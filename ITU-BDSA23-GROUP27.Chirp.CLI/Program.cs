@@ -3,34 +3,28 @@
 string FILE = "chirp_cli_db.csv";
 string DATE_FORMAT = "MM/dd/yy HH:mm:ss";
 
-void Main()
+if (args.Length < 1)
 {
-    if (args.Length < 1)
-    {
-        Console.WriteLine("Usage: \n  " +
-                        " - dotnet <read> \n  " +
-                        " - dotnet <cheep> [message]");
-        return;
-    }
+    Console.WriteLine("Usage: \n  " +
+                      " - dotnet <read> \n  " +
+                      " - dotnet <cheep> [message]");
+    return;
+}
 
-    if (args[0] == "read")
-    {
+switch (args[0])
+{
+    case "read":
         ReadChirps();
-    }
-    else if (args[0] == "cheep")
-    {
-        if (args.Length < 2)
-        {
-            Console.WriteLine("A cheep message is missing!");
-            return;
-        }
-
+        break;
+    case "cheep" when args.Length < 2:
+        Console.WriteLine("A cheep message is missing!");
+        return;
+    case "cheep":
         Cheep(args[1]);
-    }
-    else
-    {
+        break;
+    default:
         Console.WriteLine("Invalid command. Use 'read' or 'cheep'.");
-    }
+        break;
 }
 
 void ReadChirps()
@@ -99,5 +93,3 @@ long DateToTimestamp(string datetime)
 
     return 0;
 }
-
-Main();
