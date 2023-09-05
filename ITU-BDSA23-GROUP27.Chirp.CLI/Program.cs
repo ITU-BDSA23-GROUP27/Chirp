@@ -1,3 +1,7 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-Console.WriteLine("Hello, World!");
+﻿if (args.Length == 0)
+{
+    Console.WriteLine("Missing argument \n  " +
+                      "-read : to read all messages \n  " +
+                      "-cheep 'Your Message' : post a message");
+    return;
+}
