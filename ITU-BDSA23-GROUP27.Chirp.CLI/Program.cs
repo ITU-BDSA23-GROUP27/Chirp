@@ -1,7 +1,5 @@
 ﻿using System.Globalization;
-
-const string FILE = "chirp_cli_db.csv";
-const string DATE_FORMAT = "MM/dd/yy HH:mm:ss";
+using System.Reflection;
 
 if (args.Length < 1)
 {
@@ -11,26 +9,55 @@ if (args.Length < 1)
     return;
 }
 
-switch (args[0])
+ExecuteArgumentExecutableMethods(args);
+
+void ExecuteArgumentExecutableMethods(string[] args)
 {
-    case "read":
-        ReadChirps();
-        break;
-    case "cheep" when args.Length < 2:
-        Console.WriteLine("A cheep message is missing!");
-        return;
-    case "cheep":
-        Cheep(args[1]);
-        break;
-    default:
-        Console.WriteLine("Invalid command. Use 'read' or 'cheep'.");
-        break;
+    var obj = Activator.CreateInstance(typeof(Chirp)); // Instantiate the class
+    
+    foreach (MethodInfo methodInfo in typeof(Chirp).GetMethods())
+    {
+        var attr = methodInfo.GetCustomAttributes(typeof(ArgumentExecutableAttribute), false);
+        
+        if (attr.FirstOrDefault() == null) continue;
+        
+        var attrNames = (attr[0] as ArgumentExecutableAttribute)?.Names;
+        
+        if (attrNames != null && attrNames.Any(attrName => args.Contains(attrName) || args.Contains(attrName?.ToLower())))
+        {
+            methodInfo.Invoke(obj, null);
+        }
+    }
 }
 
-[ArgumentExecutable("Read")]
-void ReadChirps()
+[AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = false)]
+internal sealed class ArgumentExecutableAttribute : Attribute
 {
-    try
+    public IEnumerable<string> Names
+    {
+        get;
+    }
+
+    public ArgumentExecutableAttribute(params string[] _names)
+    {
+        this.Names = _names;
+    }
+}
+
+internal sealed class Chirp
+{
+    const string FILE = "chirp_cli_db.csv";
+    const string DATE_FORMAT = "MM/dd/yy HH:mm:ss";
+
+    private static string[] Args
+    {
+        get => Environment.GetCommandLineArgs();
+    }
+    
+    #region Commands
+
+    [ArgumentExecutable("Read")]
+    public void ReadChirps()
     {
         string[] lines = File.ReadAllLines(FILE);
 
@@ -48,17 +75,17 @@ void ReadChirps()
             Console.WriteLine(chirp);
         }
     }
-    catch (Exception e)
-    {
-        Console.WriteLine(e.Message);
-    }
-}
 
-[ArgumentExecutable("Cheep")]
-void Cheep(string message)
-{
-    try
+    [ArgumentExecutable("Cheep", "New")]
+    public void Cheep()
     {
+        if (Args.Length < 2)
+        {
+            Console.WriteLine("When cheeping a message is required");
+            return;
+        }
+    
+        string message = Args[1];
         string username = Environment.UserName;
         long timestamp = DateToTimestamp(DateTime.Now.ToString(DATE_FORMAT, CultureInfo.InvariantCulture));
 
@@ -67,43 +94,38 @@ void Cheep(string message)
 
         Console.WriteLine("Text appended successfully.");
     }
-    catch (Exception)
-    {
-        Console.WriteLine("An error occurred while cheeping.");
-    }
-}
 
-string TimestampToDate(string timestamp)
-{
-    if (int.TryParse(timestamp, out int unixTimestamp))
+    [ArgumentExecutable("Hello", "Test")]
+    public void HelloWorldTest()
     {
-        DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(unixTimestamp);
-        string formattedDateTime = dateTimeOffset.ToLocalTime().ToString(DATE_FORMAT, CultureInfo.InvariantCulture);
-        return formattedDateTime;
+        Console.WriteLine("Hello World!");
     }
 
-    return "Invalid Timestamp";
-}
+    #endregion
+    #region Utility Methods
 
-long DateToTimestamp(string datetime)
-{
-    if (DateTime.TryParseExact(datetime, DATE_FORMAT, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime datetimeParse))
+    string TimestampToDate(string timestamp)
     {
-        long timestamp = new DateTimeOffset(datetimeParse).ToUnixTimeSeconds();
-        return timestamp;
+        if (int.TryParse(timestamp, out int unixTimestamp))
+        {
+            DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(unixTimestamp);
+            string formattedDateTime = dateTimeOffset.ToLocalTime().ToString(DATE_FORMAT, CultureInfo.InvariantCulture);
+            return formattedDateTime;
+        }
+
+        return "Invalid Timestamp";
     }
 
-    return 0;
-}
-
-[AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = true)]
-internal sealed class ArgumentExecutableAttribute : Attribute
-{
-    private string name;
-
-    public ArgumentExecutableAttribute(string _name)
+    long DateToTimestamp(string datetime)
     {
-        this.name = _name;
+        if (DateTime.TryParseExact(datetime, DATE_FORMAT, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime datetimeParse))
+        {
+            long timestamp = new DateTimeOffset(datetimeParse).ToUnixTimeSeconds();
+            return timestamp;
+        }
+
+        return 0;
     }
-    
+
+    #endregion
 }
