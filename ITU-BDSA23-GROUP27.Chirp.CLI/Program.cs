@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 
-string FILE = "chirp_cli_db.csv";
-string DATE_FORMAT = "MM/dd/yy HH:mm:ss";
+const string FILE = "chirp_cli_db.csv";
+const string DATE_FORMAT = "MM/dd/yy HH:mm:ss";
 
 if (args.Length < 1)
 {
