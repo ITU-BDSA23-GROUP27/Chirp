@@ -27,6 +27,7 @@ switch (args[0])
         break;
 }
 
+[ArgumentExecutable("Read")]
 void ReadChirps()
 {
     try
@@ -53,6 +54,7 @@ void ReadChirps()
     }
 }
 
+[ArgumentExecutable("Cheep")]
 void Cheep(string message)
 {
     try
@@ -92,4 +94,16 @@ long DateToTimestamp(string datetime)
     }
 
     return 0;
+}
+
+[AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = true)]
+internal sealed class ArgumentExecutableAttribute : Attribute
+{
+    private string name;
+
+    public ArgumentExecutableAttribute(string _name)
+    {
+        this.name = _name;
+    }
+    
 }
