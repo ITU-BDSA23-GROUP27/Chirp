@@ -1,43 +1,41 @@
 using System.Globalization;
 namespace ITU_BDSA23_GROUP27.Chirp.CLI;
 
-public class UserInterface
+public static class UserInterface
 {
-    const string DATE_FORMAT = "MM/dd/yy HH:mm:ss";
-    
-    public static void PrintCheeps(IEnumerable<Cheep> cheeps, long? limit)
+    public static void PrintCheeps(IEnumerable<Cheep> cheeps, int? limit)
     {
         var list = cheeps.ToList();
-        
-        switch (limit)
+        int readLimit = limit ?? list.Count;
+
+        if (readLimit <= 0)
         {
-            case null:
-                limit = list.Count;
-                break;
-            
-            case <= 0:
-                throw new ArgumentException("Limit cannot be less than or equal to zero");
+            throw new ArgumentException("limit must be null or greater than 0");
         }
         
-        int i = 0;
-        foreach (var (author, message, timestamp) in list)
+        int counter = 0;
+        
+        foreach ((string author, string message, long timestamp) in list)
         {
-            if (i == limit) break;
+            if (counter == readLimit)
+            {
+                break;
+            }
+            
             string chirp = $"{author} @ {TimestampToDate(timestamp.ToString())}: {message}";
             Console.WriteLine(chirp);
-            i++;
+            counter++;
         }
     }
     
     private static string TimestampToDate(string timestamp)
     {
-        if (int.TryParse(timestamp, out int unixTimestamp))
+        if (!int.TryParse(timestamp, out int unixTimestamp))
         {
-            DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(unixTimestamp);
-            string formattedDateTime = dateTimeOffset.ToLocalTime().ToString(DATE_FORMAT, CultureInfo.InvariantCulture);
-            return formattedDateTime;
+            throw new ArgumentException("Invalid Timestamp");
         }
 
-        return "Invalid Timestamp";
+        DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(unixTimestamp);
+        return dateTimeOffset.ToLocalTime().ToString(Utility.DATE_FORMAT, CultureInfo.InvariantCulture);
     }
 }
