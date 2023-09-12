@@ -1,33 +1,37 @@
 ﻿using System.Globalization;
+using CommandLine;
 using ITU_BDSA23_GROUP27.Chirp.CLI;
 using SimpleDB;
 
 const string DATE_FORMAT = "MM/dd/yy HH:mm:ss";
 IDatabaseRepository<Cheep> database = new CSVDatabase<Cheep>();
 
-if (args.Length < 1)
-{
-    Console.WriteLine("Usage: \n  " +
-                      " - dotnet <read> \n  " +
-                      " - dotnet <cheep> [message]");
-    return;
-}
+const string usage = @"Missing arguments:
+  (--r | --read) <limit>      : Read all cheeps
+  (--c | --cheep) <message>   : Create a new cheep
 
-switch (args[0])
+  --h                         : Show this help screen
+";
+
+Parser.Default.ParseArguments<Options>(args).WithParsed(o =>
 {
-    case "read":
-        UserInterface.PrintCheeps(database.Read());
-        break;
-    case "cheep" when args.Length < 2:
-        Console.WriteLine("A cheep message is missing!");
-        return;
-    case "cheep":
-        Cheep(args[1]);
-        break;
-    default:
-        Console.WriteLine("Invalid command. Use 'read' or 'cheep'.");
-        break;
-}
+    if (o.Read)
+    {
+        UserInterface.PrintCheeps(database.Read(), o.ReadLimit);
+    }
+    else if (o.Cheep is not null)
+    {
+        Cheep(o.Cheep);
+    }
+    else if (o.Help)
+    {
+        Console.WriteLine(usage);
+    }
+    else
+    {
+        Console.WriteLine(usage);
+    }
+});
 
 void Cheep(string message)
 {
@@ -48,3 +52,18 @@ long DateToTimestamp(string datetime)
 }
 
 public record Cheep(string Author, string Message, long Timestamp);
+
+public class Options
+{
+    [Option('r', "read", Required = false, HelpText = "Read all cheeps")]
+    public bool Read { get; set; }
+    
+    [Value(1, Required = false, HelpText = "Value for read limit")]
+    public long? ReadLimit { get; set; }
+    
+    [Option('c', "cheep", Required = false, HelpText = "Create a new Cheep")]
+    public string? Cheep { get; set; }
+    
+    [Option('h', "help", Required = false, HelpText = "Display a help screen")]
+    public bool Help { get; set; }
+}
