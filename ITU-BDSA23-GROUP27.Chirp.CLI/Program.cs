@@ -1,9 +1,8 @@
 ﻿using System.Globalization;
-using CsvHelper;
-using CsvHelper.Configuration;
+using SimpleDB;
 
-const string FILE = "chirp_cli_db.csv";
 const string DATE_FORMAT = "MM/dd/yy HH:mm:ss";
+IDatabaseRepository<Cheep> database = new CSVDatabase<Cheep>();
 
 if (args.Length < 1)
 {
@@ -12,8 +11,6 @@ if (args.Length < 1)
                       " - dotnet <cheep> [message]");
     return;
 }
-
-
 
 switch (args[0])
 {
@@ -33,63 +30,19 @@ switch (args[0])
 
 void ReadChirps()
 {
-    var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+    var records = database.Read();
+    foreach (var (author, message, timestamp) in records)
     {
-        HasHeaderRecord = true,
-    };
-    using (var reader = new StreamReader(FILE))
-    using (var csv = new CsvReader(reader, config))
-    {
-        var records = csv.GetRecords<Cheep>();
-
-        foreach (var (author, message, timestamp) in records)
-        {
-            string chirp = $"{author} @ {TimestampToDate(timestamp.ToString())}: {message}";
-            Console.WriteLine(chirp);
-        }
-    }
-    /*
-    string[] lines = File.ReadAllLines(FILE);
-
-    for (int i = 1; i < lines.Length; i++) // skip header line
-    {
-        string[] data = lines[i].Split('"');
-
-        string author = data[0].TrimEnd(',');
-        string message = data[1];
-        string timestamp = data[2].TrimStart(',');
-
-        string datetime = TimestampToDate(timestamp);
-
-        string chirp = $"{author} @ {datetime}: {message}";
+        string chirp = $"{author} @ {TimestampToDate(timestamp.ToString())}: {message}";
         Console.WriteLine(chirp);
-    }*/
+    }
 }
 
 void Cheep(string message)
 {
-    var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-    {
-        HasHeaderRecord = true,
-    };
-    using (var writer = new StreamWriter(File.Open(FILE,FileMode.Append)))
-    using (var csv = new CsvWriter(writer, config))
-    {
-        long timestamp = DateToTimestamp(DateTime.Now.ToString(DATE_FORMAT, CultureInfo.InvariantCulture));
-        var record = new Cheep(Environment.UserName, message, timestamp);
-        csv.WriteRecord(record);
-        writer.WriteLine();
-    }
-    /*
-    string username = Environment.UserName;
     long timestamp = DateToTimestamp(DateTime.Now.ToString(DATE_FORMAT, CultureInfo.InvariantCulture));
-
-    string chirp = $"{username},\"{message}\",{timestamp}";
-    
-    File.AppendAllText(FILE, chirp + Environment.NewLine);
-
-    Console.WriteLine("Text appended successfully.");
-    */
+    var record = new Cheep(Environment.UserName, message, timestamp);
+    database.Store(record);
 }
 
 string TimestampToDate(string timestamp)

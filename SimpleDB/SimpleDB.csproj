@@ -1,16 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <ItemGroup>
-      <ProjectReference Include="..\SimpleDB\SimpleDB.csproj" />
-    </ItemGroup>
-
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
         <TargetFramework>net7.0</TargetFramework>
-        <RootNamespace>ITU_BDSA23_GROUP27.Chirp.CLI</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="CsvHelper" Version="30.0.1" />
+    </ItemGroup>
 
 </Project>
