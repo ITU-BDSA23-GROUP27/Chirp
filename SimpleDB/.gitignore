@@ -479,3 +479,4 @@ $RECYCLE.BIN/
 *.lnk
 /bin/
 /bin/
+/obj/
