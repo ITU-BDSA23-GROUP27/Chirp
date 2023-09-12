@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using ITU_BDSA23_GROUP27.Chirp.CLI;
 using SimpleDB;
 
 const string DATE_FORMAT = "MM/dd/yy HH:mm:ss";
@@ -15,7 +16,7 @@ if (args.Length < 1)
 switch (args[0])
 {
     case "read":
-        ReadChirps();
+        UserInterface.PrintCheeps(database.Read());
         break;
     case "cheep" when args.Length < 2:
         Console.WriteLine("A cheep message is missing!");
@@ -28,33 +29,11 @@ switch (args[0])
         break;
 }
 
-void ReadChirps()
-{
-    var records = database.Read();
-    foreach (var (author, message, timestamp) in records)
-    {
-        string chirp = $"{author} @ {TimestampToDate(timestamp.ToString())}: {message}";
-        Console.WriteLine(chirp);
-    }
-}
-
 void Cheep(string message)
 {
     long timestamp = DateToTimestamp(DateTime.Now.ToString(DATE_FORMAT, CultureInfo.InvariantCulture));
     var record = new Cheep(Environment.UserName, message, timestamp);
     database.Store(record);
-}
-
-string TimestampToDate(string timestamp)
-{
-    if (int.TryParse(timestamp, out int unixTimestamp))
-    {
-        DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(unixTimestamp);
-        string formattedDateTime = dateTimeOffset.ToLocalTime().ToString(DATE_FORMAT, CultureInfo.InvariantCulture);
-        return formattedDateTime;
-    }
-
-    return "Invalid Timestamp";
 }
 
 long DateToTimestamp(string datetime)
