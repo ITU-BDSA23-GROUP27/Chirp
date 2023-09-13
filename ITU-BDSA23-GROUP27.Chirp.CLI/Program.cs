@@ -11,7 +11,7 @@ Parser.Default.ParseArguments(args, types)
 
 static void HandleErrors(object obj)
 {
-            
+    // TODO Implement error handling
 }
         
 static void Run(object obj)
