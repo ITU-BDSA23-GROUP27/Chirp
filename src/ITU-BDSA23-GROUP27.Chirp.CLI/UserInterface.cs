@@ -22,20 +22,9 @@ public static class UserInterface
                 break;
             }
             
-            string chirp = $"{author} @ {TimestampToDate(timestamp.ToString())}: {message}";
+            string chirp = $"{author} @ {Utility.TimestampToDate(timestamp.ToString())}: {message}";
             Console.WriteLine(chirp);
             counter++;
         }
-    }
-    
-    private static string TimestampToDate(string timestamp)
-    {
-        if (!int.TryParse(timestamp, out int unixTimestamp))
-        {
-            throw new ArgumentException("Invalid Timestamp");
-        }
-
-        DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(unixTimestamp);
-        return dateTimeOffset.ToLocalTime().ToString(Utility.DATE_FORMAT, CultureInfo.InvariantCulture);
     }
 }

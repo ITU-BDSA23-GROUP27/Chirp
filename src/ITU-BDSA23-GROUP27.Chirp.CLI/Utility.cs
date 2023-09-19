@@ -16,4 +16,15 @@ internal static class Utility
         long timestamp = new DateTimeOffset(datetimeParse).ToUnixTimeSeconds();
         return timestamp;
     }
+    
+    internal static string TimestampToDate(string timestamp)
+    {
+        if (!int.TryParse(timestamp, out int unixTimestamp))
+        {
+            throw new ArgumentException("Invalid Timestamp");
+        }
+
+        DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(unixTimestamp);
+        return dateTimeOffset.ToLocalTime().ToString(DATE_FORMAT, CultureInfo.InvariantCulture);
+    }
 }
