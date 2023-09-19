@@ -2,11 +2,11 @@ using System.Globalization;
 
 namespace ITU_BDSA23_GROUP27.Chirp.CLI;
 
-internal static class Utility
+public static class Utility
 {
     internal const string DATE_FORMAT = "MM/dd/yy HH:mm:ss";
 
-    internal static long DateToTimestamp(string datetime)
+    public static long DateToTimestamp(string datetime)
     {
         if (!DateTime.TryParseExact(datetime, DATE_FORMAT, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime datetimeParse))
         {
@@ -17,7 +17,7 @@ internal static class Utility
         return timestamp;
     }
     
-    internal static string TimestampToDate(string timestamp)
+    public static string TimestampToDate(string timestamp)
     {
         if (!int.TryParse(timestamp, out int unixTimestamp))
         {
