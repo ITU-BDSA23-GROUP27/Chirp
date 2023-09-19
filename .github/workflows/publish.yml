@@ -53,6 +53,6 @@ jobs:
       - name: Publish
         uses: softprops/action-gh-release@v1
         with:
-          files: "App*"
+          files: "ITU-BDSA23-GROUP27.Chirp.CLI*", "SimpleDB*"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
