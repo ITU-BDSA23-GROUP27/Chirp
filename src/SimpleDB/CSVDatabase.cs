@@ -1,10 +1,11 @@
 ﻿using System.Globalization;
 using CsvHelper;
 using CsvHelper.Configuration;
+using SimpleDB.Utility;
 
 namespace SimpleDB;
 
-public class CSVDatabase<T> : IDatabaseRepository<T>
+public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
 {
     private readonly string FILE;
     
