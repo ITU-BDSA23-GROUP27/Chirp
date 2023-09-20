@@ -6,7 +6,13 @@ namespace SimpleDB;
 
 public class CSVDatabase<T> : IDatabaseRepository<T>
 {
-    private const string FILE = "../SimpleDB/chirp_cli_db.csv";
+    private readonly string FILE;
+    
+    public CSVDatabase(string FILE = "../../data/chirp_cli_db.csv")
+    {
+        this.FILE = FILE;
+    }
+    
     public IEnumerable<T> Read(int? limit = null)
     {
         var config = new CsvConfiguration(CultureInfo.InvariantCulture)
