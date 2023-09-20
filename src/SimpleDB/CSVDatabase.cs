@@ -1,10 +1,11 @@
 ﻿using System.Globalization;
 using CsvHelper;
 using CsvHelper.Configuration;
+using SimpleDB.Utility;
 
 namespace SimpleDB;
 
-public class CSVDatabase<T> : IDatabaseRepository<T>
+public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
 {
     private const string FILE = "../SimpleDB/chirp_cli_db.csv";
     public IEnumerable<T> Read(int? limit = null)
