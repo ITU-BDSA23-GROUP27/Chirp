@@ -31,14 +31,13 @@ jobs:
           dotnet-version: 7.0.x
 
       - name: Build
-        shell: bash
         run: |
           tag=$(git describe --tags --abbrev=0)
           release_name="Chirp-$tag-${{ matrix.target }}"
-
+          
           # Build everything
-          dotnet publish src/ITU-BDSA23-GROUP27.Chirp.CLI/ITU-BDSA23-GROUP27.Chirp.CLI.csproj --framework net7.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name" -p:PublishSingleFile=true
-
+          dotnet publish src/ITU-BDSA23-GROUP27.Chirp.CLI/ITU-BDSA23-GROUP27.Chirp.CLI.csproj --framework net7.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name" -p:PublishSingleFile=true -o output-directory
+          
           # Pack files
           if [ "${{ matrix.target }}" == "win-x64" ]; then
             # Pack to zip for Windows
@@ -46,10 +45,11 @@ jobs:
           else
             7z a -tzip "${release_name}.zip" "./${release_name}/*"
           fi
-
+          
           # Delete output directory
           rm -r "$release_name"
-
+        shell: bash
+        
       - name: Publish
         uses: softprops/action-gh-release@v1
         with:
