@@ -12,7 +12,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E7FABE2A-A94
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{74408887-709B-4B70-9E65-797CFCF4CE02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirp.CSVDBService", "src\Chirp.CSVDBService\Chirp.CSVDBService.csproj", "{A6BF9A36-1CD2-4CD4-B078-0764A0562E0A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSVDBService", "src\CSVDBService\CSVDBService.csproj", "{A6BF9A36-1CD2-4CD4-B078-0764A0562E0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSVDBService.Tests", "test\CSVDBService.Tests\CSVDBService.Tests.csproj", "{A9920143-E0F2-4165-B653-9908E4F9BDFD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,6 +42,10 @@ Global
 		{A6BF9A36-1CD2-4CD4-B078-0764A0562E0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6BF9A36-1CD2-4CD4-B078-0764A0562E0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6BF9A36-1CD2-4CD4-B078-0764A0562E0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9920143-E0F2-4165-B653-9908E4F9BDFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9920143-E0F2-4165-B653-9908E4F9BDFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9920143-E0F2-4165-B653-9908E4F9BDFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9920143-E0F2-4165-B653-9908E4F9BDFD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{35D50235-693B-4A25-9AB5-B991A89F8F2F} = {E7FABE2A-A942-455D-B6E4-F8A6C2B21484}
