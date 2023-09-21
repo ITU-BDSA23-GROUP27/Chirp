@@ -7,13 +7,13 @@ on:
 jobs:
   release:
     name: Release
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        target: ['linux-x64', 'win-x64', 'osx-x64']
-    runs-on: ${{ matrix.os }}
+        kind: ['linux', 'windows', 'macOS']
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v1
 
       - name: Setup dotnet
         uses: actions/setup-dotnet@v1
@@ -21,15 +21,17 @@ jobs:
           dotnet-version: 7.0.x
 
       - name: Build
+        shell: bash
         run: |
           tag=$(git describe --tags --abbrev=0)
           release_name="Chirp-$tag-${{ matrix.target }}"
 
-          # Build and publish
+          # Build everything
           dotnet publish src/ITU-BDSA23-GROUP27.Chirp.CLI/ITU-BDSA23-GROUP27.Chirp.CLI.csproj --framework net7.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
 
-          # Create ZIP file
-          7z a -tzip "${release_name}.zip" "$release_name/*"
+          # Pack files
+          7z a -tzip "${release_name}.zip" "./${release_name}/*"
+          fi
 
           # Delete output directory
           rm -r "$release_name"
@@ -37,6 +39,6 @@ jobs:
       - name: Publish
         uses: softprops/action-gh-release@v1
         with:
-          files: "${release_name}.zip"
+          files: "Chirp*"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
