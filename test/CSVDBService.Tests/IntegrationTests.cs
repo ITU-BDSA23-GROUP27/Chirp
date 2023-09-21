@@ -1,8 +1,6 @@
 using System.Net;
 using System.Text;
-using System.Xml.Serialization;
 using Newtonsoft.Json;
-using Xunit.Abstractions;
 
 namespace CSVDBService.Tests;
 
