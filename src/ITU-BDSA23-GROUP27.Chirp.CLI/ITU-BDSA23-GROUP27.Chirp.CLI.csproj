@@ -10,7 +10,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="data/chirp_cli_db.csv"/>
+        <Content Include="$(SolutionDir)/data/chirp_cli_db.csv"/>
     </ItemGroup>
 
 
