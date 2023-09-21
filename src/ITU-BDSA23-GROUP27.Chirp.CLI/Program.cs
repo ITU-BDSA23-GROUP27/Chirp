@@ -46,7 +46,6 @@ async Task Cheep(string message)
 async Task ReadCheeps(int? limit)
 {
     var response = await client.GetAsync("/cheeps");
-    
     var responseContent = await response.Content.ReadAsStringAsync();
     IEnumerable<Cheep> ?cheeps = JsonConvert.DeserializeObject<List<Cheep>>(responseContent);
     
