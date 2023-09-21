@@ -1,14 +1,20 @@
 ﻿using System.Globalization;
 using CsvHelper;
 using CsvHelper.Configuration;
+using SimpleDB.Utility;
 
 namespace SimpleDB;
 
-public class CSVDatabase<T> : IDatabaseRepository<T>
+public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
 {
     private readonly string FILE;
+
+    public CSVDatabase()
+    {
+        this.FILE = "../../data/chirp_cli_db.csv";
+    }
     
-    public CSVDatabase(string FILE = "../../data/chirp_cli_db.csv")
+    public CSVDatabase(string FILE)
     {
         this.FILE = FILE;
     }

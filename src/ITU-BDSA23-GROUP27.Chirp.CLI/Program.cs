@@ -31,17 +31,14 @@ static void Run(object obj)
 
 static void Cheep(string message)
 {
-    IDatabaseRepository<Cheep> database = new CSVDatabase<Cheep>();
-
     long timestamp = Utility.DateToTimestamp(DateTime.Now.ToString(Utility.DATE_FORMAT, CultureInfo.InvariantCulture));
     Cheep record = new Cheep(Environment.UserName, message, timestamp);
-    database.Store(record);
+    CSVDatabase<Cheep>.Instance.Store(record);
 }
 
 static void ReadCheeps(int? limit)
 {
-    IDatabaseRepository<Cheep> database = new CSVDatabase<Cheep>();
-    UserInterface.PrintCheeps(database.Read(), limit);
+    UserInterface.PrintCheeps(CSVDatabase<Cheep>.Instance.Read(), limit);
 }
 
 public record Cheep(string Author, string Message, long Timestamp);
