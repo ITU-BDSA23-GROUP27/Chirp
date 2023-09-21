@@ -1,7 +1,13 @@
+using SimpleDB;
+
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
-app.MapGet("/cheeps", () => new Cheep("me", "Hej!", 1684229348));
+//Read cheeps
+app.MapGet("/cheeps", () => CSVDatabase<Cheep>.Instance.Read());
+
+//Store cheep
+app.MapPost("/cheep", (Cheep cheep) => CSVDatabase<Cheep>.Instance.Store(cheep));
 
 app.Run();
 
