@@ -9,6 +9,11 @@
       <PackageReference Include="CommandLineParser" Version="2.9.1" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Content Include="data/chirp_cli_db.csv"/>
+    </ItemGroup>
+
+
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net7.0</TargetFramework>
