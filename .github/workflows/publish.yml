@@ -63,16 +63,6 @@ jobs:
           rm -r "$release_name"
         shell: bash
         
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v2.0.0 # Update with your desired version
-          release_name: Release 1.0.0
-          body: Release notes and description go here
-        
       - name: Publish
         uses: softprops/action-gh-release@v1
         with:
