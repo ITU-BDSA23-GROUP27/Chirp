@@ -10,7 +10,7 @@ public class IntegrationTests
     public async void StatusCode_Cheeps_Is_200()
     {
         // HTTP Client Creation
-        var baseURL = "http://localhost:5100";
+        var baseURL = "https://bdsagroup27chirpremotedb.azurewebsites.net/";
         using HttpClient client = new();
         client.BaseAddress = new Uri(baseURL);
         
@@ -28,7 +28,7 @@ public class IntegrationTests
     public async void StatusCode_Cheep_Is_200()
     {
         // HTTP Client Creation
-        var baseURL = "http://localhost:5100";
+        var baseURL = "https://bdsagroup27chirpremotedb.azurewebsites.net/";
         using HttpClient client = new();
         client.BaseAddress = new Uri(baseURL);
         

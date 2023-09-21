@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 var types = CommandLineOptions.GetVerbs();
 
 // HTTP Client Creation
-var baseURL = "http://localhost:5100";
+var baseURL = "https://bdsagroup27chirpremotedb.azurewebsites.net/";
 using HttpClient client = new();
 client.BaseAddress = new Uri(baseURL);
 
