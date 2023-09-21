@@ -70,7 +70,7 @@ jobs:
             tag=$(git describe --tags --abbrev=0)
             release_name="Chirp-$tag"
             echo "::set-output name=release_name::$release_name"
-          shell: bash
+        shell: bash
 
       - name: Publish
         uses: softprops/action-gh-release@v1
