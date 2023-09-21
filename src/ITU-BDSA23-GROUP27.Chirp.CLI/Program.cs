@@ -18,7 +18,7 @@ static void Run(object obj)
 {
     switch (obj)
     {
-        case CommandLineOptions.CheepOptions c:
+        case CommandLineOptions.CheepOptions c when c.Message != null:
             Cheep(c.Message);
             break;
         case CommandLineOptions.ReadOptions r:
