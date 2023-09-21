@@ -8,15 +8,15 @@ class CommandLineOptions
     [Verb("read", aliases:new []{"r"}, HelpText = "Read cheeps from database")]
     internal class ReadOptions
     {
-        [Option("limit", Required = false, HelpText = "The amount of cheeps to read")]
+        [Value(0, Required = false, Default = null, HelpText = "The amount of cheeps to read. Omit to read everything.")]
         public int? Limit { get; set; }
     }
 
     [Verb("cheep", aliases:new []{"c"}, HelpText = "Create new cheep")]
     internal class CheepOptions
     {
-        [Option('m', "message", Required = true, HelpText = "The message to cheep")]
-        public string Message { get; set; }
+        [Value(0, Required = true, HelpText = "The message to cheep")]       
+        public string? Message { get; set; }
     }
     
     internal class Options
