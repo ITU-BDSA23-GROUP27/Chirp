@@ -7,10 +7,20 @@ on:
 jobs:
   release:
     name: Release
-    runs-on: ubuntu-latest
     strategy:
       matrix:
         kind: ['linux', 'windows', 'macOS']
+        include:
+          - kind: linux
+            os: ubuntu-latest
+            target: linux-x64
+          - kind: windows
+            os: ubuntu-latest
+            target: win-x64
+          - kind: macOS
+            os: ubuntu-latest
+            target: osx-x64
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -30,7 +40,11 @@ jobs:
           dotnet publish src/ITU-BDSA23-GROUP27.Chirp.CLI/ITU-BDSA23-GROUP27.Chirp.CLI.csproj --framework net7.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
 
           # Pack files
-          7z a -tzip "${release_name}.zip" "./${release_name}/*"
+          if [ "${{ matrix.target }}" == "win-x64" ]; then
+            # Pack to zip for Windows
+            7z a -tzip "${release_name}.zip" "./${release_name}/*"
+          else
+            7z a -tzip "${release_name}.zip" "./${release_name}/*"
           fi
 
           # Delete output directory
