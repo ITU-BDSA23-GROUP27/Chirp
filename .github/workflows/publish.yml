@@ -36,7 +36,7 @@ jobs:
           release_name="Chirp-$tag-${{ matrix.target }}"
           
           # Build everything
-          dotnet publish src/ITU-BDSA23-GROUP27.Chirp.CLI/ITU-BDSA23-GROUP27.Chirp.CLI.csproj --framework net7.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name" -p:PublishSingleFile=true -o output-directory
+          dotnet publish src/ITU-BDSA23-GROUP27.Chirp.CLI/ITU-BDSA23-GROUP27.Chirp.CLI.csproj --framework net7.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name" -p:PublishSingleFile=true
           
           # Pack files
           if [ "${{ matrix.target }}" == "win-x64" ]; then
