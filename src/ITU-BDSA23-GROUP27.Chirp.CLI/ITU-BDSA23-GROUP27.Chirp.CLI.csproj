@@ -10,7 +10,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="$(SolutionDir)/data/chirp_cli_db.csv"/>
+        <Resource Include="..\data\**\*">
+            <Link>data\%(RecursiveDir)/%(FileName)%(Extension)</Link>
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Resource>
     </ItemGroup>
 
 
