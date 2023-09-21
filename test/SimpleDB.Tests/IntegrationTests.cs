@@ -1,20 +1,30 @@
+using System.Text;
+using Newtonsoft.Json;
+
 namespace SimpleDB.Tests;
 
 public class IntegrationTests
 {
-    
     [Fact]
-    public void CSVDatabase_Cheep_Read_ReturnsLastCheep()
+    public async void CSVDatabase_Cheep_Read_ReturnsLastCheep()
     {
+        // HTTP Client Creation
+        var baseURL = "http://localhost:5100";
+        using HttpClient client = new();
+        client.BaseAddress = new Uri(baseURL);
+        
         // Arrange
-        string filepath = "../../../../../data/chirp_cli_db.csv";
-        IDatabaseRepository<Cheep> database = new CSVDatabase<Cheep>(filepath);
         Cheep entry = new Cheep(Environment.UserName, "message", 1690891760);
+        var httpCheep = new StringContent(JsonConvert.SerializeObject(entry), Encoding.UTF8, "application/json");
         
         // Act
-        database.Store(entry);
-        var cheeps = database.Read().ToArray();
-        var lastCheep = cheeps[^1];
+        await client.PostAsync("/cheep", httpCheep);
+        
+        var cheepsHttp = await client.GetAsync("/cheeps");
+        var cheepsHttpContent = await cheepsHttp.Content.ReadAsStringAsync();
+        var cheepArray = JsonConvert.DeserializeObject<List<Cheep>>(cheepsHttpContent).ToArray();
+        
+        var lastCheep = cheepArray[^1];
     
         // Assert
         Assert.Equal("message", lastCheep.Message);
