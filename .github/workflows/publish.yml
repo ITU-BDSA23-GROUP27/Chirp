@@ -40,10 +40,8 @@ jobs:
           dotnet publish src/ITU-BDSA23-GROUP27.Chirp.CLI/ITU-BDSA23-GROUP27.Chirp.CLI.csproj --framework net7.0 --runtime "${{ matrix.target }}" -c Release -o "$release_name"
 
           # Pack files
-          if [ "${{ matrix.target }}" == "win-x64" ]; then
+          if [ "${{ matrix.target }}"]; then
             # Pack to zip for Windows
-            7z a -tzip "${release_name}.zip" "./${release_name}/*"
-          else
             7z a -tzip "${release_name}.zip" "./${release_name}/*"
           fi
 
