@@ -1,8 +1,9 @@
 name: Publish
 
-on:  
+on:
   push:
-    branches: [ main ]
+    branches:
+      - master
 
 jobs:
   release:
@@ -17,7 +18,7 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 7.0.x
-        
+
       - name: Build Linux
         run: |
           tag=$(git describe --tags --abbrev=0)
@@ -32,7 +33,7 @@ jobs:
           # Delete output directory
           rm -r "$release_name"
         shell: bash
-          
+
       - name: Build Windows
         run: |
           tag=$(git describe --tags --abbrev=0)
@@ -47,7 +48,7 @@ jobs:
           # Delete output directory
           rm -r "$release_name"
         shell: bash
-          
+
       - name: Build MacOS
         run: |
           tag=$(git describe --tags --abbrev=0)
@@ -62,13 +63,13 @@ jobs:
           # Delete output directory
           rm -r "$release_name"
         shell: bash
-        
+
       - name: Create Release and Tag
         id: create_release
         run: |
-            tag=$(git describe --tags --abbrev=0)
-            release_name="Chirp-$tag"
-            echo "::set-output name=release_name::$release_name"
+          tag=$(git describe --tags --abbrev=0)
+          release_name="Chirp-$tag"
+          echo "::set-output name=release_name::$release_name"
         shell: bash
 
       - name: Publish
