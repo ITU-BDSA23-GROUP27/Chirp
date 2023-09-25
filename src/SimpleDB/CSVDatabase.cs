@@ -17,7 +17,7 @@ public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
             FILE = filepath;
         } else
         {
-            FILE  = Directory.GetCurrentDirectory() + "chirp_cli_db.csv";
+            FILE  = Directory.GetCurrentDirectory() + "/chirp_cli_db.csv";
             
             Console.WriteLine(FILE);
             
