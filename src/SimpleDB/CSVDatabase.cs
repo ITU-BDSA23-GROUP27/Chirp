@@ -53,8 +53,9 @@ public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
         catch (Exception e)
         {
             Console.WriteLine(e);
-            throw;
         }
+
+        return null;
     }
 
     public void Store(T record)
