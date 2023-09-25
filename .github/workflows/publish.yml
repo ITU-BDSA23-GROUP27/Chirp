@@ -76,6 +76,5 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: "Chirp*"
-          tag_name: test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
