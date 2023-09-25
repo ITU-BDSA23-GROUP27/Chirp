@@ -67,13 +67,16 @@ jobs:
       - name: Create Release and Tag
         id: create_release
         run: |
-          echo "tag=$(git describe --tags --abbrev=0)" >> "$GITHUB_ENV"          
+          tag=$(git describe --tags --abbrev=0)
+          release_name="Chirp-$tag"
+          echo "::set-output name=release_name::$release_name"
         shell: bash
-      
+
       - name: Publish
         uses: softprops/action-gh-release@v1
         with:
           files: "Chirp*"
-          tag_name: Chirp-${{ env.tag }}
+          tag_name: ${{ steps.create_release.outputs.release_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
