@@ -12,9 +12,9 @@ public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
     
     public CSVDatabase()
     {
-        string? assemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        string assemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? throw new InvalidOperationException();
         string fileName = "chirp_cli_db.csv";
-        if (assemblyLocation != null) FILE = Path.Combine(assemblyLocation, fileName);
+        FILE = Path.Combine(assemblyLocation, fileName);
         //this.FILE = "../../data/chirp_cli_db.csv";
     }
     
