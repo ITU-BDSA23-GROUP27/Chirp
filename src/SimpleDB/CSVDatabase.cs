@@ -17,11 +17,15 @@ public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
         } else {
             FILE  = Directory.GetCurrentDirectory() + "/chirp_cli_db.csv";
 
-            if (File.Exists(FILE)) return;
+            if (File.Exists(FILE)) {
+                Console.WriteLine("There's no Cheeps! Add some Cheeps by using the command: cheep -m \"<message>\"");
+                return;
+            } 
             
+            Console.WriteLine("No .cvs file was found! An empty cvs. file will be created at the current directory");
+                
             using var writer = new StreamWriter(FILE);
-            // Write header row
-            writer.WriteLine("Author,Message,Timestamp");
+            writer.WriteLine("Author,Message,Timestamp"); // Write header row
         }   
     }
     
