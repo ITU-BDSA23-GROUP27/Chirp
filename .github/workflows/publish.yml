@@ -67,11 +67,11 @@ jobs:
       - name: Create Release and Tag
         id: create_release
         run: |
-          echo "tag=$(git describe --tags --abbrev=0)"          
+          tag=$(git describe --tags --abbrev=0)
           release_name="Chirp-$tag"
           echo "::set-output name=release_name::$release_name"
         shell: bash
-      
+
       - name: Publish
         uses: softprops/action-gh-release@v1
         with:
