@@ -7,19 +7,21 @@ namespace SimpleDB;
 
 public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
 {
+    private string filepath = "../../data/chirp_cli_db.csv";
     private readonly string FILE;
 
     public CSVDatabase()
     {
         try
         {
-            if (File.Exists("../../data/chirp_cli_db.csv"))
+            if (File.Exists(filepath))
             {
-                FILE = "../../data/chirp_cli_db.csv";
-            }
-            else
+                FILE = filepath;
+            } else
             {
                 FILE = "chirp_cli_db.csv";
+                Console.WriteLine("The file does not exist.");
+                Console.WriteLine("A new empty .csv file will be made at the current directory.");
             }
         }
         catch (FileNotFoundException exception)
