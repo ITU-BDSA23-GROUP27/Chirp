@@ -7,23 +7,18 @@ namespace SimpleDB;
 
 public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
 {
-    private string filepath = "../../data/chirp_cli_db.csv";
     private readonly string FILE;
 
     public CSVDatabase()
     {
-        if (File.Exists(filepath))
+        if (File.Exists("../../data/chirp_cli_db.csv"))
         {
-            FILE = filepath;
-        } else
-        {
+            FILE = "../../data/chirp_cli_db.csv";
+        } else {
             FILE  = Directory.GetCurrentDirectory() + "/chirp_cli_db.csv";
-            
-            Console.WriteLine(FILE);
-            
-            Console.WriteLine("The file does not exist.");
-            Console.WriteLine("A new empty .csv file will be made at the current directory.");
 
+            if (File.Exists(FILE)) return;
+            
             using var writer = new StreamWriter(FILE);
             // Write header row
             writer.WriteLine("Author,Message,Timestamp");
