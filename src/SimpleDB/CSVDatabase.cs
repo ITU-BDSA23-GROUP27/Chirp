@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Reflection;
 using CsvHelper;
 using CsvHelper.Configuration;
 using SimpleDB.Utility;
@@ -7,11 +8,14 @@ namespace SimpleDB;
 
 public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
 {
-    private readonly string FILE;
-
+    private string FILE;
+    
     public CSVDatabase()
     {
-        this.FILE = "../../data/chirp_cli_db.csv";
+        string? assemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        string fileName = "chirp_cli_db.csv";
+        if (assemblyLocation != null) FILE = Path.Combine(assemblyLocation, fileName);
+        //this.FILE = "../../data/chirp_cli_db.csv";
     }
     
     public CSVDatabase(string FILE)
