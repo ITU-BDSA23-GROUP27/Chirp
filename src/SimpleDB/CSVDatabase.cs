@@ -11,7 +11,15 @@ public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
 
     public CSVDatabase()
     {
-        FILE = "../../data/chirp_cli_db.csv";
+        if (File.Exists("../../data/chirp_cli_db.csv"))
+        {
+            FILE = "../../data/chirp_cli_db.csv";
+        }
+        else
+        {
+            string currentDirectory = Directory.GetCurrentDirectory();
+            Console.WriteLine("Current Directory: " + currentDirectory);
+        }
     }
     
     public CSVDatabase(string FILE)
