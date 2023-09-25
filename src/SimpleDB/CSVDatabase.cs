@@ -11,12 +11,21 @@ public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
 
     public CSVDatabase()
     {
-        if (File.Exists("../../../data/chirp_cli_db.csv"))
+        try
         {
-            FILE = "../../data/chirp_cli_db.csv";
+            if (File.Exists("../../data/chirp_cli_db.csv"))
+            {
+                FILE = "../../data/chirp_cli_db.csv";
+            }
+            else
+            {
+                FILE = "chirp_cli_db.csv";
+            }
         }
-        else {
-            FILE = "chirp_cli_db.csv";
+        catch (FileNotFoundException exception)
+        {
+            Console.WriteLine(exception.Message);
+            Console.WriteLine("A new empty .csv file will be made at the current directory.");
         }
     }
     
