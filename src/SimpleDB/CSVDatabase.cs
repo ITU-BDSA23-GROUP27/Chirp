@@ -16,7 +16,16 @@ public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
     
     public CSVDatabase(string FILE)
     {
-        this.FILE = FILE;
+        if (Directory.Exists(FILE))
+        {
+            this.FILE = FILE;
+        }
+        else
+        {
+            string currentDirectory = Directory.GetCurrentDirectory();
+            Console.WriteLine("Current Directory: " + currentDirectory);
+        }
+        
     }
     
     public IEnumerable<T> Read(int? limit = null)
