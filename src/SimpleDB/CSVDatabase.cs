@@ -12,21 +12,13 @@ public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
 
     public CSVDatabase()
     {
-        try
+        if (File.Exists(filepath))
         {
-            if (File.Exists(filepath))
-            {
-                FILE = filepath;
-            } else
-            {
-                FILE = "chirp_cli_db.csv";
-                Console.WriteLine("The file does not exist.");
-                Console.WriteLine("A new empty .csv file will be made at the current directory.");
-            }
-        }
-        catch (FileNotFoundException exception)
+            FILE = filepath;
+        } else
         {
-            Console.WriteLine(exception.Message);
+            FILE = "chirp_cli_db.csv";
+            Console.WriteLine("The file does not exist.");
             Console.WriteLine("A new empty .csv file will be made at the current directory.");
         }
     }
@@ -47,15 +39,22 @@ public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
     
     public IEnumerable<T> Read(int? limit = null)
     {
-        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+        try
         {
-            HasHeaderRecord = true,
-        };
+            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
+            {
+                HasHeaderRecord = true,
+            };
 
-        using var reader = new StreamReader(FILE);
-        using var csv = new CsvReader(reader, config);
-        
-        return csv.GetRecords<T>().ToList();
+            using var reader = new StreamReader(FILE);
+            using var csv = new CsvReader(reader, config);
+            return csv.GetRecords<T>().ToList();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public void Store(T record)
