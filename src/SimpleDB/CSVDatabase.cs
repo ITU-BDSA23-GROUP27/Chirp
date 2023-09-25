@@ -17,45 +17,35 @@ public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
             FILE = filepath;
         } else
         {
-            FILE = "chirp_cli_db.csv";
+            FILE  = Directory.GetCurrentDirectory();
+            
+            Console.WriteLine(FILE);
+            
             Console.WriteLine("The file does not exist.");
             Console.WriteLine("A new empty .csv file will be made at the current directory.");
-        }
+
+            using var writer = new StreamWriter(FILE);
+            // Write header row
+            writer.WriteLine("Name, Age, City");
+        }   
     }
     
-    public CSVDatabase(string FILE)
+    public CSVDatabase(string FILE) 
     {
-        if (Directory.Exists(FILE))
-        {
-            this.FILE = FILE;
-        }
-        else
-        {
-            string currentDirectory = Directory.GetCurrentDirectory();
-            Console.WriteLine("Current Directory: " + currentDirectory);
-        }
-        
+        this.FILE = FILE;
     }
     
     public IEnumerable<T> Read(int? limit = null)
-    {
-        try
+    {   
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-            {
-                HasHeaderRecord = true,
-            };
+            HasHeaderRecord = true,
+        };
 
-            using var reader = new StreamReader(FILE);
-            using var csv = new CsvReader(reader, config);
-            return csv.GetRecords<T>().ToList();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-        }
-
-        return null;
+        using var reader = new StreamReader(FILE);
+        using var csv = new CsvReader(reader, config);
+        
+        return csv.GetRecords<T>().ToList();
     }
 
     public void Store(T record)
