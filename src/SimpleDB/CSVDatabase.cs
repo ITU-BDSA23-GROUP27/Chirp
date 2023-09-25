@@ -26,7 +26,7 @@ public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
 
             using var writer = new StreamWriter(FILE);
             // Write header row
-            writer.WriteLine("Name, Age, City");
+            writer.WriteLine("Author,Message,Timestamp");
         }   
     }
     
