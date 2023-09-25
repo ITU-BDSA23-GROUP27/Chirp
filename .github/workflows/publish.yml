@@ -63,16 +63,14 @@ jobs:
           # Delete output directory
           rm -r "$release_name"
         shell: bash
-
-      - name: Create Release and Publish
-        id: create_release_and_publish
+      
+      - name: Publish
+        uses: softprops/action-gh-release@v1
+        with:
+          files: "Chirp*"
         run: |
           tag=$(git describe --tags --abbrev=0)
           release_name="Chirp-$tag"
           echo "::set-output name=release_name::$release_name"
-          echo "Publishing release with tag $tag"
-          gh release create "$tag" Chirp* --title="$release_name"
-        shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-     
