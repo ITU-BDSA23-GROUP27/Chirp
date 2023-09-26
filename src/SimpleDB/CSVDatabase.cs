@@ -18,7 +18,7 @@ public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
         } else {
             FILE  = Directory.GetCurrentDirectory() + "/chirp_cli_db.csv";
 
-            if (!File.Exists(FILE)) //creates a .csv file if not found
+            if (!File.Exists(FILE)) // creates a .csv file if not found
             {
                 Console.WriteLine("No .cvs file was found! An empty cvs. file will be created at the current directory");
                 
@@ -26,7 +26,7 @@ public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
                 writer.WriteLine("Author,Message,Timestamp"); // Write header row
             }
             
-            //instructs user to cheep before reading
+            // instructs user to cheep before reading
             if (IsCsvFileEmpty(FILE)) Console.WriteLine("There's no Cheeps! Add some Cheeps by using the command: cheep -m \"<message>\"");
         }   
     }
