@@ -19,19 +19,23 @@ public class End_To_EndTests
     {
         // Arrange
         // TODO Change to just use the singleton implicitly
-        var db = CSVDatabase<Cheep>.Instance;
+        // var db = CSVDatabase<Cheep>.Instance;
+
+
+        // Get the absolute path to your CLI project's directory
+        string cliProjectDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "src", "ITU-BDSA23-GROUP27.Chirp.CLI");
+
 
         // Act
         string output = "";
-        // string commandLineArguments = "read 10";
         
         using (var process = new Process())
         {
-            process.StartInfo.FileName = "C:/Program Files/dotnet/dotnet.exe";
-            process.StartInfo.Arguments = $"./src/ITU-BDSA23-GROUP27.Chirp.CLI/bin/Debug/net7.0/ITU-BDSA23-GROUP27.Chirp.CLI.dll read";
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.WorkingDirectory = "../../../../../";
+            process.StartInfo.FileName = "dotnet";
+            process.StartInfo.Arguments = "run read";
+            process.StartInfo.WorkingDirectory = cliProjectDirectory;
             process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.UseShellExecute = false;
             process.Start();
             
             // Read std output of spawned process
@@ -39,6 +43,9 @@ public class End_To_EndTests
             output = reader.ReadToEnd();
             process.WaitForExit();
         }
+        _testOutputHelper.WriteLine("TEEEEEEEEEEEEEEEEEEEEEEEEEEEST");
+        _testOutputHelper.WriteLine(output);
+        _testOutputHelper.WriteLine("TEEEEEEEEEEEEEEEEEEEEEEEEEEEST");
 
         string fstCheep = output.Split("\n")[0];
 
@@ -46,9 +53,11 @@ public class End_To_EndTests
  
         _testOutputHelper.WriteLine(fstCheep);
 
+
         // Assert
         Assert.StartsWith("ropf", fstCheep);
         Assert.EndsWith("Hello, BDSA students!", fstCheep);
     }
+    
 }
 
