@@ -71,12 +71,15 @@ public class End_To_EndTests
         // Assert
         Assert.Equal(expected, actual);
     }
-
+    
+    [Fact]
     public void Test_CheepAndReadLastMessage() 
     {
         // Arrange
-        var msg = "cheep Hi";
-        CLIRun(msg);
+        var command = "cheep Hi";
+        var message = "Hi";
+        
+        CLIRun(command);
 
         var output = CLIRun("read");
     
@@ -84,6 +87,6 @@ public class End_To_EndTests
         var lastCheep = output.TrimEnd('\r', '\n').Split("\n")[^1];
 
         // Assert
-        Assert.EndsWith(msg, lastCheep);
+        Assert.EndsWith(message, lastCheep);
     }
 }
