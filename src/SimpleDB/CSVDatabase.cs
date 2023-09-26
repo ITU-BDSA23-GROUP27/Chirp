@@ -18,13 +18,13 @@ public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
         } else {
             FILE  = Directory.GetCurrentDirectory() + "/chirp_cli_db.csv";
 
-            if (!File.Exists(FILE)) // creates a .csv file if not found
-            {
-                Console.WriteLine("No .cvs file was found! An empty cvs. file will be created at the current directory");
-                Console.WriteLine("Please Cheep before reading the file! Add some Cheeps by using the command: cheep -m \"<message>\"");
-                using var writer = new StreamWriter(FILE);
-                writer.WriteLine("Author,Message,Timestamp"); // Write header row
-            }
+            if (File.Exists(FILE)) return; // creates a .csv file if not found
+            
+            Console.WriteLine("No .cvs file was found! An empty cvs. file will be created at the current directory");
+            Console.WriteLine("Please Cheep before reading the file! Add some Cheeps by using the command: cheep -m \"<message>\"");
+                
+            using var writer = new StreamWriter(FILE);
+            writer.WriteLine("Author,Message,Timestamp"); // Write header row in .csv file
         }   
     }
     
