@@ -14,18 +14,20 @@ public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
         if (File.Exists("../../data/chirp_cli_db.csv"))
         {
             FILE = "../../data/chirp_cli_db.csv";
+            
         } else {
             FILE  = Directory.GetCurrentDirectory() + "/chirp_cli_db.csv";
 
-            if (File.Exists(FILE)) {
-                Console.WriteLine("There's no Cheeps! Add some Cheeps by using the command: cheep -m \"<message>\"");
-                return;
-            } 
-            
-            Console.WriteLine("No .cvs file was found! An empty cvs. file will be created at the current directory");
+            if (!File.Exists(FILE)) //creates a .csv file if not found
+            {
+                Console.WriteLine("No .cvs file was found! An empty cvs. file will be created at the current directory");
                 
-            using var writer = new StreamWriter(FILE);
-            writer.WriteLine("Author,Message,Timestamp"); // Write header row
+                using var writer = new StreamWriter(FILE);
+                writer.WriteLine("Author,Message,Timestamp"); // Write header row
+            }
+            
+            //instructs user to cheep before reading
+            if (IsCsvFileEmpty(FILE)) Console.WriteLine("There's no Cheeps! Add some Cheeps by using the command: cheep -m \"<message>\"");
         }   
     }
     
@@ -59,5 +61,25 @@ public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
         
         csv.WriteRecord(record);
         writer.WriteLine();
+    }
+    
+    static bool IsCsvFileEmpty(string filePath)
+    {
+        try
+        {
+            using (StreamReader reader = new StreamReader(filePath))
+            {
+                // Read the header row
+                reader.ReadLine();
+
+                // Check if the file ends after the header
+                return reader.EndOfStream;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return false; // Handle the error as needed
+        }
     }
 }
