@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Microsoft.VisualBasic;
 using SimpleDB;
 using Xunit.Abstractions;
 
@@ -8,56 +9,81 @@ public class End_To_EndTests
 {
     private readonly ITestOutputHelper _testOutputHelper;
 
+    // Debugger
     public End_To_EndTests(ITestOutputHelper testOutputHelper)
     {
         _testOutputHelper = testOutputHelper;
     }
 
-    // checks if Chirp returns the correct cheeps when using the command "read {limit}"
-    [Fact]
-    public void Commandline_Read_ReturnsCheeps() 
+    // TODO - run on a test.csv
+    // 
+
+    //Executes the program with the given command
+    private string CLIRun(string args)
     {
-        // Arrange
-        // TODO Change to just use the singleton implicitly
-        // var db = CSVDatabase<Cheep>.Instance;
-
-
-        // Get the absolute path to your CLI project's directory
+        //! ChatGPT - Get the absolute path to your CLI project's directory
         string cliProjectDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "..", "..", "..", "..", "src", "ITU-BDSA23-GROUP27.Chirp.CLI");
-
-
-        // Act
-        string output = "";
         
-        using (var process = new Process())
+        // Act
+        using (Process process = new Process())
         {
             process.StartInfo.FileName = "dotnet";
-            process.StartInfo.Arguments = "run read";
+            process.StartInfo.Arguments = $"run {args}";
             process.StartInfo.WorkingDirectory = cliProjectDirectory;
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.UseShellExecute = false;
             process.Start();
             
-            // Read std output of spawned process
+             // Synchronously read the standard output of the spawned process.
             var reader = process.StandardOutput;
-            output = reader.ReadToEnd();
+            var output = reader.ReadToEnd();
             process.WaitForExit();
+
+            return output;
         }
-        _testOutputHelper.WriteLine("TEEEEEEEEEEEEEEEEEEEEEEEEEEEST");
-        _testOutputHelper.WriteLine(output);
-        _testOutputHelper.WriteLine("TEEEEEEEEEEEEEEEEEEEEEEEEEEEST");
-
-        string fstCheep = output.Split("\n")[0];
-
-        fstCheep = fstCheep.TrimEnd('\r', '\n');
- 
-        _testOutputHelper.WriteLine(fstCheep);
-
-
-        // Assert
-        Assert.StartsWith("ropf", fstCheep);
-        Assert.EndsWith("Hello, BDSA students!", fstCheep);
     }
     
-}
+    [Fact]
+    public void Test_ReadCheep_ReturnsFirstCheep() 
+    {
+        // Arrange
+        var output = CLIRun("read");
+    
+        // Act
+        string firstCheep = output.Split("\n")[0].TrimEnd('\r', '\n');
 
+        // Assert
+        Assert.StartsWith("ropf", firstCheep);
+        Assert.EndsWith("Hello, BDSA students!", firstCheep);
+    }
+
+    [Theory]
+    [InlineData("read 2", 2)]
+    [InlineData("read 4", 4)]
+    public void Test_ReadNumberOfTotalCheeps_ReturnsTotalCheeps(string args, int expected) 
+    {
+        // Arrange
+        var output = CLIRun(args);
+    
+        // Act
+        var actual = output.TrimEnd('\r', '\n').Split("\n").Length;
+
+        // Assert
+        Assert.Equal(expected, actual);
+    }
+
+    public void Test_CheepAndReadLastMessage() 
+    {
+        // Arrange
+        var msg = "cheep Hi";
+        CLIRun(msg);
+
+        var output = CLIRun("read");
+    
+        // Act
+        var lastCheep = output.TrimEnd('\r', '\n').Split("\n")[^1];
+
+        // Assert
+        Assert.EndsWith(msg, lastCheep);
+    }
+}
