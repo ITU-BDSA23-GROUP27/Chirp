@@ -11,7 +11,7 @@ public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
 
     public CSVDatabase()
     {
-        this.FILE = "../../data/chirp_cli_db.csv";
+        this.FILE = "../../src/CSVDBService/chirp_cli_db.csv";
     }
     
     public CSVDatabase(string FILE)
