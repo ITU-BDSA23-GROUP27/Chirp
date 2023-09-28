@@ -1,13 +1,11 @@
-using SimpleDB;
-
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
 //Read cheeps
-app.MapGet("/cheeps", () => CSVDatabase<Cheep>.Instance.Read());
+app.MapGet("/cheeps", () => Chirp.CSVDBService.DataBaseHandling.CSVDatabase<Cheep>.Instance.Read());
 
 //Store cheep
-app.MapPost("/cheep", (Cheep cheep) => CSVDatabase<Cheep>.Instance.Store(cheep));
+app.MapPost("/cheep", (Cheep cheep) => Chirp.CSVDBService.DataBaseHandling.CSVDatabase<Cheep>.Instance.Store(cheep));
 
 app.Run();
 

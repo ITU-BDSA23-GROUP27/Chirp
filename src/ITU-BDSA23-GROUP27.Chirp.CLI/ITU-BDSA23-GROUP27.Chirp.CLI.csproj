@@ -1,9 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <ItemGroup>
-      <ProjectReference Include="..\SimpleDB\SimpleDB.csproj" />
-    </ItemGroup>
-
 
     <ItemGroup>
       <PackageReference Include="CommandLineParser" Version="2.9.1" />

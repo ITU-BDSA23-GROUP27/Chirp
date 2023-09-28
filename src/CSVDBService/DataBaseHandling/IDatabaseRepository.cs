@@ -1,4 +1,4 @@
-namespace SimpleDB;
+namespace Chirp.CSVDBService.DataBaseHandling;
 
 public interface IDatabaseRepository<T>
 {

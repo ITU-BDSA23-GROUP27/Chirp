@@ -1,4 +1,3 @@
-using System.Globalization;
 namespace ITU_BDSA23_GROUP27.Chirp.CLI;
 
 public static class UserInterface
