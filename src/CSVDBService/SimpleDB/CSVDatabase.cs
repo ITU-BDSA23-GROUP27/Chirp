@@ -1,9 +1,9 @@
 ﻿using System.Globalization;
+using Chirp.CSVDBService.SimpleDB.Utility;
 using CsvHelper;
 using CsvHelper.Configuration;
-using SimpleDB.Utility;
 
-namespace SimpleDB;
+namespace Chirp.CSVDBService.SimpleDB;
 
 public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
 {
@@ -11,7 +11,7 @@ public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
 
     public CSVDatabase()
     {
-        this.FILE = "../../data/chirp_cli_db.csv";
+        FILE = "data/chirp_cli_db.csv";
     }
     
     public CSVDatabase(string FILE)

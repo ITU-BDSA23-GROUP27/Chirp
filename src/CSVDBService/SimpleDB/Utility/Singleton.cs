@@ -1,4 +1,4 @@
-﻿namespace SimpleDB.Utility;
+﻿namespace Chirp.CSVDBService.SimpleDB.Utility;
 
 public abstract class Singleton<T> where T : new()
 {
@@ -6,7 +6,7 @@ public abstract class Singleton<T> where T : new()
 
     public static T Instance
     {
-        get => instance ?? new T();
+        get => instance ??= new T();
         private set => instance = value;
     }
 }
