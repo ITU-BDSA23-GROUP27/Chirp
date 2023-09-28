@@ -1,6 +1,4 @@
 using System.Diagnostics;
-using Microsoft.VisualBasic;
-using SimpleDB;
 using Xunit.Abstractions;
 
 namespace Chirp.CLI.Tests;
