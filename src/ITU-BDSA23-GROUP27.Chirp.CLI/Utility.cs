@@ -25,6 +25,7 @@ public static class Utility
         }
 
         DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(unixTimestamp);
-        return dateTimeOffset.ToLocalTime().ToString(DATE_FORMAT, CultureInfo.InvariantCulture);
+        return dateTimeOffset.ToUniversalTime().ToOffset(new TimeSpan(2, 0,0))
+            .ToString(DATE_FORMAT, CultureInfo.InvariantCulture);
     }
 }

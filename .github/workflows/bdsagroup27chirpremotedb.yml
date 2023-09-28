@@ -8,6 +8,7 @@ on:
     branches:
       - master
       - azure
+      - develop
   workflow_dispatch:
 
 jobs:
