@@ -1,4 +1,4 @@
-﻿namespace Chirp.CSVDBService.DataBaseHandling.Utility;
+﻿namespace Chirp.CSVDBService.SimpleDB.Utility;
 
 public abstract class Singleton<T> where T : new()
 {
