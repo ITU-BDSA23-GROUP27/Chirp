@@ -7,6 +7,5 @@ public abstract class Singleton<T> where T : new()
     public static T Instance
     {
         get => instance ??= new T();
-        private set => instance = value;
     }
 }
