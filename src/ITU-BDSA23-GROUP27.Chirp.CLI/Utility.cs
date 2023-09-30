@@ -12,8 +12,8 @@ public static class Utility
         {
             return 0;
         }
-
-        long timestamp = new DateTimeOffset(datetimeParse).ToUnixTimeSeconds();
+        
+        long timestamp = new DateTimeOffset(datetimeParse.ToUniversalTime()).ToUnixTimeSeconds();
         return timestamp;
     }
     
