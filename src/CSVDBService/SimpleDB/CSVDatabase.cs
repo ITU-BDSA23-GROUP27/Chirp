@@ -1,23 +1,22 @@
 ﻿using System.Globalization;
-using Chirp.CSVDBService.SimpleDB.Utility;
 using CsvHelper;
 using CsvHelper.Configuration;
 
 namespace Chirp.CSVDBService.SimpleDB;
 
-public class CSVDatabase<T> : Singleton<CSVDatabase<T>>, IDatabaseRepository<T>
+public class CSVDatabase<T> : IDatabaseRepository<T>
 {
-    private readonly string FILE;
+    private static CSVDatabase<T>? instance;
 
-    public CSVDatabase()
+    public static CSVDatabase<T> Instance
     {
-        FILE = "data/chirp_cli_db.csv";
+        get
+        {
+            return instance ??= new CSVDatabase<T>();
+        }
     }
-    
-    public CSVDatabase(string FILE)
-    {
-        this.FILE = FILE;
-    }
+
+    private const string FILE = "data/chirp_cli_db.csv";
     
     public IEnumerable<T> Read(int? limit = null)
     {

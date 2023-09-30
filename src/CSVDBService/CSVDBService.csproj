@@ -13,5 +13,8 @@
     <ItemGroup>
         <None Update="data/chirp_cli_db.csv" CopyToOutputDirectory="PreserveNewest"/>
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="SimpleDB\Utility\" />
+    </ItemGroup>
 
 </Project>
