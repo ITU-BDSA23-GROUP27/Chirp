@@ -8,12 +8,12 @@ public static class Utility
 
     public static long DateToTimestamp(string datetime)
     {
-        if (!DateTime.TryParseExact(datetime, DATE_FORMAT, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime datetimeParse))
+        if (!DateTime.TryParseExact(datetime, DATE_FORMAT, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal, out DateTime datetimeParse))
         {
             return 0;
         }
 
-        long timestamp = new DateTimeOffset(datetimeParse).ToUnixTimeSeconds();
+        long timestamp = new DateTimeOffset(datetimeParse, new TimeSpan(2, 0,0)).ToUnixTimeSeconds();
         return timestamp;
     }
     
