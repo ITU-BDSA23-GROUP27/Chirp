@@ -16,6 +16,10 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\SQLite\SQLite.csproj" />
+    </ItemGroup>
+    
+    <ItemGroup>
       <_ContentIncludedByDefault Remove="wwwroot\background.png" />
       <_ContentIncludedByDefault Remove="wwwroot\exampleJsInterop.js" />
     </ItemGroup>

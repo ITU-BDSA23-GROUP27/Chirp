@@ -1,4 +1,8 @@
 using Razor;
+using SQLite;
+
+DBFacade.Instance.ReadCheeps();
+/*
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,3 +29,4 @@ app.UseRouting();
 app.MapRazorPages();
 
 app.Run();
+*/
