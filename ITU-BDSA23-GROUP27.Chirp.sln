@@ -1,6 +1,8 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Razor", "src\Razor\Razor.csproj", "{FCE563C8-F130-4AE2-9919-83164604BE03}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLite", "src\SQLite\SQLite.csproj", "{E0072605-4390-482B-8524-2FFECEAEC7D4}"
+EndProject
 Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 	EndGlobalSection
