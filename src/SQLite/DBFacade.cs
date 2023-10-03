@@ -35,7 +35,7 @@ public class DBFacade
 
         command.CommandText =
             @"
-                SELECT (U.username, M.text, M.pub_date)
+                SELECT U.username, M.text, M.pub_date
                 FROM message M
                 JOIN user U ON M.author_id = U.user_id
             ";
