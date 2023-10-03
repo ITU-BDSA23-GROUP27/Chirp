@@ -15,4 +15,9 @@
         <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.9"/>
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\background.png" />
+      <_ContentIncludedByDefault Remove="wwwroot\exampleJsInterop.js" />
+    </ItemGroup>
+
 </Project>
