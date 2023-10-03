@@ -29,7 +29,7 @@ public class DBFacade
         connection.Open();
     }
 
-    public List<string> ReadCheeps()
+    public List<T> ReadCheeps<T>()
     {
         var command = connection.CreateCommand();
 
@@ -46,7 +46,7 @@ public class DBFacade
             {
                 var name = reader.GetString(0);
 
-                Console.WriteLine($"Hello, {name}!");
+                Console.WriteLine($"Hello!");
             }
         }
 
