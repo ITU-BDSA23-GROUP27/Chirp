@@ -1,3 +1,4 @@
+using System.Data;
 using Microsoft.Data.Sqlite;
 using Razor;
 
@@ -60,6 +61,38 @@ public class DBFacade
         return cheeps;
     }
     
+    public List<CheepViewModel> ReadCheepsFromAuthor(string author)
+    {
+        var command = connection.CreateCommand();
+
+        command.CommandText =
+            @"
+                SELECT M.text, M.pub_date
+                FROM message M
+                JOIN user U ON M.author_id = U.user_id
+                WHERE U.username = @Author
+            ";
+
+        command.Parameters.AddWithValue("@Author", author);
+        
+        List<CheepViewModel> cheeps = new List<CheepViewModel>();
+        
+        using (var reader = command.ExecuteReader())
+        {
+            while (reader.Read())
+            {
+                
+                // could probably be refactored
+                var message = reader.GetString(0);
+                var timestamp = reader.GetString(1);
+
+                cheeps.Add(new CheepViewModel(author,message, UnixTimeStampToDateTimeString(Convert.ToDouble(timestamp))));
+            }
+        }
+
+        return cheeps;
+    }
+    
     // Could be in an utility class
     private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
     {
@@ -68,4 +101,6 @@ public class DBFacade
         dateTime = dateTime.AddSeconds(unixTimeStamp);
         return dateTime.ToString("MM/dd/yy H:mm:ss");
     }
+    
+    
 }

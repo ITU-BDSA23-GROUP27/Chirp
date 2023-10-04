@@ -15,14 +15,16 @@ public class CheepService : ICheepService
     public List<CheepViewModel> GetCheeps()
     {
         return DBFacade.Instance.ReadCheeps();
-        //return _cheeps;
     }
 
     public List<CheepViewModel> GetCheepsFromAuthor(string author)
     {
         // filter by the provided author name
-        //return _cheeps.Where(x => x.Author == author).ToList();
-        throw new NotImplementedException();
+        //return DBFacade.Instance.ReadCheeps().Where(x => x.Author == author).ToList();
+
+        return DBFacade.Instance.ReadCheepsFromAuthor(author);
+
+        //throw new NotImplementedException();
     }
 
 }
