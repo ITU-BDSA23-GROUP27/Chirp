@@ -1,5 +1,3 @@
-using SQLite;
-
 namespace Razor;
 
 public record CheepViewModel(string Author, string Message, string Timestamp);

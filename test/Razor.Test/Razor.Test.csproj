@@ -23,4 +23,7 @@
         </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Razor\Razor.csproj" />
+    </ItemGroup>
 </Project>

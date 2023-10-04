@@ -1,7 +1,6 @@
 using Microsoft.Data.Sqlite;
-using Razor;
 
-namespace SQLite;
+namespace Razor;
 
 public class DBFacade
 {
@@ -133,7 +132,7 @@ public class DBFacade
     }
     
     // Could be in an utility class
-    private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
+    public static string UnixTimeStampToDateTimeString(double unixTimeStamp)
     {
         // Unix timestamp is seconds past epoch
         DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
