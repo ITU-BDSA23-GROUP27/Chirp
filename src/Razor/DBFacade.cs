@@ -27,14 +27,14 @@ public class DBFacade
 
     public DBFacade()
     {
-        CHIRPDBPATH = Environment.GetEnvironmentVariable("CHIRPDBPATH", EnvironmentVariableTarget.Machine);
+        /*CHIRPDBPATH = Environment.GetEnvironmentVariable("CHIRPDBPATH", EnvironmentVariableTarget.Machine);
         Console.WriteLine(CHIRPDBPATH);
         
         if (CHIRPDBPATH is null)
         {
             Console.WriteLine("Environment Variable 'CHIRPDBPATH' Does Not Exist");
             CHIRPDBPATH = Path.GetTempPath() + "chirp.db";
-        }
+        }*/
         
         connection = new SqliteConnection("Data Source=./chirp.db");
         connection.Open();
