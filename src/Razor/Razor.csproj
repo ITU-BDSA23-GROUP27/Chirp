@@ -23,5 +23,14 @@
       <_ContentIncludedByDefault Remove="wwwroot\background.png" />
       <_ContentIncludedByDefault Remove="wwwroot\exampleJsInterop.js" />
     </ItemGroup>
+    
+    <ItemGroup>
+        <Folder Include="Pages"/>
+        <Folder Include="Properties"/>
+        <Folder Include="wwwroot"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="chirp.db" CopyToOutputDirectory="PreserveNewest"/>
+    </ItemGroup>
 
 </Project>
