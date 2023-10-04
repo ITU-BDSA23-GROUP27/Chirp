@@ -1,4 +1,3 @@
-using System.Data;
 using Microsoft.Data.Sqlite;
 using Razor;
 
@@ -26,17 +25,40 @@ public class DBFacade
     private SqliteConnection connection;
 
     public DBFacade()
-    {   
-        CHIRPDBPATH = Environment.GetEnvironmentVariable("CHIRPDBPATH");
+    {
+        CHIRPDBPATH = Environment.GetEnvironmentVariable("CHIRPDBPATH", EnvironmentVariableTarget.Machine);
+        Console.WriteLine(CHIRPDBPATH);
         
         if (CHIRPDBPATH is null)
         {
-            CHIRPDBPATH = Path.GetTempPath();
+            Console.WriteLine("Environment Variable 'CHIRPDBPATH' Does Not Exist");
+            CHIRPDBPATH = Path.GetTempPath() + "chirp.db";
         }
         
-        
-        connection = new SqliteConnection($"Data Source={CHIRPDBPATH}chirp.db");
+        connection = new SqliteConnection($"Data Source={CHIRPDBPATH}");
         connection.Open();
+
+        if (new FileInfo(CHIRPDBPATH).Length == 0)
+        {
+            WriteToEmptyDB();
+        }
+    }
+
+    private void WriteToEmptyDB()
+    {
+        var command = connection.CreateCommand();
+        
+        using (var reader = new StreamReader("../SQLite/data/schema.sql"))
+        {
+            command.CommandText = reader.ReadToEnd();
+        }
+        command.ExecuteNonQuery();
+        
+        using (var reader = new StreamReader("../SQLite/data/dump.sql"))
+        {
+            command.CommandText = reader.ReadToEnd();
+        }
+        command.ExecuteNonQuery();
     }
     
     public List<CheepViewModel> ReadCheeps()
