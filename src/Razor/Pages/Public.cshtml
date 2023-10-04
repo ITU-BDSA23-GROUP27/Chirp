@@ -11,7 +11,7 @@
     @if (Model.Cheeps.Any())
     {
         <ul id="messagelist" class="cheeps">
-            @foreach (var cheep in Model.Cheeps)
+            @foreach (var cheep in Model.Cheeps.Skip((Model.CurrentPage - 1) * Model.MaxCheepsPerPage).Take(Model.MaxCheepsPerPage)) //This line has been made with the help of CHAT-GPT
             {
                 <li>
                     <p>
@@ -21,6 +21,15 @@
                         @cheep.Message
                         <small>&mdash; @cheep.Timestamp</small>
                     </p>
+                </li>
+            }
+        </ul>
+        // The following pagination has been made with the help of CHAT-GPT
+        <ul class="pagination">
+            @for (var i = 1; i <= Math.Ceiling(Model.Cheeps.Count / (double)Model.MaxCheepsPerPage); i++)
+            {
+                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                    <a class="page-link" href="?page=@i">@i</a>
                 </li>
             }
         </ul>
