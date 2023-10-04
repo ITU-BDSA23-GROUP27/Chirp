@@ -11,7 +11,7 @@ public class APITests
     public async void GetCheepTest(string query, string name, string message)
     {
         string url = $"https://bdsagroup27chirprazor.azurewebsites.net/{query}";
-        var document = await WebCrawler.DownloadDocument(url);
+        var document = await WebpageDownloader.DownloadDocument(url);
         Assert.NotNull(document);
         
         var messageList = document.QuerySelector("#message-list");
