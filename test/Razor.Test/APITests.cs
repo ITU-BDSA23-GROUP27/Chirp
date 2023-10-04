@@ -11,15 +11,15 @@ public class APITests
     public async void GetCheepTest(string query, string name, string message)
     {
         string url = $"https://bdsagroup27chirprazor.azurewebsites.net/{query}";
-        var document = await WebCrawler.DownloadDocument(url);
+        var document = await WebpageDownloader.DownloadDocument(url);
         Assert.NotNull(document);
         
-        var messageList = document.QuerySelector("#messagelist");
+        var messageList = document.QuerySelector("#message-list");
         Assert.NotNull(messageList);
         
         var containsCheep = messageList.Children.Any(element => 
-            element.QuerySelector("> p > strong").TextContent.Contains(name) &&
-            element.QuerySelector("> p").TextContent.Contains(message));
+            element.QuerySelector("#author").TextContent.Contains(name) &&
+            element.QuerySelector("#cheep-content").TextContent.Contains(message));
         
         Assert.True(containsCheep);
     }
