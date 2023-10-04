@@ -5,9 +5,11 @@ namespace SQLite;
 
 public class DBFacade
 {
-    private string? CHIRPDBPATH;
+    private const int PageLength = 32;
+    
     private static DBFacade? instance;
-
+    private string? CHIRPDBPATH;
+    
     public static DBFacade Instance
     {
         get
@@ -61,7 +63,7 @@ public class DBFacade
         command.ExecuteNonQuery();
     }
     
-    public List<CheepViewModel> ReadCheeps()
+    public List<CheepViewModel> ReadCheeps(int page)
     {
         var command = connection.CreateCommand();
 
@@ -70,7 +72,11 @@ public class DBFacade
                 SELECT U.username, M.text, M.pub_date
                 FROM message M
                 JOIN user U ON M.author_id = U.user_id
+                LIMIT 32 OFFSET @page*@PageLength
             ";
+        
+        command.Parameters.AddWithValue("@page", page);
+        command.Parameters.AddWithValue("@PageLength", PageLength);
         
         List<CheepViewModel> cheeps = new List<CheepViewModel>();
         
@@ -91,7 +97,7 @@ public class DBFacade
         return cheeps;
     }
     
-    public List<CheepViewModel> ReadCheepsFromAuthor(string author)
+    public List<CheepViewModel> ReadCheepsFromAuthor(string author, int page)
     {
         var command = connection.CreateCommand();
 
@@ -101,9 +107,12 @@ public class DBFacade
                 FROM message M
                 JOIN user U ON M.author_id = U.user_id
                 WHERE U.username = @Author
+                LIMIT 32 OFFSET @page*@PageLength
             ";
 
         command.Parameters.AddWithValue("@Author", author);
+        command.Parameters.AddWithValue("@page", page);
+        command.Parameters.AddWithValue("@PageLength", PageLength);
         
         List<CheepViewModel> cheeps = new List<CheepViewModel>();
         
