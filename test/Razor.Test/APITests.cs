@@ -10,7 +10,7 @@ public class APITests
     [InlineData("Rasmus", "Rasmus", "Hej, velkommen til kurset.")]
     public async void GetCheepTest(string query, string name, string message)
     {
-        string url = $"http://localhost:5273/{query}";
+        string url = $"https://bdsagroup27chirprazor.azurewebsites.net/{query}";
         var document = await WebCrawler.DownloadDocument(url);
         Assert.NotNull(document);
         
