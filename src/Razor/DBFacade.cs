@@ -1,4 +1,5 @@
 using Microsoft.Data.Sqlite;
+using Razor;
 
 namespace SQLite;
 
@@ -29,7 +30,7 @@ public class DBFacade
         connection.Open();
     }
 
-    public List<T> ReadCheeps<T>()
+    public List<CheepViewModel> ReadCheeps()
     {
         var command = connection.CreateCommand();
 
@@ -40,16 +41,31 @@ public class DBFacade
                 JOIN user U ON M.author_id = U.user_id
             ";
         
+        List<CheepViewModel> cheeps = new List<CheepViewModel>();
+        
         using (var reader = command.ExecuteReader())
         {
             while (reader.Read())
             {
-                var name = reader.GetString(0);
+                
+                // could probably be refactored
+                var author = reader.GetString(0);
+                var message = reader.GetString(1);
+                var timestamp = reader.GetString(2);
 
-                Console.WriteLine($"Hello!");
+                cheeps.Add(new CheepViewModel(author,message, UnixTimeStampToDateTimeString(Convert.ToDouble(timestamp))));
             }
         }
 
-        throw new NotImplementedException();
+        return cheeps;
+    }
+    
+    // Could be in an utility class
+    private static string UnixTimeStampToDateTimeString(double unixTimeStamp)
+    {
+        // Unix timestamp is seconds past epoch
+        DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+        dateTime = dateTime.AddSeconds(unixTimeStamp);
+        return dateTime.ToString("MM/dd/yy H:mm:ss");
     }
 }
