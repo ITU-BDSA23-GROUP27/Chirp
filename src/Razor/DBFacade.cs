@@ -36,13 +36,13 @@ public class DBFacade
             CHIRPDBPATH = Path.GetTempPath() + "chirp.db";
         }
         
-        connection = new SqliteConnection($"Data Source={CHIRPDBPATH}");
+        connection = new SqliteConnection("Data Source=./chirp.db");
         connection.Open();
 
-        if (new FileInfo(CHIRPDBPATH).Length == 0)
+        /*if (new FileInfo(CHIRPDBPATH).Length == 0)
         {
             WriteToEmptyDB();
-        }
+        }*/
     }
 
     private void WriteToEmptyDB()
