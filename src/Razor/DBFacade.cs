@@ -6,7 +6,7 @@ namespace SQLite;
 
 public class DBFacade
 {
-
+    private string? CHIRPDBPATH;
     private static DBFacade? instance;
 
     public static DBFacade Instance
@@ -26,11 +26,19 @@ public class DBFacade
     private SqliteConnection connection;
 
     public DBFacade()
-    {
-        connection = new SqliteConnection("Data Source=chirp.db");
+    {   
+        CHIRPDBPATH = Environment.GetEnvironmentVariable("CHIRPDBPATH");
+        
+        if (CHIRPDBPATH is null)
+        {
+            CHIRPDBPATH = Path.GetTempPath();
+        }
+        
+        
+        connection = new SqliteConnection($"Data Source={CHIRPDBPATH}chirp.db");
         connection.Open();
     }
-
+    
     public List<CheepViewModel> ReadCheeps()
     {
         var command = connection.CreateCommand();
