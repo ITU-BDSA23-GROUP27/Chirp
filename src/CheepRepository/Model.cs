@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CheepRepository;
 
-public class CheepContext : DbContext
+public class ChirpDBContext : DbContext
 {
     public DbSet<Cheep> Cheeps { get; set; }
     public DbSet<Author> Authors { get; set; } 
     
     public string DbPath { get; }
-    public CheepContext()
+    public ChirpDBContext()
     {
         var folder = Environment.SpecialFolder.LocalApplicationData;
         var path = Environment.GetFolderPath(folder);
@@ -28,7 +28,7 @@ public class Cheep
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
+    public int CheepId { get; set; }
     
     public required string Text { get; set; }
     public DateTime TimeStamp { get; set; }
@@ -39,7 +39,7 @@ public class Author
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id { get; set; }
+    public int AuthorId { get; set; }
     
     public required string Name { get; set; }
     public required string Email { get; set; }
