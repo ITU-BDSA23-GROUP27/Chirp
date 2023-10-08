@@ -6,22 +6,23 @@ namespace CheepRepository;
 
 public class ChirpDBContext : DbContext
 {
-    public DbSet<Cheep> Cheeps { get; set; }
-    public DbSet<Author> Authors { get; set; } 
+    public DbSet<Cheep>? Cheeps { get; set; }
+    public DbSet<Author>? Authors { get; set; }
     
-    public string DbPath { get; }
-    public ChirpDBContext()
+    private static string DbPath
     {
-        var folder = Environment.SpecialFolder.LocalApplicationData;
-        var path = Environment.GetFolderPath(folder);
-        DbPath = Path.Join(path, "chirp.db");
+        get
+        {
+            const Environment.SpecialFolder folder = Environment.SpecialFolder.LocalApplicationData;
+            string path = Environment.GetFolderPath(folder);
+            return Path.Join(path, "chirp.db");
+        }
     }
-    
+
     // The following configures EF to create a Sqlite database file in the
     // special "local" folder for your platform.
     protected override void OnConfiguring(DbContextOptionsBuilder options)
         => options.UseSqlite($"Data Source={DbPath}");
-    
 }
 
 public class Cheep
@@ -43,5 +44,5 @@ public class Author
     
     public required string Name { get; set; }
     public required string Email { get; set; }
-    public List<Cheep> Cheeps { get; set; } = new();
+    public List<Cheep> Cheeps { get; set; } = new List<Cheep>();
 }
