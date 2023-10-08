@@ -19,5 +19,4 @@ public class CheepService : ICheepService
     {
         return DBFacade.Instance.ReadCheepsFromAuthor(author, page);
     }
-
 }
