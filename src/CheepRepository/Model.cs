@@ -6,8 +6,8 @@ namespace CheepRepository;
 
 public class ChirpDBContext : DbContext
 {
-    public DbSet<Cheep>? Cheeps { get; set; }
-    public DbSet<Author>? Authors { get; set; }
+    public DbSet<Cheep> Cheeps { get; set; }
+    public DbSet<Author> Authors { get; set; }
     
     private static string DbPath
     {
@@ -44,5 +44,5 @@ public class Author
     
     public required string Name { get; set; }
     public required string Email { get; set; }
-    public List<Cheep> Cheeps { get; set; } = new List<Cheep>();
+    public IEnumerable<Cheep> Cheeps { get; set; } = new List<Cheep>();
 }
