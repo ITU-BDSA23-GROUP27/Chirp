@@ -1,5 +1,4 @@
 using CheepRepository;
-using CheepRepository.Model;
 
 namespace Razor;
 
@@ -13,6 +12,7 @@ public interface ICheepService
 
 public class CheepService : ICheepService
 {
+    private const int PageLimit = 32;
     private readonly IChirpController _controller;
     public CheepService(IChirpController controller)
     {
@@ -23,7 +23,7 @@ public class CheepService : ICheepService
         //return DBFacade.Instance.ReadCheeps(page);
         
         return _controller.GetCheeps().Select(c =>
-            new CheepViewModel(c.AuthorName, c.Message, c.TimeStamp));
+            new CheepViewModel(c.AuthorName, c.Message, c.TimeStamp)).Skip((page-1)*PageLimit).Take(PageLimit);
         
     }
 
@@ -31,6 +31,6 @@ public class CheepService : ICheepService
     {
         //return DBFacade.Instance.ReadCheepsFromAuthor(author, page);
         return _controller.GetCheeps().Where(c => c.AuthorName == author)
-            .Select(c => new CheepViewModel(c.AuthorName, c.Message, c.TimeStamp));
+            .Select(c => new CheepViewModel(c.AuthorName, c.Message, c.TimeStamp)).Skip((page-1)*PageLimit).Take(PageLimit);
     }
 }
