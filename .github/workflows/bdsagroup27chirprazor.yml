@@ -7,7 +7,7 @@ on:
   push:
     branches:
       - master
-      - DTOs
+      - features/DTOs
   workflow_dispatch:
 
 jobs:
