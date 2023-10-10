@@ -1,3 +1,4 @@
+using CheepRepository;
 using Razor;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddSingleton<ICheepService, CheepService>();
+builder.Services.AddSingleton<IChirpController, ChirpController>();
 
 var app = builder.Build();
 

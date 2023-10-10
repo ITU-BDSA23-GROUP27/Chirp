@@ -1,22 +1,36 @@
+using CheepRepository;
+using CheepRepository.Model;
+
 namespace Razor;
 
 public record CheepViewModel(string Author, string Message, string Timestamp);
 
 public interface ICheepService
 {
-    public List<CheepViewModel> GetCheeps(int page);
-    public List<CheepViewModel> GetCheepsFromAuthor(string author, int page);
+    public IQueryable<CheepViewModel> GetCheeps(int page);
+    public IQueryable<CheepViewModel> GetCheepsFromAuthor(string author, int page);
 }
 
 public class CheepService : ICheepService
 {
-    public List<CheepViewModel> GetCheeps(int page)
+    private readonly IChirpController _controller;
+    public CheepService(IChirpController controller)
     {
-        return DBFacade.Instance.ReadCheeps(page);
+        _controller = controller;
+    }
+    public IQueryable<CheepViewModel> GetCheeps(int page)
+    {
+        //return DBFacade.Instance.ReadCheeps(page);
+        
+        return _controller.GetCheeps().Select(c =>
+            new CheepViewModel(c.AuthorName, c.Message, c.TimeStamp));
+        
     }
 
-    public List<CheepViewModel> GetCheepsFromAuthor(string author, int page)
+    public IQueryable<CheepViewModel> GetCheepsFromAuthor(string author, int page)
     {
-        return DBFacade.Instance.ReadCheepsFromAuthor(author, page);
+        //return DBFacade.Instance.ReadCheepsFromAuthor(author, page);
+        return _controller.GetCheeps().Where(c => c.AuthorName == author)
+            .Select(c => new CheepViewModel(c.AuthorName, c.Message, c.TimeStamp));
     }
 }

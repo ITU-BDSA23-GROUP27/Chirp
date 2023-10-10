@@ -1,11 +1,10 @@
 using System.Globalization;
-using System.Web.Http;
 using CheepRepository.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace CheepRepository;
 
-public class Controller : ApiController
+public class ChirpController : IChirpController
 {
     private ChirpDBContext db = new ChirpDBContext();
     
@@ -44,8 +43,4 @@ public class Controller : ApiController
         });
         return authors;
     }
-    
-    
-    
-    
 }
