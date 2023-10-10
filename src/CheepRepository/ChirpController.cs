@@ -7,6 +7,12 @@ namespace CheepRepository;
 public class ChirpController : IChirpController
 {
     private ChirpDBContext db = new ChirpDBContext();
+
+    public ChirpController()
+    {
+        // If the database does not contain any cheeps or authors the sample data gets injected
+        DbInitializer.SeedDatabase(db);
+    }
     
     public IQueryable<CheepDto> GetCheeps()
     {
