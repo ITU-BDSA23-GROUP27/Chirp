@@ -27,13 +27,13 @@ jobs:
         run: dotnet build src/Razor --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish src/Razor -c Release -o ${{env.DOTNET_ROOT}}/myApp
+        run: dotnet publish src/Razor -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myApp
+          path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
     runs-on: ubuntu-latest
