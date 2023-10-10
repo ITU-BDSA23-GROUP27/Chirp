@@ -33,15 +33,13 @@ jobs:
         run: dotnet publish src/CheepRepository -c Release -o ${{env.DOTNET_ROOT}}/CheepRepository
 
       - name: dotnet publish
-        run: dotnet publish src/Razor -c Release -o ${{env.DOTNET_ROOT}}/Razor
+        run: dotnet publish src/Razor -c Release -o ${{env.DOTNET_ROOT}}/myApp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: .net-app
-          path:
-            - ${{env.DOTNET_ROOT}}/Razor
-            - ${{env.DOTNET_ROOT}}/CheepRepository
+          path: ${{env.DOTNET_ROOT}}/myApp
 
   deploy:
     runs-on: ubuntu-latest
