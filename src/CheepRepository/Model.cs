@@ -37,7 +37,7 @@ public class Cheep
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int CheepId { get; set; }
+    public Guid CheepId { get; set; }
     
     public required string Text { get; set; }
     public DateTime TimeStamp { get; set; }
@@ -48,7 +48,7 @@ public class Author
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int AuthorId { get; set; }
+    public Guid AuthorId { get; set; }
     
     public required string Name { get; set; }
     public required string Email { get; set; }
@@ -57,8 +57,8 @@ public class Author
 
 public class Follower
 {
-    public int FollowerId { get; set; }
-    public int FolloweeId { get; set; }
-    public Author FollowerAuthor { get; set; }
-    public Author FolloweeAuthor { get; set; }
+    public Guid FollowerId { get; set; }
+    public Guid FolloweeId { get; set; }
+    public required Author FollowerAuthor { get; set; }
+    public required Author FolloweeAuthor { get; set; }
 }

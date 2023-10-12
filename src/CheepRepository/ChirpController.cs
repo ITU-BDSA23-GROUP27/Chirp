@@ -26,7 +26,7 @@ public class ChirpController : IChirpController
         return cheeps;
     }
     
-    public AuthorDetailDto GetAuthor(int authorId)
+    public AuthorDetailDto GetAuthor(Guid authorId)
     {
         var author = db.Authors.Include(author => author.Cheeps).First(a => a.AuthorId == authorId);
 
