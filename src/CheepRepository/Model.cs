@@ -6,8 +6,8 @@ namespace CheepRepository;
 
 public class ChirpDBContext : DbContext
 {
-    public DbSet<Cheep> Cheeps { get; set; }
-    public DbSet<Author> Authors { get; set; }
+    public DbSet<Cheep> Cheeps => Set<Cheep>();
+    public DbSet<Author> Authors => Set<Author>();
     
     private static string DbPath
     {
@@ -23,6 +23,14 @@ public class ChirpDBContext : DbContext
     // special "local" folder for your platform.
     protected override void OnConfiguring(DbContextOptionsBuilder options)
         => options.UseSqlite($"Data Source={DbPath}");
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Cheep>().Property(c => c.Text).HasMaxLength(160);
+        modelBuilder.Entity<Author>().Property(a => a.Name).HasMaxLength(50);
+        modelBuilder.Entity<Author>().Property(c => c.Email).HasMaxLength(50);
+        modelBuilder.Entity<Follower>().HasKey(f => new {f.FollowerId, f.FolloweeId});
+    }
 }
 
 public class Cheep
@@ -45,4 +53,12 @@ public class Author
     public required string Name { get; set; }
     public required string Email { get; set; }
     public IEnumerable<Cheep> Cheeps { get; set; } = new List<Cheep>();
+}
+
+public class Follower
+{
+    public int FollowerId { get; set; }
+    public int FolloweeId { get; set; }
+    public Author FollowerAuthor { get; set; }
+    public Author FolloweeAuthor { get; set; }
 }
