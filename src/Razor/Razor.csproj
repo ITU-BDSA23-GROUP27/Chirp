@@ -29,11 +29,5 @@
       <ProjectReference Include="..\CheepRepository\CheepRepository.csproj" />
       <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-        <Folder Include="..\CheepRepository" />
-        <Folder Include="..\Infrastructure" />
-    </ItemGroup>
-    
     
 </Project>
