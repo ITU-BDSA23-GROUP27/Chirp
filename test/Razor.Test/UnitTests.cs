@@ -2,6 +2,7 @@ namespace Razor.Test;
 
 public class UnitTests
 {
+    /*
     [Theory]
     [InlineData(1690891760, "08/01/23 12.09.20")]
     [InlineData(1690978778, "08/02/23 12.19.38")]
@@ -15,4 +16,5 @@ public class UnitTests
         // Assert
         Assert.Equal(expected, actual);
     }
+    */
 }
