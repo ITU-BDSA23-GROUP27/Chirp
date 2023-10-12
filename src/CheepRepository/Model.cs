@@ -15,7 +15,7 @@ public class ChirpDBContext : DbContext
         {
             const Environment.SpecialFolder folder = Environment.SpecialFolder.LocalApplicationData;
             string path = Environment.GetFolderPath(folder);
-            return Path.Join("data/", "chirp.db");
+            return Path.Join(path, "chirp.db");
         }
     }
 
