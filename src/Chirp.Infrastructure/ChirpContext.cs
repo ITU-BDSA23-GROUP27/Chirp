@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure;
@@ -11,7 +12,7 @@ public class ChirpContext : DbContext
 
     public ChirpContext(DbContextOptions<ChirpContext> options)
     {
-        
+        Database.EnsureCreated();
     }
     
     private static string DbPath
@@ -19,7 +20,7 @@ public class ChirpContext : DbContext
         get
         {
             string path = Path.GetTempPath();
-            return Path.Join("./data/", "chirp.db");
+            return Path.Join(path, "chirp.db");
         }
     }
 
