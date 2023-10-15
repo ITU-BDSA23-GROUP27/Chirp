@@ -18,7 +18,9 @@ public class CheepRepository : ICheepRepository
     
     public IEnumerable<CheepDto> GetCheeps()
     {
-        var cheeps = _context.Cheeps.Select<Cheep, CheepDto>(c => new CheepDto()
+        var cheeps = _context.Cheeps
+            .OrderByDescending(c => c.TimeStamp)
+            .Select<Cheep, CheepDto>(c => new CheepDto()
         {
             Id = c.CheepId,
             Message = c.Text,
