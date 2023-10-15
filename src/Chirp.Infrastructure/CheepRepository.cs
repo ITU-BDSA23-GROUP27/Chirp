@@ -30,13 +30,13 @@ public class CheepRepository : ICheepRepository
     
     public IEnumerable<CheepDto> GetCheepsFromPage(int page)
     {
-        return GetCheeps().ToArray()[(page - 1)..(page + pageLimit)];
+        return GetCheeps().Skip((page - 1) * pageLimit).Take(pageLimit);
     }
     
     public IEnumerable<CheepDto> GetCheepsFromAuthor(string authorName, int page)
     {
         var cheeps = GetCheeps().Where(c => c.AuthorName == authorName);
-        return cheeps.ToArray()[((page - 1) * pageLimit)..(page + pageLimit)];
+        return cheeps.Skip((page - 1) * pageLimit).Take(pageLimit);
     }
     
     public AuthorDetailDto GetAuthor(Guid authorId)
