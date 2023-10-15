@@ -1,11 +1,11 @@
 ﻿Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Razor", "src\Razor\Razor.csproj", "{FCE563C8-F130-4AE2-9919-83164604BE03}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirp.Web", "src\Chirp.Web\Chirp.Web.csproj", "{FCE563C8-F130-4AE2-9919-83164604BE03}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Razor.Test", "test\Razor.Test\Razor.Test.csproj", "{CFD7BDA7-F553-4692-82D5-8F823E00DE84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheepRepository", "src\CheepRepository\CheepRepository.csproj", "{33ACBC86-CFEB-489A-979B-0F70FECC58E6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirp.Infrastructure", "src\Chirp.Infrastructure\Chirp.Infrastructure.csproj", "{33ACBC86-CFEB-489A-979B-0F70FECC58E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{A7693E02-53A7-44DB-B797-741650C75D47}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chirp.Core", "src\Chirp.Core\Chirp.Core.csproj", "{A7693E02-53A7-44DB-B797-741650C75D47}"
 EndProject
 Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution

@@ -1,20 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Chirp.Core;
+using Chirp.Core.DTOs;
+using Chirp.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Razor;
 
-namespace Chirp.Razor.Pages;
+namespace Chirp.Web.Pages;
 
 public class PublicModel : PageModel
 {
-    private readonly ICheepService _service;
-    public IQueryable<CheepViewModel> Cheeps { get; set; }
+    private readonly ICheepRepository _cheepRepository;
+    public IEnumerable<CheepDto> Cheeps { get; set; }
 
     public int CurrentPage { get; set; } = 1;
     //public int MaxCheepsPerPage { get; } = 32;
 
-    public PublicModel(ICheepService service)
+    public PublicModel(ICheepRepository cheepRepository)
     {
-        _service = service;
+        _cheepRepository = cheepRepository;
     }
 
     public ActionResult OnGet()
@@ -24,8 +26,8 @@ public class PublicModel : PageModel
         {
             CurrentPage = parsedPage;
         }
-        
-        Cheeps = _service.GetCheeps(CurrentPage);
+
+        Cheeps = _cheepRepository.GetCheepsFromPage(CurrentPage);
         return Page();
     }
 }

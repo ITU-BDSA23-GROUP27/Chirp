@@ -2,9 +2,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace CheepRepository;
+namespace Chirp.Infrastructure;
 
-public class ChirpDBContext : DbContext
+public class ChirpContext : DbContext
 {
     public DbSet<Cheep> Cheeps => Set<Cheep>();
     public DbSet<Author> Authors => Set<Author>();
@@ -13,8 +13,7 @@ public class ChirpDBContext : DbContext
     {
         get
         {
-            const Environment.SpecialFolder folder = Environment.SpecialFolder.LocalApplicationData;
-            string path = Environment.GetFolderPath(folder);
+            string path = Path.GetTempPath();
             return Path.Join(path, "chirp.db");
         }
     }
@@ -33,6 +32,7 @@ public class ChirpDBContext : DbContext
     }
 }
 
+// could be in seperate classes for better overview 
 public class Cheep
 {
     [Key]

@@ -1,18 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Chirp.Core;
+using Chirp.Core.DTOs;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Razor;
 
 namespace Chirp.Razor.Pages;
 
 public class UserTimelineModel : PageModel
 {
-    private readonly ICheepService _service;
-    public IQueryable<CheepViewModel> Cheeps { get; set; }
+    private readonly ICheepRepository _cheepRepository;
+    public IEnumerable<CheepDto> Cheeps { get; set; }
     public int CurrentPage { get; set; }
 
-    public UserTimelineModel(ICheepService service)
+    public UserTimelineModel(ICheepRepository cheepRepository)
     {
-        _service = service;
+        _cheepRepository = cheepRepository;
     }
 
     public ActionResult OnGet(string author)
@@ -22,7 +23,7 @@ public class UserTimelineModel : PageModel
         {
             CurrentPage = parsedPage;
         }
-        Cheeps = _service.GetCheepsFromAuthor(author, CurrentPage);
+        Cheeps = _cheepRepository.GetCheepsFromAuthor(author, CurrentPage);
         return Page();
     }
 }
