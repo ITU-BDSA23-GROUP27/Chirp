@@ -19,7 +19,7 @@ public class ChirpContext : DbContext
         get
         {
             string path = Path.GetTempPath();
-            return Path.Join(path, "chirp.db");
+            return Path.Join("./data/", "chirp.db");
         }
     }
 
