@@ -35,7 +35,13 @@ public class CheepRepository : ICheepRepository
         return GetCheeps().Skip((page - 1) * pageLimit).Take(pageLimit);
     }
     
-    public IEnumerable<CheepDto> GetCheepsFromAuthor(string authorName, int page)
+    public IEnumerable<CheepDto> GetCheepsFromAuthor(string authorName)
+    {
+        var cheeps = GetCheeps().Where(c => c.AuthorName == authorName);
+        return cheeps;
+    }
+    
+    public IEnumerable<CheepDto> GetCheepsFromAuthorPage(string authorName, int page)
     {
         var cheeps = GetCheeps().Where(c => c.AuthorName == authorName);
         return cheeps.Skip((page - 1) * pageLimit).Take(pageLimit);
