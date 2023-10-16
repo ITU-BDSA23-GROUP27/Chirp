@@ -1,0 +1,30 @@
+body {
+    margin: 0;
+}
+
+.navbar {
+    background-color: #181819;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 20px;
+    transition: color 0.5s;
+}
+
+.navbar a:hover {
+    color: #ee97a4;
+}
+
+.navbar a.active {
+    color: #e9596e;
+}
+
+.mute {
+    color: #827e79 !important;
+    cursor: not-allowed;
+}
