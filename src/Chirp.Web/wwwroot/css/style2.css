@@ -1,0 +1,29 @@
+cheep-container {
+    display: flex;
+    background-color: #f00 !important;
+}
+
+.cheep-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.left-content {
+    flex: 1;
+}
+
+.right-content {
+    flex: 2;
+}
+
+#author {
+    text-decoration: none;
+    color: #26776F;
+}
+
+#author:hover {
+    color: #333;
+}
+

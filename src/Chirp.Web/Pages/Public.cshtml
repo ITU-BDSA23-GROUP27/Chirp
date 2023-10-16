@@ -20,7 +20,7 @@
         <ul id="message-list" class="cheeps">
             @foreach (var cheep in Model.Cheeps)
             {
-                <li>
+                @* <li>
                     <p id="cheep-content">
                         <strong>
                             <a id="author" href="/@cheep.AuthorName">@cheep.AuthorName</a>
@@ -28,6 +28,25 @@
                         @cheep.Message
                         <small>&mdash; @cheep.TimeStamp</small>
                     </p>
+                </li> *@
+                <li>
+                    <div class="cheep-container">
+                        <div class="left-content">
+                            <p id="cheep-content">
+                                <strong>
+                                    <a id="author" href="/@cheep.AuthorName">@cheep.AuthorName</a>
+                                </strong>
+                            </p>
+                            <p id="cheep-content">
+                                <small>@cheep.TimeStamp</small>
+                            </p>
+                        </div>
+                        <div class="right-content">
+                            <p id="cheep-content">
+                                @cheep.Message
+                            </p>
+                        </div>
+                    </div>
                 </li>
             }
         </ul>
@@ -72,7 +91,8 @@
             }
             @if (currentPage < totalPageCount)
             {
-                <li class="page-item next-button">
+                <li class="page-item next-button"  style="width: 72px;">
+                    @* <a class="page-link" href="?page=@(currentPage + 1)">Next</a> *@
                     <a class="page-link" href="?page=@(currentPage + 1)">Next</a>
                 </li>
             }
