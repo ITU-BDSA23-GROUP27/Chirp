@@ -4,10 +4,18 @@
     ViewData["Title"] = "Chirp!";
     Layout = "Shared/_Layout";
     var routeName = HttpContext.GetRouteValue("author");
+
+    int totalPageCount = Model.GetTotalPages(routeName.ToString());
+    int currentPage = Model.CurrentPage;
+    int displayRange = 5;
+    int halfRange = displayRange / 2;
+    int startPage = Math.Max(1, currentPage - halfRange);
+    int endPage = Math.Min(totalPageCount, startPage + displayRange - 1); 
 }
 
 <div>
     <h2> @routeName's Timeline </h2>
+    <h2 style="color: red"> Total page count test: @totalPageCount </h2>
 
     @if (Model.Cheeps.Any())
     {
@@ -25,6 +33,52 @@
                 </li>
             }
         </ul>
+
+        <ul class="pagination">
+            @if (currentPage > 1)
+            {
+                <li class="page-item prev-button">
+                    <a class="page-link" href="?page=@(currentPage - 1)">Previous</a>
+                </li>
+            }
+            @if (startPage > 1)
+            {
+                <li class="page-item">
+                    <a class "page-link" href="?page=1">1</a>
+                </li>
+                @if (startPage > 2)
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+            }
+            @for (var i = startPage; i <= endPage; i++)
+            {
+                <li class="page-item @(i == currentPage ? "active" : "")">
+                    <a class="page-link page-number" href="?page=@i">@i</a>
+                </li>
+            }
+            @if (endPage < totalPageCount)
+            {
+                @if (endPage < totalPageCount - 1)
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+                <li class="page-item">
+                    <a class="page-link" href="?page=@totalPageCount">@totalPageCount</a>
+                </li>
+            }
+            @if (currentPage < totalPageCount)
+            {
+                <li class="page-item next-button">
+                    <a class="page-link" href="?page=@(currentPage + 1)">Next</a>
+                </li>
+            }
+        </ul>
+
     }
     else
     {
