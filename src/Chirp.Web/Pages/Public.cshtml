@@ -24,9 +24,9 @@
                 </li>
             }
         </ul>
-        // The following pagination has been made with the help of CHAT-GPT
+
         <ul class="pagination">
-            @for (var i = 1; i <= 21; i++)
+            @for (var i = 1; i <= Model.GetTotalPages(); i++)
             {
                 <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
                     <a class="page-link" href="?page=@i">@i</a>

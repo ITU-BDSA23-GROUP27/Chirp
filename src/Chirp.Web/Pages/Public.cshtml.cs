@@ -12,7 +12,7 @@ public class PublicModel : PageModel
     public IEnumerable<CheepDto> Cheeps { get; set; }
 
     public int CurrentPage { get; set; } = 1;
-    //public int MaxCheepsPerPage { get; } = 32;
+    public int MaxCheepsPerPage { get; } = 32;
 
     public PublicModel(ICheepRepository cheepRepository)
     {
@@ -29,5 +29,11 @@ public class PublicModel : PageModel
 
         Cheeps = _cheepRepository.GetCheepsFromPage(CurrentPage);
         return Page();
+    }
+
+    public int GetTotalPages()
+    {
+        int totalCheeps = _cheepRepository.GetCheeps().Count();
+        return (int)Math.Ceiling((double)totalCheeps / MaxCheepsPerPage);
     }
 }
