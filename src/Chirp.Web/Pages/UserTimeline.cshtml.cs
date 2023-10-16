@@ -24,13 +24,13 @@ public class UserTimelineModel : PageModel
         {
             CurrentPage = parsedPage;
         }
-        Cheeps = _cheepRepository.GetCheepsFromAuthor(author, CurrentPage);
+        Cheeps = _cheepRepository.GetCheepsFromAuthorPage(author, CurrentPage);
         return Page();
     }
 
     public int GetTotalPages(string author)
     {
-        int totalCheeps = _cheepRepository.GetCheepsFromAuthor(author, 1).Count();
+        int totalCheeps = _cheepRepository.GetCheepsFromAuthor(author).Count();
         return (int)Math.Ceiling((double)totalCheeps / MaxCheepsPerPage);
     }
 }

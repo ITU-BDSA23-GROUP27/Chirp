@@ -5,7 +5,7 @@
     Layout = "Shared/_Layout";
     var routeName = HttpContext.GetRouteValue("author");
 
-    int totalPageCount = Model.GetTotalPages(routeName.ToString());
+    int totalPageCount = Model.GetTotalPages(routeName?.ToString() ?? "default");
     int currentPage = Model.CurrentPage;
     int displayRange = 5;
     int halfRange = displayRange / 2;
@@ -15,7 +15,6 @@
 
 <div>
     <h2> @routeName's Timeline </h2>
-    <h2 style="color: red"> Total page count test: @totalPageCount </h2>
 
     @if (Model.Cheeps.Any())
     {
@@ -44,7 +43,7 @@
             @if (startPage > 1)
             {
                 <li class="page-item">
-                    <a class "page-link" href="?page=1">1</a>
+                    <a class="page-link" href="?page=1">1</a>
                 </li>
                 @if (startPage > 2)
                 {
