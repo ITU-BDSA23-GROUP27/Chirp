@@ -10,7 +10,6 @@ public class PublicModel : PageModel
 {
     private readonly ICheepRepository _cheepRepository;
     public IEnumerable<CheepDto> Cheeps { get; set; }
-
     public int CurrentPage { get; set; } = 1;
     public int MaxCheepsPerPage { get; } = 32;
 

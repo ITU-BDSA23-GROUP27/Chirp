@@ -18,6 +18,7 @@
     border: 1px solid #333;
     padding: 5px 10px;
     transition: transform 0.2s;
+    border-radius: 2px;
 }
 
 .page-item.active .page-link {
@@ -39,13 +40,15 @@
     background: linear-gradient(to bottom right, #6399b496, #1e3cd2);
     color: #fff;
     border: none;
+    border-radius: 2px;
+    
+    /* display: inline-block; */
+    /* text-align: center; */
+    /* padding: 5px 10px; */
+
 }
 
 .prev-button:hover, .next-button:hover,
 .page-item:hover .page-link {
     transform: scale(1.1) !important;
-}
-
-li.page-item.next-button {
-    width: fit-content !important;
 }

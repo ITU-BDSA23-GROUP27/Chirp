@@ -10,6 +10,14 @@
     int halfRange = displayRange / 2;
     int startPage = Math.Max(1, currentPage - halfRange);
     int endPage = Math.Min(totalPageCount, startPage + displayRange - 1);
+
+    if (endPage - startPage + 1 < displayRange) {
+        if (startPage > 1) {
+            startPage = Math.Max(1, endPage - displayRange + 1);
+        } else if (endPage < totalPageCount) {
+            endPage = Math.Min(totalPageCount, startPage + displayRange - 1);
+        }
+    }    
 }
 
 <div>
@@ -56,44 +64,41 @@
             @if (currentPage > 1)
             {
                 <li class="page-item prev-button">
-                    <a class="page-link" href="?page=@(currentPage - 1)"><i class="fas fa-angle-double-left"></i></a>
+                    <a class="page-link" href="?page=1"><i class="fas fa-angle-double-left"></i></a>
+                </li>
+                <li class="page-item prev-button">
+                    <a class="page-link" href="?page=@(currentPage - 1)"><i class="fas fa-angle-left"></i></a>
                 </li>
             }
+
             @if (startPage > 1)
             {
-                <li class="page-item">
-                    <a class="page-link" href="?page=1">1</a>
-                </li>
-                @if (startPage > 2)
-                {
                     <li class="page-item disabled">
                         <span class="page-link">...</span>
                     </li>
-                }
             }
+
             @for (var i = startPage; i <= endPage; i++)
             {
                 <li class="page-item @(i == currentPage ? "active" : "")">
                     <a class="page-link page-number" href="?page=@i">@i</a>
                 </li>
             }
+
             @if (endPage < totalPageCount)
             {
-                @if (endPage < totalPageCount - 1)
-                {
-                    <li class="page-item disabled">
-                        <span class="page-link">...</span>
-                    </li>
-                }
-                <li class="page-item">
-                    <a class="page-link" href="?page=@totalPageCount">@totalPageCount</a>
+                <li class="page-item disabled">
+                    <span class="page-link">...</span>
                 </li>
             }
+
             @if (currentPage < totalPageCount)
             {
-                <li class="page-item next-button"  style="width: 72px;">
-                    @* <a class="page-link" href="?page=@(currentPage + 1)">Next</a> *@
-                    <a class="page-link" href="?page=@(currentPage + 1)"><i class="fas fa-angle-double-right"></i></a>
+                <li class="page-item next-button">
+                    <a class="page-link" href="?page=@(currentPage + 1)"><i class="fas fa-angle-right"></i></a>
+                <li class="page-item next-button">
+                    <a class="page-link" href="?page=@totalPageCount"><i class="fas fa-angle-double-right"></i></a>
+                </li>
                 </li>
             }
         </ul>
