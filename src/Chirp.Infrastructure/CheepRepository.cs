@@ -37,14 +37,12 @@ public class CheepRepository : ICheepRepository
     
     public IEnumerable<CheepDto> GetCheepsFromAuthor(string authorName)
     {
-        var cheeps = GetCheeps().Where(c => c.AuthorName == authorName);
-        return cheeps;
+        return GetCheeps().Where(c => c.AuthorName == authorName);
     }
     
     public IEnumerable<CheepDto> GetCheepsFromAuthorPage(string authorName, int page)
     {
-        var cheeps = GetCheeps().Where(c => c.AuthorName == authorName);
-        return cheeps.Skip((page - 1) * pageLimit).Take(pageLimit);
+        return GetCheepsFromAuthor(authorName).Skip((page - 1) * pageLimit).Take(pageLimit);
     }
     
     public AuthorDetailDto GetAuthor(Guid authorId)
