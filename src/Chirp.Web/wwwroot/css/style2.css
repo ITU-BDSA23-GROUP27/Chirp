@@ -1,3 +1,17 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    /* border: 1px solid red; */
+}
+
+header > h2 {
+    margin-bottom: 5px !important;
+}
+
+header > .display-page {
+    color: #9c9c9c;
+}
+
 .cheep-container {
     display: flex;
     justify-content: space-between;
@@ -15,10 +29,9 @@
 
 #author {
     text-decoration: none;
-    color: #26776F;
+    color: #26776f;
 }
 
 #author:hover {
     color: #333;
 }
-
