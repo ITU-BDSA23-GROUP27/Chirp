@@ -12,6 +12,10 @@ public class PublicModel : PageModel
     public IEnumerable<CheepDto> Cheeps { get; set; }
     public int CurrentPage { get; set; } = 1;
     public int MaxCheepsPerPage { get; } = 32;
+    public int TotalPageCount { get; set; }
+    public int StartPage { get; set; }
+    public int EndPage { get; set; }
+    public int DisplayRange { get; set; } = 5;
 
     public PublicModel(ICheepRepository cheepRepository)
     {
@@ -27,6 +31,10 @@ public class PublicModel : PageModel
         }
 
         Cheeps = _cheepRepository.GetCheepsFromPage(CurrentPage);
+
+        TotalPageCount = GetTotalPages();
+        CalculatePagination();
+
         return Page();
     }
 
@@ -34,5 +42,23 @@ public class PublicModel : PageModel
     {
         int totalCheeps = _cheepRepository.GetCheeps().Count();
         return (int)Math.Ceiling((double)totalCheeps / MaxCheepsPerPage);
+    }
+
+    private void CalculatePagination()
+    {
+        StartPage = Math.Max(1, CurrentPage - DisplayRange / 2);
+        EndPage = Math.Min(TotalPageCount, StartPage + DisplayRange - 1);
+
+        if (EndPage - StartPage + 1 < DisplayRange)
+        {
+            if (StartPage > 1)
+            {
+                StartPage = Math.Max(1, EndPage - DisplayRange + 1);
+            }
+            else if (EndPage < TotalPageCount)
+            {
+                EndPage = Math.Min(TotalPageCount, StartPage + DisplayRange - 1);
+            }
+        }
     }
 }
