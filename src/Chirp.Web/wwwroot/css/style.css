@@ -1,5 +1,6 @@
 body {
-  background: #eccaca;
+  /* background: #eccaca; */
+  background: linear-gradient(#ffd0b3, #ffefb6ee) no-repeat fixed;
   font-family: 'Trebuchet MS', sans-serif;
   font-size: 14px;
 }

@@ -36,7 +36,6 @@
 }
 
 .prev-button .page-link, .next-button .page-link {
-    background-color: #e6c0bf;
     background: linear-gradient(to bottom right, #6399b496, #1e3cd2);
     color: #fff;
     border: none;
@@ -45,4 +44,8 @@
 .prev-button:hover, .next-button:hover,
 .page-item:hover .page-link {
     transform: scale(1.1) !important;
+}
+
+li.page-item.next-button {
+    width: fit-content !important;
 }
