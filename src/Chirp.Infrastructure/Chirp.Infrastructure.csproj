@@ -5,6 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>Chirp.Infrastructure</RootNamespace>
+        <NoWarn>NU1701</NoWarn> 
     </PropertyGroup>
 
     <ItemGroup>
