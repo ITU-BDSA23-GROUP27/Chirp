@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ChirpContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("Chirp")));
 builder.Services.AddScoped<ICheepRepository, Chirp.Infrastructure.CheepRepository>();
+builder.Services.AddScoped<IAuthorRepository, Chirp.Infrastructure.AuthorRepository>();
 
 var app = builder.Build();
 

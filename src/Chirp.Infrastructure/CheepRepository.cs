@@ -1,7 +1,6 @@
 using System.Globalization;
 using Chirp.Core;
 using Chirp.Core.DTOs;
-using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure;
 
@@ -44,28 +43,25 @@ public class CheepRepository : ICheepRepository
     {
         return GetCheepsFromAuthor(authorName).Skip((page - 1) * pageLimit).Take(pageLimit);
     }
-    
-    public AuthorDetailDto GetAuthor(Guid authorId)
+    public void CreateCheep(CheepDto cheep)
     {
-        var author = _context.Authors.Include(author => author.Cheeps).First(a => a.AuthorId == authorId);
+        var existingAuthor = _context.Authors.SingleOrDefault(c => c.Name == cheep.AuthorName);
 
-        return new AuthorDetailDto()
+        if (existingAuthor is null)
         {
-            Id = author.AuthorId,
-            Name = author.Name,
-            Email = author.Email,
-            CheepIds = author.Cheeps.Select(c => c.CheepId)
+            throw new ArgumentException("No existing author with that name found");
+        }
+
+        var newCheep = new Cheep()
+        {
+            CheepId = new Guid(),
+            Text = cheep.Message,
+            TimeStamp = DateTime.Parse(cheep.TimeStamp),
+            Author = existingAuthor
+            
         };
-    }
-    
-    public IEnumerable<AuthorDto>GetAuthors()
-    {
-        var authors = _context.Authors.Select<Author, AuthorDto>(a => new AuthorDto()
-        {
-            Id = a.AuthorId,
-            Name = a.Name,
-            Email = a.Email
-        });
-        return authors;
+        
+        _context.Cheeps.Add(newCheep);
+        _context.SaveChanges();
     }
 }
