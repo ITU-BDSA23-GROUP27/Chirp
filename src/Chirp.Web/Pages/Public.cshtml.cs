@@ -9,7 +9,7 @@ namespace Chirp.Web.Pages;
 public class PublicModel : PageModel
 {
     private readonly ICheepRepository _cheepRepository;
-    public IEnumerable<CheepDto> Cheeps { get; set; }
+    public IEnumerable<CheepDto> Cheeps { get; set; } = new List<CheepDto>();
     public int CurrentPage { get; set; } = 1;
     public int MaxCheepsPerPage { get; } = 32;
     public int TotalPageCount { get; set; }

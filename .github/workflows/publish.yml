@@ -25,7 +25,7 @@ jobs:
           release_name="Chirp-$tag-linux-x64"
           
           # Build file
-          dotnet publish src/ITU-BDSA23-GROUP27.Chirp.CLI/ITU-BDSA23-GROUP27.Chirp.CLI.csproj --framework net7.0 --runtime "linux-x64" -c Release -o "$release_name" -p:PublishSingleFile=true --self-contained false /p:DebugType=None
+          dotnet publish src/Chirp.Web/Chirp.Web.csproj --framework net7.0 --runtime "linux-x64" -c Release -o "$release_name" -p:PublishSingleFile=true --self-contained false /p:DebugType=None
           
           # Pack file
           7z a -tzip "${release_name}.zip" "./${release_name}/*"
@@ -40,7 +40,7 @@ jobs:
           release_name="Chirp-$tag-win-x64"
           
           # Build file
-          dotnet publish src/ITU-BDSA23-GROUP27.Chirp.CLI/ITU-BDSA23-GROUP27.Chirp.CLI.csproj --framework net7.0 --runtime "win-x64" -c Release -o "$release_name" -p:PublishSingleFile=true --self-contained false /p:DebugType=None
+          dotnet publish src/Chirp.Web/Chirp.Web.csproj --framework net7.0 --runtime "win-x64" -c Release -o "$release_name" -p:PublishSingleFile=true --self-contained false /p:DebugType=None
           
           # Pack file
           7z a -tzip "${release_name}.zip" "./${release_name}/*"
