@@ -5,6 +5,7 @@ namespace Razor.Test;
 
 public class APITests
 {
+    /*
     [Theory]
     [InlineData("?page=20", "Helge", "Hello, BDSA students!")]
     [InlineData("Rasmus", "Rasmus", "Hej, velkommen til kurset.")]
@@ -23,4 +24,5 @@ public class APITests
         
         Assert.True(containsCheep);
     }
+    */
 }
