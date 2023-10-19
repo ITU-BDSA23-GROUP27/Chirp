@@ -8,16 +8,14 @@ namespace Chirp.Razor.Pages;
 public class UserTimelineModel : PageModel
 {
     private readonly ICheepRepository _cheepRepository;
-    public IEnumerable<CheepDto> Cheeps { get; set; }
+    public IEnumerable<CheepDto> Cheeps { get; set; } = new List<CheepDto>();
     public int CurrentPage { get; set; } = 1;
-    public int MaxCheepsPerPage { get; } = 32;
-
+    public int MaxCheepsPerPage { get; set; } = 32;
     public int TotalPageCount { get; set; }
     public int StartPage { get; set; }
     public int EndPage { get; set; }
     public int DisplayRange { get; set; } = 5;
-
-    public string RouteName { get; set; }
+    public string? RouteName { get; set; }
 
     public UserTimelineModel(ICheepRepository cheepRepository)
     {
