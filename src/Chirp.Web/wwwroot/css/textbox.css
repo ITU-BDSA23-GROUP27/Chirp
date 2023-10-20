@@ -1,3 +1,14 @@
+.textbox-container {
+    background-color: rgb(233, 228, 228);
+    background-color: transparent;
+    max-height: 300px;
+    overflow: hidden;
+    transition: max-height 0.3s;
+}
+.textbox-container.collapsed {
+    max-height: 0;
+}
+
 .form-container {
     max-width: 400px;
     margin: 0 auto;
@@ -7,11 +18,6 @@
     margin-bottom: 20px;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-}
-
 .form-group input[type="text"],
 .form-group textarea {
     width: 100%;
@@ -19,18 +25,60 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     resize: none;
+    margin-bottom: 0px;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #aaa;
+}
+
+.form-group:nth-child(2) {
+    margin-bottom: 10px;
+}
+
+.bottom-container {
+    display: flex;
+    justify-content: space-between;
+
+    /* border: 1px solid red; */
+    width: 422px;
+}
+
+.bottom-container button {
+    background: linear-gradient(to bottom right, #6399b496, #1e3cd2);
+    color: #fff;
+    border: none;
+    border-radius: 2px;
+    
+    padding: 10px 20px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-top: 0px;
+    
+    cursor: pointer;    
+}
+
+.toggleButton {
+    background: linear-gradient(to bottom right, #b15c1696, #d55867);
+    color: #fff;
+    border: none;
+    border-radius: 2px;
+    
+    padding: 10px 20px;
+    margin: 10px 10px 10px 0px;
+    
+    cursor: pointer;
+
+    transition: background 0.3s;
+}
+.toggleButton.active-color {
+    background: linear-gradient(to bottom right, #97440096, #b8051a);
 }
 
 .char-count {
     font-size: 12px;
     color: #777;
-}
-
-.button-container {
-    text-align: center;
-}
-
-.button-container button {
-    padding: 10px 20px;
-    margin-right: 10px;
+    /* border: 1px solid red; */
+    margin: 0;
 }

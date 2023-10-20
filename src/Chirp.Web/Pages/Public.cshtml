@@ -6,27 +6,35 @@
 }
 
 <div>
-    <h2>Write Author's Cheep</h2>
 
-    <div class="form-container">
-        <form>
-            <div class="form-group">
-                <label for="author">Author:</label>
-                <input type="text" id="author" name="author" required>
-            </div>
-            <div class="form-group">
-                <label for="text">Text:</label>
-                <textarea id="text" name="text" rows="5" maxlength="@Model.CheepMaxLength" required></textarea>
-                <p class="char-count">Characters: <span id="char-counter">0</span>/@Model.CheepMaxLength</p>
-            </div>
-            <div class="button-container">
-                <button type="submit">Submit</button>
-                <button type="button">Close</button>
-            </div>
-        </form>
+    <button class="toggleButton">Write Cheep</button>
+
+    <hr/>
+
+    <div class="textbox-container collapsed">
+        <h2>Write Cheep as Author</h2>
+
+        <div class="form-container">
+            <form>
+                <div class="form-group">
+                    <input type="text" name="author" required placeholder="Author name">
+                </div>
+                <div class="form-group">
+                    <textarea id="text" name="text" rows="5" maxlength="@Model.CheepMaxLength" 
+                        required placeholder="Write your cheep here!"></textarea>
+                </div>
+                <div class="bottom-container">
+                    <div>
+                        <button type="submit">Submit</button>
+                    </div>
+                    <div>
+                        <p class="char-count">Characters: <span id="char-counter">0</span>/@Model.CheepMaxLength</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <hr />
     </div>
-
-    <hr />
 
     <header>
         <h2> Public Timeline </h2>
@@ -38,15 +46,6 @@
         <ul id="message-list" class="cheeps">
             @foreach (var cheep in Model.Cheeps)
             {
-                @* <li>
-                    <p id="cheep-content">
-                        <strong>
-                            <a id="author" href="/@cheep.AuthorName">@cheep.AuthorName</a>
-                        </strong>
-                        @cheep.Message
-                        <small>&mdash; @cheep.TimeStamp</small>
-                    </p>
-                </li> *@
                 <li>
                     <div class="cheep-container">
                         <div class="left-content">
@@ -140,6 +139,13 @@
     textArea.addEventListener("input", function () {
         charCounter.textContent = textArea.value.length;
     });
+
+    // toggle button
+    const toggleButton = document.querySelector(".toggleButton");
+    const textboxContainer = document.querySelector(".textbox-container");
+
+    toggleButton.addEventListener("click", function () {
+        textboxContainer.classList.toggle("collapsed");
+        toggleButton.classList.toggle("active-color")
+    });
 </script>
-
-
