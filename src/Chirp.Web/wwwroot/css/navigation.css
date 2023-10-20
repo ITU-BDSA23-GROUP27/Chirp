@@ -3,14 +3,16 @@ body {
 }
 
 .navbar {
-    background-color: #181819da;
+    background-color: #181819c3;
     color: #fff;
     box-shadow: 0 5px 10px #0000004d;
     padding: 20px 0;
     text-align: center;
 
-
     font-size: 1.5em;
+
+    margin: 20px;
+    border-radius: 10px;
 }
 
 .navbar a {

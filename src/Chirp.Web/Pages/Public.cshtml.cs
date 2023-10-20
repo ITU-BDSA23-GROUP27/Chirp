@@ -16,6 +16,7 @@ public class PublicModel : PageModel
     public int StartPage { get; set; }
     public int EndPage { get; set; }
     public int DisplayRange { get; set; } = 5;
+    public int CheepMaxLength { get; set; } = 160;
 
     public PublicModel(ICheepRepository cheepRepository)
     {
