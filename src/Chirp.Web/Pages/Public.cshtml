@@ -16,8 +16,8 @@
             </div>
             <div class="form-group">
                 <label for="text">Text:</label>
-                <textarea id="text" name="text" rows="5" maxlength="160" required></textarea>
-                <p class="char-count">Characters: <span id="char-counter">0</span>/160</p>
+                <textarea id="text" name="text" rows="5" maxlength="@Model.CheepMaxLength" required></textarea>
+                <p class="char-count">Characters: <span id="char-counter">0</span>/@Model.CheepMaxLength</p>
             </div>
             <div class="button-container">
                 <button type="submit">Submit</button>
@@ -120,6 +120,7 @@
 </div>
 
 <script>
+    // next/previous page
     document.addEventListener('keydown', function (event) {
         if (event.key === 'ArrowLeft') {
             if (@Model.CurrentPage > 1) {
@@ -131,4 +132,14 @@
             }
         }
     });
+
+    // textarea
+    const textArea = document.getElementById("text");
+    const charCounter = document.getElementById("char-counter");
+    
+    textArea.addEventListener("input", function () {
+        charCounter.textContent = textArea.value.length;
+    });
 </script>
+
+
