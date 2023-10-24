@@ -7,7 +7,7 @@ namespace Chirp.Infrastructure.Test
     public class RepositoryTests : IDisposable
     {
         private readonly ChirpContext _context;
-        private readonly Infrastructure.CheepRepository _cheepRepository;
+        private readonly CheepRepository _cheepRepository;
         private readonly AuthorRepository _authorRepository;
 
         public RepositoryTests()
@@ -23,7 +23,7 @@ namespace Chirp.Infrastructure.Test
             _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
 
-            _cheepRepository = new Infrastructure.CheepRepository(_context);
+            _cheepRepository = new CheepRepository(_context);
             _authorRepository = new AuthorRepository(_context);
         }
 
@@ -59,7 +59,7 @@ namespace Chirp.Infrastructure.Test
             _cheepRepository.CreateCheep(cheepDto);
 
             // Assert
-            var cheep = _context.Cheeps.Single();
+            var cheep = _context.Cheeps.Include(cheep => cheep.Author).Single();
             Assert.Equal("Bye, world!", cheep.Text);
             Assert.Equal("Hans Hansen", cheep.Author.Name);
         }
