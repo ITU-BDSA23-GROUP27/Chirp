@@ -96,7 +96,7 @@ namespace Chirp.Infrastructure.Test
             var result = _cheepRepository.GetCheepsFromPage(2);
 
             // Assert
-            Assert.Equal(18, result.Count());  // Assuming page size of 32
+            Assert.Equal(18, result.Count()); 
         }
 
         [Fact]
