@@ -6,9 +6,9 @@ namespace Chirp.Infrastructure;
 
 public class CheepRepository : ICheepRepository
 {
-    private ChirpContext _context;
+    private readonly ChirpContext _context;
 
-    private const int pageLimit = 32;
+    private const int PageLimit = 32;
 
     public CheepRepository(ChirpContext context)
     {
@@ -31,7 +31,7 @@ public class CheepRepository : ICheepRepository
     
     public IEnumerable<CheepDto> GetCheepsFromPage(int page)
     {
-        return GetCheeps().Skip((page - 1) * pageLimit).Take(pageLimit);
+        return GetCheeps().Skip((page - 1) * PageLimit).Take(PageLimit);
     }
     
     public IEnumerable<CheepDto> GetCheepsFromAuthor(string authorName)
@@ -41,7 +41,7 @@ public class CheepRepository : ICheepRepository
     
     public IEnumerable<CheepDto> GetCheepsFromAuthorPage(string authorName, int page)
     {
-        return GetCheepsFromAuthor(authorName).Skip((page - 1) * pageLimit).Take(pageLimit);
+        return GetCheepsFromAuthor(authorName).Skip((page - 1) * PageLimit).Take(PageLimit);
     }
     public void CreateCheep(CheepDto cheep)
     {

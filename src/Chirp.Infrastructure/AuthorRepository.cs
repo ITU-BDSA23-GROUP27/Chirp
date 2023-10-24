@@ -1,12 +1,11 @@
 using Chirp.Core;
 using Chirp.Core.DTOs;
-using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure;
 
 public class AuthorRepository : IAuthorRepository
 {
-    private ChirpContext _context;
+    private readonly ChirpContext _context;
 
     public AuthorRepository(ChirpContext context)
     {
