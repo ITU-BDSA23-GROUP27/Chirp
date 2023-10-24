@@ -1,11 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure;
 
-public class ChirpContext : DbContext
+public sealed class ChirpContext : DbContext
 {
     public DbSet<Cheep> Cheeps => Set<Cheep>();
     public DbSet<Author> Authors => Set<Author>();
