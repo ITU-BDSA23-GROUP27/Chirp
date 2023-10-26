@@ -20,7 +20,7 @@ namespace Chirp.Infrastructure.Test
                 .Options;
 
             _context = new ChirpContext(options);
-            _context.Database.EnsureDeleted();
+            //_context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
 
             _cheepRepository = new CheepRepository(_context);
@@ -129,7 +129,7 @@ namespace Chirp.Infrastructure.Test
 
         public void Dispose()
         {
-            _context.Database.EnsureDeleted();
+            //_context.Database.EnsureDeleted();
             _context.Dispose();
         }
     }

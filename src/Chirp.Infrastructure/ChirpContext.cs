@@ -9,12 +9,13 @@ public sealed class ChirpContext : DbContext
     public DbSet<Cheep> Cheeps => Set<Cheep>();
     public DbSet<Author> Authors => Set<Author>();
 
-    public ChirpContext(DbContextOptions<ChirpContext> options)
+    public ChirpContext(DbContextOptions<ChirpContext> options): base(options)
     {
-        Database.EnsureCreated();
+        //Database.EnsureCreated();
+        //Migrate to program (database.migrate)
     }
     
-    private static string DbPath
+    /*private static string DbPath
     {
         get
         {
@@ -22,11 +23,10 @@ public sealed class ChirpContext : DbContext
             return Path.Join(path, "chirp.db");
         }
     }
-
     // The following configures EF to create a Sqlite database file in the
     // special "local" folder for your platform.
     protected override void OnConfiguring(DbContextOptionsBuilder options)
-        => options.UseSqlite($"Data Source={DbPath}");
+        => options.UseSqlite($"Data Source={DbPath}");*/
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
