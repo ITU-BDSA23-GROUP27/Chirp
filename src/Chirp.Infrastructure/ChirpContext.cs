@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Chirp.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure;
@@ -37,33 +38,5 @@ public sealed class ChirpContext : DbContext
     }
 }
 
-// could be in seperate classes for better overview 
-public class Cheep
-{
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public Guid CheepId { get; set; }
-    
-    public required string Text { get; set; }
-    public DateTime TimeStamp { get; set; }
-    public required Author Author { get; set; }
-}
 
-public class Author
-{
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public Guid AuthorId { get; set; }
-    
-    public required string Name { get; set; }
-    public required string Email { get; set; }
-    public IEnumerable<Cheep> Cheeps { get; set; } = new List<Cheep>();
-}
 
-public class Follower
-{
-    public Guid FollowerId { get; set; }
-    public Guid FolloweeId { get; set; }
-    public required Author FollowerAuthor { get; set; }
-    public required Author FolloweeAuthor { get; set; }
-}
