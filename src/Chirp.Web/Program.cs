@@ -3,7 +3,6 @@ using Chirp.Core;
 using Chirp.Infrastructure;
 using Chirp.Infrastructure.Data;
 using Chirp.Web.Data;
-using Individual.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
