@@ -1,3 +1,5 @@
+using Chirp.Infrastructure.Entities;
+
 namespace Chirp.Infrastructure.Data;
 
 public static class DbInitializer
