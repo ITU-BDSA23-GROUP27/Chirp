@@ -2,6 +2,9 @@
 using Chirp.Core;
 using Chirp.Infrastructure;
 using Chirp.Infrastructure.Data;
+using Chirp.Web.Data;
+using Individual.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +12,15 @@ var builder = WebApplication.CreateBuilder(args);
 string path = Path.Join(Path.GetTempPath(), "Chirp.db");
 
 // Add services to the container.
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlite(connectionString));
+builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ChirpContext>(options => options.UseSqlite($"Data Source={path}"));
 builder.Services.AddScoped<ICheepRepository, Chirp.Infrastructure.CheepRepository>();
@@ -27,7 +39,11 @@ using (var scope = app.Services.CreateScope())
 
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
+{
+    app.UseMigrationsEndPoint();
+}
+else
 {
     app.UseExceptionHandler("/Error");
     
@@ -37,6 +53,11 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
 app.UseRouting();
+
+app.UseAuthorization();
+
 app.MapRazorPages();
+
 app.Run();
