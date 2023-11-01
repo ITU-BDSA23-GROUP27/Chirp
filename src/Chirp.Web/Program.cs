@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//string path = Path.Join(Path.GetTempPath(), "Chirp.db");
+string path = Path.Join(Path.GetTempPath(), "Chirp.db");
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddDbContext<ChirpContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("Chirp")));
+builder.Services.AddDbContext<ChirpContext>(options => options.UseSqlite($"Data Source={path}"));
 builder.Services.AddScoped<ICheepRepository, Chirp.Infrastructure.CheepRepository>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 
