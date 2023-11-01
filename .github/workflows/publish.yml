@@ -22,7 +22,7 @@ jobs:
       - name: Build Linux
         run: |
           tag=$(git describe --tags --abbrev=0)
-          release_name="Chirp-$tag-linux-x64"
+          release_name="$tag-linux-x64"
           
           # Build file
           dotnet publish src/Chirp.Web/Chirp.Web.csproj --framework net7.0 --runtime "linux-x64" -c Release -o "$release_name" -p:PublishSingleFile=true --self-contained false /p:DebugType=None
@@ -37,7 +37,7 @@ jobs:
       - name: Build Windows
         run: |
           tag=$(git describe --tags --abbrev=0)
-          release_name="Chirp-$tag-win-x64"
+          release_name="$tag-win-x64"
           
           # Build file
           dotnet publish src/Chirp.Web/Chirp.Web.csproj --framework net7.0 --runtime "win-x64" -c Release -o "$release_name" -p:PublishSingleFile=true --self-contained false /p:DebugType=None
@@ -52,7 +52,7 @@ jobs:
       - name: Build MacOS
         run: |
           tag=$(git describe --tags --abbrev=0)
-          release_name="Chirp-$tag-osx-x64"
+          release_name="$tag-osx-x64"
           
           # Build file
           dotnet publish src/Chirp.Web/Chirp.Web.csproj --framework net7.0 --runtime "osx-x64" -c Release -o "$release_name" -p:PublishSingleFile=true --self-contained false /p:DebugType=None
@@ -68,8 +68,7 @@ jobs:
         id: create_release
         run: |
           tag=$(git describe --tags --abbrev=0)
-          if [ -n "$tag" ]; then
-            release_name="Chirp-$tag"
+            release_name="$tag"
             echo "::set-output name=release_name::$release_name"
           fi
         shell: bash
