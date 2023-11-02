@@ -43,7 +43,7 @@ input[type="submit"] {
 
 div.page {
   background: white;
-  border: 1px solid #cc6e6e;
+  /* border: 1px solid #cc6e6e; */
   width: 700px;
   margin: 30px auto;
 }
