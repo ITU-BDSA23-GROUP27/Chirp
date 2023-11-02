@@ -20,42 +20,51 @@
         @if (User.Identity.IsAuthenticated)
         {
             <div>
-                <a href="/@(User.Identity.Name)">My Timeline</a> |
-                <a href="/">Public Timeline</a> |
-                <a ... >Logout [@(User.Identity.Name)]</a>
+                <a class='@(Context.Request.Path == "/" ? "active" : "")' href="/">Home</a>
+                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Privacy</a>
+                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Chirp!</a>
+                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Profile</a>
+                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Claims</a>
+            </div>
+            <div>
+                @* <span>Hello @User</a></span> *@
+                <span>Hello  <span class="username">&lt;username&gt;</span></span>
+                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#"><i class="fa-solid fa-right-from-bracket"></i> Sign out</a>
             </div>
         }
         else
         {
-            <a class="@(Context.Request.Path == "/" ? "active" : "")" href="/">Public Timeline</a>
-            <a class="" href="#">Register</a>
-            <a class="" href="https://github.com/login/oauth/authorize"><i class="fab fa-github"></i> Login</a>
+            <div>
+                <a class='@(Context.Request.Path == "/" ? "active" : "")' href="/">Home</a>
+                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Privacy</a>
+            </div>
+            <div>
+                <a class="" href="https://github.com/login/oauth/authorize"><i class="fab fa-github"></i> Sign in</a>
+            </div>
         }
     </nav>
+
+    @*! temporary code until login is implemented *@
+    <nav class="navbar">
+            <div>
+                <a class='@(Context.Request.Path == "/" ? "active" : "")' href="/">Home</a>
+                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Privacy</a>
+                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Chirp!</a>
+                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Profile</a>
+                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Claims</a>
+            </div>
+            <div>
+                @* <span>Hello @User</a></span> *@
+                <span>Hello  <span class="username">&lt;username&gt;</span></span>
+                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#"><i class="fa-solid fa-right-from-bracket"></i> Sign out</a>
+            </div>
+    </nav>
+
 
     <div class=page>
         <a href="/">
             <h1><img src="/images/icon1.png" alt="Icon1" />Chirp!</h1>
         </a>
-
-        <div class=navigation>
-            @if (User.Identity.IsAuthenticated)
-            {
-                <div>
-                    <a href="/@(User.Identity.Name)">my timeline</a> |
-                    <a href="/">public timeline</a> |
-                    <a ... >logout [@(User.Identity.Name)]</a>
-                </div>
-            }
-            else
-            {
-                <div>
-                    <a href="/">public timeline</a> |
-                    <a ... >register</a> |
-                    <a ... >login</a>
-                </div>
-            }
-        </div>
 
         <div class=body>
             @RenderBody()
