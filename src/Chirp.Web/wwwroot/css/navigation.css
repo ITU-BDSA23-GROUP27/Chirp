@@ -3,10 +3,8 @@ body {
 }
 
 .navbar {
-    background-color: #00000084;
-    /* background-color: #1818194e; */
+    background: rgba(0, 0, 0, 0.5);
     color: #fff;
-    box-shadow: 0 5px 10px #0000004d;
     padding: 20px 0;
     text-align: center;
 
@@ -17,12 +15,16 @@ body {
 
     width: 700px;
     margin: 30px auto;
+
+    
 }
 
 .navbar a {
     color: #fff;
     text-decoration: none;
     margin: 0 20px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    
     transition: color 0.5s;
 }
 
