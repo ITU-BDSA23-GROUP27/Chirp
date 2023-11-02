@@ -17,13 +17,45 @@
 <body>
 
     <nav class="navbar">
-        <a class="@(Context.Request.Path == "/" ? "active" : "")" href="/">Public Timeline</a>
-        <a class="mute" href="#">Author</a>
-        <a class="mute" href="#">Follower</a>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div>
+                <a href="/@(User.Identity.Name)">My Timeline</a> |
+                <a href="/">Public Timeline</a> |
+                <a ... >Logout [@(User.Identity.Name)]</a>
+            </div>
+        }
+        else
+        {
+            <a class="@(Context.Request.Path == "/" ? "active" : "")" href="/">Public Timeline</a>
+            <a class="" href="#">Register</a>
+            <a class="" href="#"><i class="fab fa-github"></i> Login</a>
+        }
     </nav>
 
     <div class=page>
-        <h1><img src="/images/icon1.png" alt="Icon1" />Chirp!</h1>
+        <a href="/">
+            <h1><img src="/images/icon1.png" alt="Icon1" />Chirp!</h1>
+        </a>
+
+        <div class=navigation>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div>
+                    <a href="/@(User.Identity.Name)">my timeline</a> |
+                    <a href="/">public timeline</a> |
+                    <a ... >logout [@(User.Identity.Name)]</a>
+                </div>
+            }
+            else
+            {
+                <div>
+                    <a href="/">public timeline</a> |
+                    <a ... >register</a> |
+                    <a ... >login</a>
+                </div>
+            }
+        </div>
 
         <div class=body>
             @RenderBody()
