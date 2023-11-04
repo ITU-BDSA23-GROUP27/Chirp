@@ -50,7 +50,7 @@ public class CheepRepository : ICheepRepository
 
         if (existingAuthor is null)
         {
-            throw new ArgumentException("No existing author with that name found");
+            throw new ArgumentException($"No existing author with that name found: {cheep.AuthorName}");
         }
 
         var newCheep = new Cheep()
