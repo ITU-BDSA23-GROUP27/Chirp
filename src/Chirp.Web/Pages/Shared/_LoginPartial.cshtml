@@ -5,22 +5,27 @@
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
-    </li>
-    <li class="nav-item">
-        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post" >
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-        </form>
-    </li>
+    <div>
+                <a class='@(Context.Request.Path == "/" ? "active" : "")' href="/">Home</a>
+                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Privacy</a>
+                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Chirp!</a>
+                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Profile</a>
+                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Claims</a>
+            </div>
+            <div>
+                @* <span>Hello @User</a></span> *@
+                <span>Hello <span class="username">&lt;username&gt;</span></span>
+                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#"><i class="fa-solid fa-right-from-bracket"></i> Sign out</a>
+            </div>
 }
 else
 {
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
+    <div>
+                <a class='@(Context.Request.Path == "/" ? "active" : "")' href="/">Home</a>
+                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Privacy</a>
+            </div>
+            <div>
+                <a class="" href="https://github.com/login/oauth/authorize?client_id=392087beb9582431dd6a"><i class="fab fa-github"></i> Sign in</a>
+            </div>
 }
 </ul>
