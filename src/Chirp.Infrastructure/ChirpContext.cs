@@ -3,10 +3,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Chirp.Infrastructure.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace Chirp.Infrastructure;
 
-public sealed class ChirpContext : IdentityDbContext<ApplicationUser>
+public sealed class ChirpContext : DbContext
 {
     public DbSet<Cheep> Cheeps => Set<Cheep>();
     public DbSet<Author> Authors => Set<Author>();
