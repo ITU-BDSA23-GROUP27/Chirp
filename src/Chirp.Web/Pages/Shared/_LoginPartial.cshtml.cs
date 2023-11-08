@@ -6,8 +6,32 @@ namespace Chirp.Web.Pages.Shared;
 
 public class LoginPartialModel : PageModel
 {
-    public IResult OnGetAuthenticateLogin()
+    public void OnGet()
     {
-        return Results.Challenge(new AuthenticationProperties(){RedirectUri = "http://localhost:5273/login"}, new List<string>(){"github"});
+        {
+            if (User.Identity?.IsAuthenticated == true)
+            {
+                Console.WriteLine(User.Identity.Name);
+            }
+            else
+            {
+                Console.WriteLine("Not Authenticated");
+            }
+        }
+    }
+
+    public IActionResult OnPostAuthenticateLogin()
+    {
+        var props = new AuthenticationProperties
+        {
+            RedirectUri = Url.Page("/Error"),
+        };
+        return Challenge(props);
+    }
+
+    public IActionResult OnPostLogOut()
+    {
+        HttpContext.SignOutAsync();
+        return RedirectToPage();
     }
 }
