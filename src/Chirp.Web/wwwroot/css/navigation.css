@@ -8,7 +8,8 @@ body {
     padding: 20px 0px;
     /* text-align: center; */
 
-    font-size: 1.25em;
+    /* font-size: 1.25em; */
+    font-size: 18px;
 
     margin: 20px 20px;
     border-radius: 10px;
@@ -22,7 +23,8 @@ body {
     gap: 20px;
 }
 
-.navbar a {
+.navbar a,
+.navbar .login {
     color: #fff;
     text-decoration: none;
     margin: 0 20px;
@@ -31,11 +33,19 @@ body {
     transition: color 0.5s;
 }
 
+.navbar .login {
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    font-family: 'Trebuchet MS', sans-serif;
+}
+
 .navbar a.active {
     color: #e9596e;
 }
 
-.navbar a:hover {
+.navbar a:hover,
+.navbar .login:hover {
     color: #ee97a4;
 }
 
