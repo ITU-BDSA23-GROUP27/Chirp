@@ -16,4 +16,10 @@ public class LoginModel : PageModel
         };
         return Challenge(props);
     }
+
+    public IActionResult OnPostLogOut()
+    {
+        HttpContext.SignOutAsync();
+        return RedirectToPage();
+    }
 }
