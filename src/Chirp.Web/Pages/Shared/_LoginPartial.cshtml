@@ -2,6 +2,7 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
+
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
@@ -24,8 +25,11 @@ else
                 <a class='@(Context.Request.Path == "/" ? "active" : "")' href="/">Home</a>
                 <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Privacy</a>
             </div>
-            <div>
-                <a class="" href="https://github.com/login/oauth/authorize?client_id=392087beb9582431dd6a"><i class="fab fa-github"></i> Sign in</a>
-            </div>
+    <div>
+        <form asp-page-handler="AuthenticateLogin"  method="get">
+            <button><i class="fab fa-github"></i> Sign in</button>
+        </form>
+        
+    </div>
 }
 </ul>
