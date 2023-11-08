@@ -47,12 +47,10 @@ builder.Services.AddAuthentication(options =>
     })
     .AddGitHub(o =>
     {
-        o.ClientId = builder.Configuration["authentication:github:clientId"];
-        o.ClientSecret = builder.Configuration["authentication:github:clientSecret"];
+        o.ClientId = builder.Configuration["authentication:github:clientId"] ?? throw new InvalidOperationException("GitHub Client ID not found.");
+        o.ClientSecret = builder.Configuration["authentication:github:clientSecret"] ?? throw new InvalidOperationException("GitHub Client Secret not found.");
         o.CallbackPath = "/signin-github";
     });
-
-
 
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ChirpContext>(options => options.UseSqlite($"Data Source={path}"));

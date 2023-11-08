@@ -3,7 +3,7 @@
 @inject UserManager<IdentityUser> UserManager
 
 <div class="navbar">
-    @if (User.Identity.IsAuthenticated)
+    @if (User.Identity?.IsAuthenticated == true)
     {
         <div>
             <a class='@(Context.Request.Path == "/" ? "active" : "")' href="/">Home</a>
@@ -14,7 +14,7 @@
         </div>
         <div>
             <form asp-page-handler="LogOut" method="post">
-                <span>Hello <span class="username">@(User.Identity?.Name)</span></span>
+                <span>Hello <span class="username"><b>@(User.Identity?.Name)</b></span>!</span>
                 <button class='login @(Context.Request.Path == "/#" ? "active" : "")'><i
                         class="fa-solid fa-right-from-bracket"></i> Sign out</button>
             </form>
