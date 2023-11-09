@@ -2,6 +2,7 @@
 using Chirp.Core;
 using Chirp.Core.DTOs;
 using Chirp.Infrastructure;
+using Microsoft.AspNetCore.Authentication;
 using Chirp.Infrastructure.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -31,6 +32,15 @@ public class PublicModel : PageModel
 
     public ActionResult OnGet()
     {
+        if (User.Identity?.IsAuthenticated == true)
+        {
+            Console.WriteLine(User.Identity.Name);
+        }
+        else
+        {
+            Console.WriteLine("Not Authenticated");
+        }
+        
         //The following if statement has been made with the help of CHAT-GPT
         if (int.TryParse(Request.Query["page"], out int parsedPage) && parsedPage > 0)
         {
@@ -63,6 +73,21 @@ public class PublicModel : PageModel
         return Page();
     }
 
+    public IActionResult OnPostAuthenticateLogin()
+    {
+        var props = new AuthenticationProperties
+        {
+            RedirectUri = Url.Page("/"),
+        };
+        return Challenge(props);
+    }
+
+    public IActionResult OnPostLogOut()
+    {
+        HttpContext.SignOutAsync();
+        return RedirectToPage();
+    }
+    
     public int GetTotalPages()
     {
         int totalCheeps = _cheepRepository.GetCheeps().Count();

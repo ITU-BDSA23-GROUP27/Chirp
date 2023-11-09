@@ -16,49 +16,10 @@
 
 <body>
 
-    <nav class="navbar">
-        @if (User.Identity.IsAuthenticated)
-        {
-            <div>
-                <a class='@(Context.Request.Path == "/" ? "active" : "")' href="/">Home</a>
-                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Privacy</a>
-                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Chirp!</a>
-                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Profile</a>
-                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Claims</a>
-            </div>
-            <div>
-                @* <span>Hello @User</a></span> *@
-                <span>Hello  <span class="username">&lt;username&gt;</span></span>
-                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#"><i class="fa-solid fa-right-from-bracket"></i> Sign out</a>
-            </div>
-        }
-        else
-        {
-            <div>
-                <a class='@(Context.Request.Path == "/" ? "active" : "")' href="/">Home</a>
-                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Privacy</a>
-            </div>
-            <div>
-                <a class="" href="https://github.com/login/oauth/authorize"><i class="fab fa-github"></i> Sign in</a>
-            </div>
-        }
-    </nav>
-
-    @*! temporary code until login is implemented *@
-    <nav class="navbar">
-            <div>
-                <a class='@(Context.Request.Path == "/" ? "active" : "")' href="/">Home</a>
-                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Privacy</a>
-                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Profile</a>
-                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Claims</a>
-            </div>
-            <div>
-                @* <span>Hello @User</a></span> *@
-                <span>Hello  <span class="username">&lt;username&gt;!</span></span>
-                <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#"><i class="fa-solid fa-right-from-bracket"></i> Sign out</a>
-            </div>
-    </nav>
-
+    @* <nav class="#">
+        <partial name="_LoginPartial"/>
+    </nav> *@
+    <partial name="_LoginPartial"/>
 
     <div class=page>
         <a href="/">
@@ -68,6 +29,7 @@
         <div class=body>
             @RenderBody()
         </div>
+
         <div class=footer>
             Chirp &mdash; An ASP.NET Application
         </div>
