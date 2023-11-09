@@ -37,7 +37,7 @@ namespace Chirp.Infrastructure.Test
             _userRepository.CreateUser(authorDto);
 
             // Assert
-            var author = _context.Authors.Single(a => a.Name == "Bodil Bodilsen");
+            var author = _context.Users.Single(a => a.Name == "Bodil Bodilsen");
             Assert.Equal("Bodil Bodilsen", author.Name);
             Assert.Equal("Bodil@danmark.dk", author.Email);
         }
