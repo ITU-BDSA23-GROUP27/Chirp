@@ -7,17 +7,23 @@
 
 <div>
 
-    @if (User.Identity?.IsAuthenticated == true)
-    {
     <button class="toggleButton">Write Cheep</button>
+
     <hr/>
+
     <div class="textbox-container collapsed">
         <h2>Write Cheep</h2>
+
         <div class="form-container">
-            <form>
+            <form method="post" asp-page-handler="Chirp">
+                
+                @* <div class="form-group"> *@
+                @* <input type="text" name="author" required placeholder="Author name"> *@
+                @* </div> *@
+
                 <div class="form-group">
-                    <textarea id="text" name="text" rows="5" maxlength="@Model.CheepMaxLength" 
-                        required placeholder="Write your cheep here!"></textarea>
+                    <textarea asp-for="CheepMessage" id="text" rows="5" maxlength="@Model.CheepMaxLength" 
+                        required placeholder="Write your cheep here!"></textarea> @*asp-for does not correctly update CheepMessage value*@
                 </div>
                 <div class="bottom-container">
                     <div>
@@ -31,7 +37,6 @@
         </div>
         <hr />
     </div>
-    }
 
     <header>
         <h2> Public Timeline </h2>

@@ -1,7 +1,9 @@
-﻿using Chirp.Core;
+﻿using System.ComponentModel.DataAnnotations;
+using Chirp.Core;
 using Chirp.Core.DTOs;
 using Chirp.Infrastructure;
 using Microsoft.AspNetCore.Authentication;
+using Chirp.Infrastructure.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -18,6 +20,10 @@ public class PublicModel : PageModel
     public int EndPage { get; set; }
     public int DisplayRange { get; set; } = 5;
     public int CheepMaxLength { get; set; } = 160;
+    
+    
+    [BindProperty, StringLength(160), Required]
+    public string? CheepMessage { get; set; }
 
     public PublicModel(ICheepRepository cheepRepository)
     {
@@ -46,6 +52,24 @@ public class PublicModel : PageModel
         TotalPageCount = GetTotalPages();
         CalculatePagination();
 
+        return Page();
+    }
+    public ActionResult OnPostChirp()
+    {
+        if (CheepMessage.Length > 160)
+        {
+            throw new ArgumentException("Message cannot be longer than 160 characters");
+        }
+        
+        var cheep = new CheepDto
+        {
+            Message = CheepMessage,
+            TimeStamp = DateTime.Now.ToString(),
+            AuthorName = User.Identity.Name //Might need to be changed to use only User.Identity (Does not work until users are implemented)
+        };
+        
+        _cheepRepository.CreateCheep(cheep);
+        
         return Page();
     }
 
