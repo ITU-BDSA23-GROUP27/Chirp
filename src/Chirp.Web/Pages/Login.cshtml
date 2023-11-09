@@ -1,8 +1,9 @@
 ﻿@page
 
+@using Chirp.Infrastructure.Entities
 @using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 
 
 @model Chirp.Web.Pages.LoginModel

@@ -18,9 +18,9 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddDbContext<ChirpContext>(options =>
     options.UseSqlite(connectionString));
-// builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-// builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
-//    .AddEntityFrameworkStores<ChirpContext>();
+ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ChirpContext>();
 
 builder.Services.AddDistributedMemoryCache();
 
@@ -56,6 +56,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddRazorPages();
 //builder.Services.AddDbContext<ChirpContext>(options => options.UseSqlite($"Data Source={path}"));
 builder.Services.AddScoped<ICheepRepository, CheepRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
