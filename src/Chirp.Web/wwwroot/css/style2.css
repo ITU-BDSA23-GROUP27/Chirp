@@ -67,7 +67,12 @@ header > .display-page {
     color: #333;
 }
 
-
+/* Privacy */
 .privacy-container {
-    padding: 20px 25px;
+    background: linear-gradient(#ffe7d9, #fff6d5ee);
+    border: 1px solid #ccc;
+    padding: 25px;
+    margin: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
