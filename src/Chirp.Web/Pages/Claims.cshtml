@@ -1,0 +1,17 @@
+﻿@page
+@model Chirp.Web.Pages.ClaimsModel
+@{
+
+}
+
+<h2>User Claims</h2>
+<div class="user-info">
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <p><span class="label">Name ID:</span> @Model.NameID</p>
+        <p><span class="label">Display Name:</span> @Model.DisplayName</p>
+        <p class="github-info"><span class="label">GitHub Name:</span> @Model.GithubName</p>
+        <p class="github-url"><span class="label">GitHub URL:</span> <a href="@Model.GithubURL"
+                target="_blank">@Model.GithubURL</a></p>
+    }
+</div>
