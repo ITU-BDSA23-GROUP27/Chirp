@@ -22,8 +22,8 @@ public class PublicModel : PageModel
     public int CheepMaxLength { get; set; } = 160;
     
     
-    [BindProperty, StringLength(160)]
-    public string CheepMessage { get; set; }
+    [BindProperty, StringLength(160), Required]
+    public string? CheepMessage { get; set; }
 
     public PublicModel(ICheepRepository cheepRepository)
     {

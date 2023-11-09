@@ -22,8 +22,8 @@
                 @* </div> *@
 
                 <div class="form-group">
-                    <textarea id="text" name="text" rows="5" maxlength="@Model.CheepMaxLength" 
-                        required placeholder="Write your cheep here!" asp-for="CheepMessage"></textarea> @*asp-for does not correctly update CheepMessage value*@
+                    <textarea asp-for="CheepMessage" id="text" rows="5" maxlength="@Model.CheepMaxLength" 
+                        required placeholder="Write your cheep here!"></textarea> @*asp-for does not correctly update CheepMessage value*@
                 </div>
                 <div class="bottom-container">
                     <div>
