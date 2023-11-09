@@ -14,8 +14,8 @@
 
     @if (Model.Cheeps.Any())
     {
-        <partial name="_CheepContextPartial" model="Model"/>
-        <partial name="_PaginationPartial" model="Model"/>
+        <partial name="Partials/_CheepContext" model="Model"/>
+        <partial name="Partials/_Pagination" model="Model"/>
     }
     else
     {
