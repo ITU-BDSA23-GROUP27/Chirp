@@ -12,10 +12,6 @@
     <ItemGroup>
         <SupportedPlatform Include="browser" />
     </ItemGroup>
-
-    <ItemGroup>
-        <None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
-    </ItemGroup>
     
     <ItemGroup>
         <PackageReference Include="AspNet.Security.OAuth.GitHub" Version="7.0.4" />
