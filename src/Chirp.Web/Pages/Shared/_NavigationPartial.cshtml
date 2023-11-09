@@ -2,15 +2,15 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
-<div class="navbar">
+<nav class="navbar">
     @if (User.Identity?.IsAuthenticated == true)
     {
         <div>
             <a class='@(Context.Request.Path == "/" ? "active" : "")' href="/">Home</a>
-            <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Privacy</a>
+            <a class='@(Context.Request.Path == "/Privacy" ? "active" : "")' href="/Privacy">Privacy</a>
             <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Chirp!</a>
-            <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Profile</a>
-            <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Claims</a>
+            <a class='@(Context.Request.Path == "/Profile" ? "active" : "")' href="Profile">Profile</a>
+            <a class='@(Context.Request.Path == "/Claims" ? "active" : "")' href="/Claims">Claims</a>
         </div>
         <div>
             <form asp-page-handler="LogOut" method="post">
@@ -24,7 +24,7 @@
     {
         <div>
             <a class='@(Context.Request.Path == "/" ? "active" : "")' href="/">Home</a>
-            <a class='@(Context.Request.Path == "/#" ? "active" : "")' href="#">Privacy</a>
+            <a class='@(Context.Request.Path == "/Privacy" ? "active" : "")' href="/Privacy">Privacy</a>
         </div>
         <div>
             <form asp-page-handler="AuthenticateLogin" method="post">
@@ -32,4 +32,4 @@
             </form>
         </div>
     }
-</div>
+</nav>
