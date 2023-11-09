@@ -7,7 +7,6 @@ on:
   push:
     branches:
       - master
-      - features/launchsettings
   workflow_dispatch:
 
 jobs:
