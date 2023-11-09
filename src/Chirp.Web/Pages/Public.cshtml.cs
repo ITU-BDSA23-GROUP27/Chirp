@@ -1,9 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Chirp.Core;
 using Chirp.Core.DTOs;
-using Chirp.Infrastructure;
 using Microsoft.AspNetCore.Authentication;
-using Chirp.Infrastructure.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
