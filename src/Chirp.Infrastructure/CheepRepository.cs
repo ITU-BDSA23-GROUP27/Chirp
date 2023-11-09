@@ -46,11 +46,11 @@ public class CheepRepository : ICheepRepository
     }
     public void CreateCheep(CheepDto cheep)
     {
-        var existingAuthor = _context.Authors.SingleOrDefault(c => c.Name == cheep.UserName);
+        var existingUser = _context.Users.SingleOrDefault(c => c.Name == cheep.UserName);
 
-        if (existingAuthor is null)
+        if (existingUser is null)
         {
-            throw new ArgumentException($"No existing author with that name found: {cheep.UserName}");
+            throw new ArgumentException($"No existing user with that name found: {cheep.UserName}");
         }
 
         var newCheep = new Cheep()
@@ -58,7 +58,7 @@ public class CheepRepository : ICheepRepository
             CheepId = new Guid(),
             Text = cheep.Message,
             TimeStamp = DateTime.Parse(cheep.TimeStamp),
-            User = existingAuthor
+            User = existingUser
             
         };
         

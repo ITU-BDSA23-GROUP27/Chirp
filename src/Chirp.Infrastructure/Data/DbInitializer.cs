@@ -6,20 +6,20 @@ public static class DbInitializer
 {
     public static void SeedDatabase(ChirpContext chirpContext)
     {
-        if (!(chirpContext.Authors.Any() && chirpContext.Cheeps.Any()))
+        if (!(chirpContext.Users.Any() && chirpContext.Cheeps.Any()))
         {
-            var a1 = new User() { UserId = new Guid(), Name = "Roger Histand", Email = "Roger+Histand@hotmail.com", Cheeps = new List<Cheep>() };
-            var a2 = new User() { UserId = new Guid(), Name = "Luanna Muro", Email = "Luanna-Muro@ku.dk", Cheeps = new List<Cheep>() };
-            var a3 = new User() { UserId = new Guid(), Name = "Wendell Ballan", Email = "Wendell-Ballan@gmail.com", Cheeps = new List<Cheep>() };
-            var a4 = new User() { UserId = new Guid(), Name = "Nathan Sirmon", Email = "Nathan+Sirmon@dtu.dk", Cheeps = new List<Cheep>() };
-            var a5 = new User() { UserId = new Guid(), Name = "Quintin Sitts", Email = "Quintin+Sitts@itu.dk", Cheeps = new List<Cheep>() };
-            var a6 = new User() { UserId = new Guid(), Name = "Mellie Yost", Email = "Mellie+Yost@ku.dk", Cheeps = new List<Cheep>() };
-            var a7 = new User() { UserId = new Guid(), Name = "Malcolm Janski", Email = "Malcolm-Janski@gmail.com", Cheeps = new List<Cheep>() };
-            var a8 = new User() { UserId = new Guid(), Name = "Octavio Wagganer", Email = "Octavio.Wagganer@dtu.dk", Cheeps = new List<Cheep>() };
-            var a9 = new User() { UserId = new Guid(), Name = "Johnnie Calixto", Email = "Johnnie+Calixto@itu.dk", Cheeps = new List<Cheep>() };
-            var a10 = new User() { UserId = new Guid(), Name = "Jacqualine Gilcoine", Email = "Jacqualine.Gilcoine@gmail.com", Cheeps = new List<Cheep>() };
-            var a11 = new User() { UserId = new Guid(), Name = "Helge", Email = "ropf@itu.dk", Cheeps = new List<Cheep>() };
-            var a12 = new User() { UserId = new Guid(), Name = "Rasmus", Email = "rnie@itu.dk", Cheeps = new List<Cheep>() };
+            var a1 = new User() {Name = "Roger Histand", Email = "Roger+Histand@hotmail.com", Cheeps = new List<Cheep>() };
+            var a2 = new User() {Name = "Luanna Muro", Email = "Luanna-Muro@ku.dk", Cheeps = new List<Cheep>() };
+            var a3 = new User() {Name = "Wendell Ballan", Email = "Wendell-Ballan@gmail.com", Cheeps = new List<Cheep>() };
+            var a4 = new User() {Name = "Nathan Sirmon", Email = "Nathan+Sirmon@dtu.dk", Cheeps = new List<Cheep>() };
+            var a5 = new User() {Name = "Quintin Sitts", Email = "Quintin+Sitts@itu.dk", Cheeps = new List<Cheep>() };
+            var a6 = new User() {Name = "Mellie Yost", Email = "Mellie+Yost@ku.dk", Cheeps = new List<Cheep>() };
+            var a7 = new User() {Name = "Malcolm Janski", Email = "Malcolm-Janski@gmail.com", Cheeps = new List<Cheep>() };
+            var a8 = new User() {Name = "Octavio Wagganer", Email = "Octavio.Wagganer@dtu.dk", Cheeps = new List<Cheep>() };
+            var a9 = new User() {Name = "Johnnie Calixto", Email = "Johnnie+Calixto@itu.dk", Cheeps = new List<Cheep>() };
+            var a10 = new User() {Name = "Jacqualine Gilcoine", Email = "Jacqualine.Gilcoine@gmail.com", Cheeps = new List<Cheep>() };
+            var a11 = new User() {Name = "Helge", Email = "ropf@itu.dk", Cheeps = new List<Cheep>() };
+            var a12 = new User() {Name = "Rasmus", Email = "rnie@itu.dk", Cheeps = new List<Cheep>() };
 
             var authors = new List<User>() { a1, a2, a3, a4, a5, a6, a7, a8, a9, a10, a11, a12 };
 
@@ -696,7 +696,7 @@ public static class DbInitializer
             a11.Cheeps = new List<Cheep>() { c656 };
             a12.Cheeps = new List<Cheep>() { c657 };
 
-            chirpContext.Authors.AddRange(authors);
+            chirpContext.Users.AddRange(authors);
             chirpContext.Cheeps.AddRange(cheeps);
             chirpContext.SaveChanges();
         }

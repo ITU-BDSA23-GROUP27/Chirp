@@ -11,27 +11,22 @@ public sealed class ChirpContext : IdentityDbContext<User>
 {
     public DbSet<Cheep> Cheeps => Set<Cheep>();
 
-    public ChirpContext(DbContextOptions<ChirpContext> options): base(options)
+    public ChirpContext(DbContextOptions<ChirpContext> options): base(options){ }
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
     }
     
-/*private static string DbPath
-{
-    get
+    /*
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        string path = Path.GetTempPath();
-        return Path.Join(path, "chirp.db");
-    }
-}*/
-
-
-protected override void OnModelCreating(ModelBuilder modelBuilder)
-{
-    modelBuilder.Entity<Cheep>().Property(c => c.Text).HasMaxLength(160);
-    modelBuilder.Entity<User>().Property(a => a.Name).HasMaxLength(50);
-    modelBuilder.Entity<User>().Property(c => c.Email).HasMaxLength(50);
-    modelBuilder.Entity<Follower>().HasKey(f => new {f.FollowerId, f.FolloweeId});
-}
+        modelBuilder.Entity<Cheep>().Property(c => c.Text).HasMaxLength(160);
+        modelBuilder.Entity<User>().HasKey(u => u.UserId);
+        modelBuilder.Entity<User>().Property(u => u.Name).HasMaxLength(50);
+        modelBuilder.Entity<User>().Property(u => u.Email).HasMaxLength(50);
+        modelBuilder.Entity<Follower>().HasKey(f => new {f.FollowerId, f.FolloweeId});
+    }*/
 }
 
 

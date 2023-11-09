@@ -1,12 +1,13 @@
 using Chirp.Core;
 using Chirp.Infrastructure;
 using Chirp.Infrastructure.Data;
-using Chirp.Web.Data;
+using Chirp.Infrastructure.Entities;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,11 +16,11 @@ string path = Path.Join(Path.GetTempPath(), "Chirp.db");
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddDbContext<ChirpContext>(options =>
     options.UseSqlite(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+// builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+// builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+//    .AddEntityFrameworkStores<ChirpContext>();
 
 builder.Services.AddDistributedMemoryCache();
 
@@ -53,9 +54,8 @@ builder.Services.AddAuthentication(options =>
     });
 
 builder.Services.AddRazorPages();
-builder.Services.AddDbContext<ChirpContext>(options => options.UseSqlite($"Data Source={path}"));
-builder.Services.AddScoped<ICheepRepository, Chirp.Infrastructure.CheepRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+//builder.Services.AddDbContext<ChirpContext>(options => options.UseSqlite($"Data Source={path}"));
+builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 
 var app = builder.Build();
 

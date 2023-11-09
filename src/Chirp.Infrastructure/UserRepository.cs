@@ -19,7 +19,7 @@ public class UserRepository : IUserRepository
 
         return new UserDto()
         {
-            Id = user.UserId,
+            Id = user.Id,
             Name = user.Name,
             Email = user.Email,
         };
@@ -31,7 +31,7 @@ public class UserRepository : IUserRepository
 
         return new UserDto()
         {
-            Id = user.UserId,
+            Id = user.Id,
             Name = user.Name,
             Email = user.Email,
         };
@@ -48,7 +48,6 @@ public class UserRepository : IUserRepository
 
         var newUser = new User
         {
-            UserId = new Guid(),
             Name = user.Name,
             Email = user.Email,
         };
