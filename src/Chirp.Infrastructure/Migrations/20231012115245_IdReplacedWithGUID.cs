@@ -44,7 +44,7 @@ namespace CheepRepository.Migrations
                 oldType: "INTEGER");
 
             migrationBuilder.AlterColumn<Guid>(
-                name: "AuthorId",
+                name: "UserId",
                 table: "Cheeps",
                 type: "TEXT",
                 nullable: false,
@@ -61,7 +61,7 @@ namespace CheepRepository.Migrations
                 .OldAnnotation("Sqlite:Autoincrement", true);
 
             migrationBuilder.AlterColumn<Guid>(
-                name: "AuthorId",
+                name: "UserId",
                 table: "Authors",
                 type: "TEXT",
                 nullable: false,
@@ -106,7 +106,7 @@ namespace CheepRepository.Migrations
                 oldType: "TEXT");
 
             migrationBuilder.AlterColumn<int>(
-                name: "AuthorId",
+                name: "UserId",
                 table: "Cheeps",
                 type: "INTEGER",
                 nullable: false,
@@ -123,7 +123,7 @@ namespace CheepRepository.Migrations
                 .Annotation("Sqlite:Autoincrement", true);
 
             migrationBuilder.AlterColumn<int>(
-                name: "AuthorId",
+                name: "UserId",
                 table: "Authors",
                 type: "INTEGER",
                 nullable: false,

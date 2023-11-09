@@ -63,7 +63,7 @@ public class PublicModel : PageModel
         {
             Message = CheepMessage,
             TimeStamp = DateTime.Now.ToString(),
-            AuthorName = User.Identity.Name //Might need to be changed to use only User.Identity (Does not work until users are implemented)
+            UserName = User.Identity.Name //Might need to be changed to use only User.Identity (Does not work until users are implemented)
         };
         
         _cheepRepository.CreateCheep(cheep);

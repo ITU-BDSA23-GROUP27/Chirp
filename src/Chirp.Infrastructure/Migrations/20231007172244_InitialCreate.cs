@@ -42,14 +42,14 @@ namespace CheepRepository.Migrations
                         name: "FK_Cheeps_Authors_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "Authors",
-                        principalColumn: "AuthorId",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cheeps_AuthorId",
                 table: "Cheeps",
-                column: "AuthorId");
+                column: "UserId");
         }
 
         /// <inheritdoc />

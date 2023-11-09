@@ -8,7 +8,7 @@ namespace Chirp.Infrastructure.Test
     {
         private readonly ChirpContext _context;
         private readonly CheepRepository _cheepRepository;
-        private readonly AuthorRepository _authorRepository;
+        private readonly UserRepository _userRepository;
 
         public RepositoryTests()
         {
@@ -24,17 +24,17 @@ namespace Chirp.Infrastructure.Test
             _context.Database.EnsureCreated();
 
             _cheepRepository = new CheepRepository(_context);
-            _authorRepository = new AuthorRepository(_context);
+            _userRepository = new UserRepository(_context);
         }
 
         [Fact]
         public void CreateAuthor_Success()
         {
             // Arrange
-            var authorDto = new AuthorDto { Name = "Bodil Bodilsen", Email = "Bodil@danmark.dk" };
+            var authorDto = new UserDto { Name = "Bodil Bodilsen", Email = "Bodil@danmark.dk" };
 
             // Act
-            _authorRepository.CreateAuthor(authorDto);
+            _userRepository.CreateUser(authorDto);
 
             // Assert
             var author = _context.Authors.Single(a => a.Name == "Bodil Bodilsen");
@@ -46,31 +46,31 @@ namespace Chirp.Infrastructure.Test
         public void CreateCheep_Success()
         {
             // Arrange
-            var authorDto = new AuthorDto { Name = "Hans Hansen", Email = "HH@outlook.com" };
-            _authorRepository.CreateAuthor(authorDto);
+            var authorDto = new UserDto { Name = "Hans Hansen", Email = "HH@outlook.com" };
+            _userRepository.CreateUser(authorDto);
             var cheepDto = new CheepDto
             {
                 Message = "Bye, world!",
                 TimeStamp = DateTime.UtcNow.ToString(),
-                AuthorName = "Hans Hansen"
+                UserName = "Hans Hansen"
             };
 
             // Act
             _cheepRepository.CreateCheep(cheepDto);
 
             // Assert
-            var cheep = _context.Cheeps.Include(cheep => cheep.Author).Single();
+            var cheep = _context.Cheeps.Include(cheep => cheep.User).Single();
             Assert.Equal("Bye, world!", cheep.Text);
-            Assert.Equal("Hans Hansen", cheep.Author.Name);
+            Assert.Equal("Hans Hansen", cheep.User.Name);
         }
 
         [Fact]
         public void GetCheeps_ReturnsAllCheeps()
         {
             // Arrange
-            var author = new AuthorDto { Name = "Omar Semou", Email = "OmarSemou@hotmail.com" };
-            _authorRepository.CreateAuthor(author);
-            var cheep = new CheepDto { AuthorName = "Omar Semou", Message = "Testing 1 2 3", TimeStamp = DateTime.UtcNow.ToString() };
+            var author = new UserDto { Name = "Omar Semou", Email = "OmarSemou@hotmail.com" };
+            _userRepository.CreateUser(author);
+            var cheep = new CheepDto { UserName = "Omar Semou", Message = "Testing 1 2 3", TimeStamp = DateTime.UtcNow.ToString() };
             _cheepRepository.CreateCheep(cheep);
 
             // Act
@@ -84,11 +84,11 @@ namespace Chirp.Infrastructure.Test
         public void GetCheepsFromPage_ReturnsCorrectPage()
         {
             // Arrange
-            var author = new AuthorDto { Name = "Darryl Davidson", Email = "merica4lyfe@usa.com" };
-            _authorRepository.CreateAuthor(author);
+            var author = new UserDto { Name = "Darryl Davidson", Email = "merica4lyfe@usa.com" };
+            _userRepository.CreateUser(author);
             for (int i = 0; i < 50; i++)
             {
-                var cheep = new CheepDto { AuthorName = "Darryl Davidson", Message = $"I ain't afriad {i}", TimeStamp = DateTime.UtcNow.ToString() };
+                var cheep = new CheepDto { UserName = "Darryl Davidson", Message = $"I ain't afriad {i}", TimeStamp = DateTime.UtcNow.ToString() };
                 _cheepRepository.CreateCheep(cheep);
             }
 
@@ -103,11 +103,11 @@ namespace Chirp.Infrastructure.Test
         public void GetAuthorByName_ReturnsCorrectAuthor()
         {
             // Arrange
-            var author = new AuthorDto { Name = "Spongebob Squarepants", Email = "mrgoofy@pants.com" };
-            _authorRepository.CreateAuthor(author);
+            var author = new UserDto { Name = "Spongebob Squarepants", Email = "mrgoofy@pants.com" };
+            _userRepository.CreateUser(author);
 
             // Act
-            var result = _authorRepository.GetAuthorByName("Spongebob Squarepants");
+            var result = _userRepository.GetUserByName("Spongebob Squarepants");
 
             // Assert
             Assert.Equal("Spongebob Squarepants", result.Name);
@@ -117,11 +117,11 @@ namespace Chirp.Infrastructure.Test
         public void GetAuthorByEmail_ReturnsCorrectAuthor()
         {
             // Arrange
-            var author = new AuthorDto { Name = "Karsten Pedersen", Email = "kp67@email.com" };
-            _authorRepository.CreateAuthor(author);
+            var author = new UserDto { Name = "Karsten Pedersen", Email = "kp67@email.com" };
+            _userRepository.CreateUser(author);
 
             // Act
-            var result = _authorRepository.GetAuthorByEmail("kp67@email.com");
+            var result = _userRepository.GetUserByEmail("kp67@email.com");
 
             // Assert
             Assert.Equal("Karsten Pedersen", result.Name);

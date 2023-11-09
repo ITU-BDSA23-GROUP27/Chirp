@@ -30,12 +30,12 @@ public class UserTimelineModel : PageModel
             CurrentPage = parsedPage;
         }
 
-        Cheeps = _cheepRepository.GetCheepsFromAuthorPage(author, CurrentPage);
+        Cheeps = _cheepRepository.GetCheepsFromUserPage(author, CurrentPage);
 
         TotalPageCount = GetTotalPages(author);
         CalculatePagination();
 
-        // Author's name
+        // User's name
         RouteName = HttpContext.GetRouteValue("author")?.ToString() ?? "";
 
         return Page();
@@ -43,7 +43,7 @@ public class UserTimelineModel : PageModel
 
     public int GetTotalPages(string author)
     {
-        int totalCheeps = _cheepRepository.GetCheepsFromAuthor(author).Count();
+        int totalCheeps = _cheepRepository.GetCheepsFromUser(author).Count();
         return (int)Math.Ceiling((double)totalCheeps / MaxCheepsPerPage);
     }
 

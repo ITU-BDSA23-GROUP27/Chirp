@@ -55,7 +55,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ChirpContext>(options => options.UseSqlite($"Data Source={path}"));
 builder.Services.AddScoped<ICheepRepository, Chirp.Infrastructure.CheepRepository>();
-builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
@@ -67,7 +67,6 @@ using (var scope = app.Services.CreateScope())
     context.Database.Migrate();
     DbInitializer.SeedDatabase(context);
 }
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -1,6 +1,6 @@
 namespace Chirp.Core.DTOs;
 
-public class AuthorDetailDto
+public class UserDetailDto
 {
     
     // made to public records instead ?

@@ -18,9 +18,9 @@ namespace CheepRepository.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.12");
 
-            modelBuilder.Entity("Chirp.Chirp.Core.Author", b =>
+            modelBuilder.Entity("Chirp.Chirp.Core.User", b =>
                 {
-                    b.Property<Guid>("AuthorId")
+                    b.Property<Guid>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
@@ -34,7 +34,7 @@ namespace CheepRepository.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.HasKey("AuthorId");
+                    b.HasKey("UserId");
 
                     b.ToTable("Authors");
                 });
@@ -45,7 +45,7 @@ namespace CheepRepository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("AuthorId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Text")
@@ -58,7 +58,7 @@ namespace CheepRepository.Migrations
 
                     b.HasKey("CheepId");
 
-                    b.HasIndex("AuthorId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Cheeps");
                 });
@@ -88,35 +88,35 @@ namespace CheepRepository.Migrations
 
             modelBuilder.Entity("Chirp.Chirp.Core.Cheep", b =>
                 {
-                    b.HasOne("Chirp.Chirp.Core.Author", "Author")
+                    b.HasOne("Chirp.Chirp.Core.User", "User")
                         .WithMany("Cheeps")
-                        .HasForeignKey("AuthorId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Author");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Chirp.Chirp.Core.Follower", b =>
                 {
-                    b.HasOne("Chirp.Chirp.Core.Author", "FolloweeAuthor")
+                    b.HasOne("Chirp.Chirp.Core.User", "FolloweeUser")
                         .WithMany()
                         .HasForeignKey("FolloweeAuthorAuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Chirp.Chirp.Core.Author", "FollowerAuthor")
+                    b.HasOne("Chirp.Chirp.Core.User", "FollowerUser")
                         .WithMany()
                         .HasForeignKey("FollowerAuthorAuthorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("FolloweeAuthor");
+                    b.Navigation("FolloweeUser");
 
-                    b.Navigation("FollowerAuthor");
+                    b.Navigation("FollowerUser");
                 });
 
-            modelBuilder.Entity("Chirp.Chirp.Core.Author", b =>
+            modelBuilder.Entity("Chirp.Chirp.Core.User", b =>
                 {
                     b.Navigation("Cheeps");
                 });

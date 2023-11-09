@@ -26,13 +26,13 @@ namespace CheepRepository.Migrations
                         name: "FK_Follower_Authors_FolloweeAuthorAuthorId",
                         column: x => x.FolloweeAuthorAuthorId,
                         principalTable: "Authors",
-                        principalColumn: "AuthorId",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Follower_Authors_FollowerAuthorAuthorId",
                         column: x => x.FollowerAuthorAuthorId,
                         principalTable: "Authors",
-                        principalColumn: "AuthorId",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
