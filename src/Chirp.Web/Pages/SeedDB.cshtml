@@ -3,5 +3,39 @@
 @{
 }
 
-
 <h2>Seed Database</h2>
+
+<div class="seed-info">
+    <h3>
+        <i class="fa-solid fa-triangle-exclamation caution"></i>
+        Caution
+        <i class="fa-solid fa-triangle-exclamation caution"></i>
+    </h3>
+
+    <p> This will clear the database and seed it with test data. </p>
+
+    <button class="seed-btn" onclick="confirmSeed()">Seed Database</button>
+    <button class="unseed-btn" onclick="confirmClear()">Clear Database</button>
+</div>
+
+@*! temporary todo list *@
+<div class="seed-info" style="text-align: left; color: red">
+    <ul>
+        <li>Unimplemented - you can safely click the buttons</li>
+        <li>This page will be restricted to certain users later</li>
+    </ul>
+</div>
+
+<script>
+    function confirmSeed() {
+        if (confirm("Are you sure you want to seed the database?")) {
+
+        }
+    }
+
+    function confirmClear() {
+        if (confirm("Are you sure you want to clear the database?")) {
+
+        }
+    }
+</script>
