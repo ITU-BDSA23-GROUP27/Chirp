@@ -6,8 +6,8 @@ namespace Chirp.Web.Pages;
 public class ClaimsModel : PageModel
 {
     public string? NameID { get; set; }
-    public string? DisplayName { get; set; }
-    public string? GithubName { get; set; }
+    public string? Username { get; set; }
+    public string? Name { get; set; }
     public string? GithubURL { get; set; }
 
     public IActionResult OnGet()
@@ -30,8 +30,8 @@ public class ClaimsModel : PageModel
             }
 
             NameID = claims[0];
-            DisplayName = claims[1];
-            GithubName = claims[2];
+            Username = claims[1];
+            Name = claims[2];
             GithubURL = claims[3];
         }
         return Page();
