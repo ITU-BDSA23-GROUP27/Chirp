@@ -1,5 +1,4 @@
 .user-info {
-    background: linear-gradient(#effbfe, #f5faffee);
     display: flex;
     flex-direction: column;
     border: 1px solid #ccc;
@@ -7,6 +6,13 @@
     margin: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    position: relative;
+    padding-left: 115px;
+
+    background: url("https://i.imgur.com/inRXNie.jpg");
+    background-size: cover;
+    background-position: center;
 }
 
 .user-info p {
@@ -28,4 +34,13 @@
 
 .github-url {
     color: #28a745;
+}
+
+.claim-img {
+    position: absolute;
+    left: 20px;
+    width: 75px;
+    border-radius: 50%;
+    margin-left: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
