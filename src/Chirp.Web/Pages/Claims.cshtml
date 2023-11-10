@@ -3,6 +3,13 @@
 @{
 }
 
+@{
+    if (!User.Identity?.IsAuthenticated == true)
+    {
+        RedirectToPage("/"); // Redirect to another page when the user is not authenticated
+    }
+}
+
 <h2>User Claims</h2>
 <div class="user-info">
     @if (User.Identity?.IsAuthenticated == true)
@@ -12,5 +19,11 @@
         <p class="github-info"><span class="label">GitHub Name:</span> @Model.GithubName</p>
         <p class="github-url"><span class="label">GitHub URL:</span> <a href="@Model.GithubURL"
                 target="_blank">@Model.GithubURL</a></p>
+    }
+    else
+    {
+        <p>test</p>
+        @RedirectToPage("/");
+        <p>test</p>
     }
 </div>

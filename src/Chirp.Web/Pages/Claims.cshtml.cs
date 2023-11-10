@@ -10,9 +10,13 @@ public class ClaimsModel : PageModel
     public string? GithubName { get; set; }
     public string? GithubURL { get; set; }
 
-    public void  OnGet()
+    public IActionResult OnGet()
     {
-        if (User.Identity?.IsAuthenticated == true)
+        if (User.Identity?.IsAuthenticated == false)
+        {
+            return RedirectToPage("/Public");
+        }        
+        else
         {
             // nameidentifier, name, github:name, github:url
             string[] claims = new string[4];
@@ -30,6 +34,7 @@ public class ClaimsModel : PageModel
             GithubName = claims[2];
             GithubURL = claims[3];
         }
+        return Page();
     }
 }
 
