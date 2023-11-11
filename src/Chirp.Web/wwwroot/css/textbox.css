@@ -60,23 +60,48 @@ textarea::placeholder {
     cursor: pointer;
 }
 
-.toggleButton {
-    background: linear-gradient(to bottom right, #b15c1696, #d55867);
+.bottom-container button {
+    background: linear-gradient(to right, #76a9ec, #557da0);
     color: #fff;
     border: none;
-    border-radius: 2px;
-
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    
-    padding: 10px 20px;
-    margin: 10px 10px 10px 0px;
-    
+    border-radius: 5px;
+    padding: 12px 24px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-top: 0px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     cursor: pointer;
-
-    transition: background 0.3s;
+    transition: background 0.3s, transform 0.3s;
 }
+
+.bottom-container button:hover {
+    background: linear-gradient(to right, #5aa3d4, #6093d2);
+    transform: scale(1.05);
+}
+
+
+.toggleButton {
+    background: linear-gradient(to right, #3498db, #2980b9);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 24px;
+    margin: 10px 10px 10px 0px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.toggleButton:hover {
+    background: linear-gradient(to right, #2980b9, #3498db);
+    transform: scale(1.05);
+}
+
 .toggleButton.active-color {
-    background: linear-gradient(to bottom right, #97440096, #b8051a);
+    background: linear-gradient(to right, #e74c3c, #c0392b);
+    background: linear-gradient(to right, #7e7676, #908e8e);
+    background: linear-gradient(to right, #66a7d2, #6d8fa7);
+    transform: scale(1);
 }
 
 .char-count {
@@ -85,3 +110,5 @@ textarea::placeholder {
     /* border: 1px solid red; */
     margin: 0;
 }
+
+

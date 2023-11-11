@@ -2,7 +2,7 @@
     background: linear-gradient(#ffd5d5, #fff5f5ee);
     border: 1px solid #ccc;
     padding: 15px;
-    margin: 20px;
+    margin: 20px 0;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -19,24 +19,31 @@
 }
 
 .seed-btn, .unseed-btn {
-    background: linear-gradient(to bottom right, #6399b496, #1e3cd2);
     color: #fff;
     border: none;
-    border-radius: 2px;
-    
-    padding: 10px 20px;
+    border-radius: 5px;
+    padding: 12px 24px;
     margin-right: 10px;
     margin-bottom: 10px;
     margin-top: 0px;
-    
     cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
 }
 
 .seed-btn {
-    background: linear-gradient(to bottom right, #6399b496, #1e3cd2);
+    background: linear-gradient(to right, #76a9ec, #557da0);
+}
+
+.seed-btn:hover {
+    background: linear-gradient(to right, #5aa3d4, #6093d2);
+    transform: scale(1.05);
 }
 
 .unseed-btn {
-    background: linear-gradient(to bottom right, #b4636396, #d21e1e);
+    background: linear-gradient(to right, #cf585896, #d13b3b);
 }
 
+.unseed-btn:hover {
+    background: linear-gradient(to right, #e5716d, #c84440);
+    transform: scale(1.05);
+}

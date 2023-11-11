@@ -85,7 +85,8 @@ div.page h2 {
 }
 
 div.page div.body {
-  padding: 10px;
+  /* padding: 10px; */
+  padding: 10px 30px;
 }
 
 div.page div.footer {
