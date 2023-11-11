@@ -48,6 +48,12 @@ header > .display-page {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
+
+    background: url("https://i.imgur.com/inRXNie.jpg");
+    background-size: cover;
+    background-position: center;
+
+    border-radius: 5px;
 }
 
 .left-content {
@@ -85,4 +91,44 @@ header > .display-page {
     margin: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.reactions-container {
+    display: flex;
+    justify-content: right;
+    /* justify-content: center; */
+    align-items: center;
+    padding: 3px 10px;
+    /* margin: 10px 0; */
+    border-radius: 5px;
+    gap: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    background-color: #ffffff69;
+}
+
+.grey, .red {
+    color: #464646;
+    transition: color 0.2s;
+}
+
+.red {
+    color: #e0245e;
+    text-shadow: 0 0 3px #e0245eb3;
+}
+
+.reaction-btn {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.reaction-count {
+    font-size: 12px;
+}
+
+.test {
+    color: #c8c8c8;
+    cursor: not-allowed;
 }
