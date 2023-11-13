@@ -21,16 +21,18 @@
                     </p>
                 </div>
                 <div class="right-content">
-                    <p id="cheep-content">
+                    <p id="cheep-content" class="cheep-message">
                         @cheep.Message
                     </p>
                 </div>
+
+                <div class="overlay"></div>
             </div>
 
             @* Reactions *@
             <div class="reactions-container">
                 <div class="reaction-item test">
-                    <button class="reaction-btn test">
+                    <button class="reaction-btn test" title="Reply">
                         <i class="fa-regular fa-comment"></i>
                     </button>
                     <span class="reaction-count">0</span>
@@ -38,7 +40,7 @@
                 
                 <div class="reaction-item">
                     @* TODO - needs to interfact with database *@
-                    <button class="reaction-btn likes-btn">
+                    <button class="reaction-btn likes-btn" title="Like">
                         <i class="fa-regular fa-heart grey"></i>
                     </button>
                     @* TODO - count = number of likes by users *@

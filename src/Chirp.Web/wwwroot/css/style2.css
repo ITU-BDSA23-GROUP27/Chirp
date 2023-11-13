@@ -54,6 +54,7 @@ header > .display-page {
     background-position: center;
 
     border-radius: 5px;
+    position: relative;
 }
 
 .left-content {
@@ -83,14 +84,28 @@ header > .display-page {
     object-fit: cover;
 }
 
-/* Privacy */
-.privacy-container {
-    background: linear-gradient(#ffe7d9, #fff6d5ee);
-    border: 1px solid #ccc;
-    padding: 25px;
-    margin: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 70%;
+    border-radius: 0 5px 5px 0px;
+    background-color: rgba(0, 0, 0, 0.1);
+    
+    clip-path: polygon(
+        0% 0%,                  
+        100% 0%,
+        100% 100%,
+        0% 100%,
+        8% 50%,
+        0% 0%                
+        );
+}
+
+.cheep-message {
+    color: #073155;
+    text-shadow: 0px 0px 0.5px rgba(0, 0, 0, 0.5);
 }
 
 .reactions-container {
@@ -131,4 +146,14 @@ header > .display-page {
 .test {
     color: #c8c8c8;
     cursor: not-allowed;
+}
+
+/* Privacy */
+.privacy-container {
+    background: linear-gradient(#ffe7d9, #fff6d5ee);
+    border: 1px solid #ccc;
+    padding: 25px;
+    margin: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
