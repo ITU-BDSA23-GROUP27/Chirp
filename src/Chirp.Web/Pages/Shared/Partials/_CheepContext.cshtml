@@ -5,10 +5,19 @@
             <div class="cheep-container">
                 @* User Avatar *@
                 <div class="avatar-container">
-                    @* TODO - @if... github avatar... else default avatar *@
-                    <img class="avatar" src="https://i.imgur.com/D61mmPL.jpg" alt="Icon1" />
-                </div>
 
+                    @* TODO - @add a new imgage (string) attribute to the DB = github avatar.. *@
+                    @if (cheep.AuthorName == "PhiVaLo")
+                    {
+                        <img class="avatar" src="https://avatars.githubusercontent.com/u/67863684?v=4" alt="Icon1" />
+                    }
+                    else 
+                    {
+                        @* default avatar *@
+                        <img class="avatar" src="https://i.imgur.com/D61mmPL.jpg" alt="Icon1" />
+                    }
+                    
+                </div>
                 @* Cheep Context *@
                 <div class="left-content">
                     <p id="cheep-content">

@@ -41,7 +41,12 @@ public class UserTimelineModel : PageModel
 
         Cheeps = _cheepRepository.GetCheepsFromAuthorPage(author, CurrentPage);
 
-        TotalPageCount = GetTotalPages(author);
+        if (GetTotalPages(author) == 0)
+        {
+            TotalPageCount = 1;
+        } else {
+            TotalPageCount = GetTotalPages(author);
+        }
         CalculatePagination();
 
         // Author's name

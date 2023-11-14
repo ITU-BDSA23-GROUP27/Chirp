@@ -50,7 +50,12 @@ public class PublicModel : PageModel
 
         Cheeps = _cheepRepository.GetCheepsFromPage(CurrentPage);
 
-        TotalPageCount = GetTotalPages();
+        if (GetTotalPages() == 0)
+        {
+            TotalPageCount = 1;    
+        } else {
+            TotalPageCount = GetTotalPages();
+        }
         CalculatePagination();
 
         return Page();
