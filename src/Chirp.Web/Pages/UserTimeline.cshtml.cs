@@ -1,5 +1,6 @@
 ﻿using Chirp.Core;
 using Chirp.Core.DTOs;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -63,5 +64,19 @@ public class UserTimelineModel : PageModel
                 EndPage = Math.Min(TotalPageCount, StartPage + DisplayRange - 1);
             }
         }
-    }    
+    }
+    public IActionResult OnPostAuthenticateLogin()
+    {
+        var props = new AuthenticationProperties
+        {
+            RedirectUri = Url.Page("/"),
+        };
+        return Challenge(props);
+    }
+
+    public IActionResult OnPostLogOut()
+    {
+        HttpContext.SignOutAsync();
+        return RedirectToPage("Public");
+    }
 }
