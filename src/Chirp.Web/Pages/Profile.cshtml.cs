@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -11,5 +12,20 @@ public class ProfileModel : PageModel
             return RedirectToPage("/Public");
         }
         return Page();
+    }
+    
+    public IActionResult OnPostAuthenticateLogin()
+    {
+        var props = new AuthenticationProperties
+        {
+            RedirectUri = Url.Page("/"),
+        };
+        return Challenge(props);
+    }
+
+    public IActionResult OnPostLogOut()
+    {
+        HttpContext.SignOutAsync();
+        return RedirectToPage("Public");
     }
 }

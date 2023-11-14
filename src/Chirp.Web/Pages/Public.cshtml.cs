@@ -101,7 +101,7 @@ public class PublicModel : PageModel
     public IActionResult OnPostLogOut()
     {
         HttpContext.SignOutAsync();
-        return RedirectToPage();
+        return RedirectToPage("Public");
     }
     
     public int GetTotalPages()
