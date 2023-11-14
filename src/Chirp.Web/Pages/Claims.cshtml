@@ -6,15 +6,51 @@
 @{
     if (!User.Identity?.IsAuthenticated == true)
     {
-        RedirectToPage("/"); // Redirect to another page when the user is not authenticated
+        RedirectToPage("/");
     }
 }
 
 <h2>User Claims</h2>
 <div class="user-info">
-    <p><span class="label">ID:</span> @Model.NameID</p>
-    <p><span class="label">Username:</span> @Model.Username</p>
-    <p class="github-info"><span class="label">Name:</span> @Model.Name</p>
-    <p class="github-url"><span class="label">GitHub URL:</span> <a href="@Model.GithubURL"
-            target="_blank">@Model.GithubURL</a></p>
+    <img class="api-avatar_url claim-img" alt="">
+    <p>
+        <span class="label">ID:</span> 
+        <span class="api-id"><span/>
+    </p>
+    <p>
+        <span class="label">Username:</span> 
+        <span class="api-login"><span/>
+    <p>
+        <span class="label">Name:</span> 
+        <span class="api-name"><span/>
+    </p>
+    <p>
+        <span class="label">GitHub URL:</span> 
+        <a href="@Model.GithubURL" target="_blank">@Model.GithubURL</a>
+    </p>
 </div>
+
+<div class="test"></div>
+
+<script>
+  window.onload = function() {
+    fetch('@Model.GithubURL')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('GitHub API Response:', data); // Log the entire data object
+
+            document.querySelector('.api-id').textContent = data.id || '';
+            document.querySelector('.api-login').textContent = data.login || '';
+            document.querySelector('.api-name').textContent = data.name || '';
+            document.querySelector('.api-avatar_url').src = data.avatar_url || '';
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+  };
+</script>

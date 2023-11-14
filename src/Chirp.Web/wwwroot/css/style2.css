@@ -1,28 +1,45 @@
-@import url('https://fonts.googleapis.com/css2?family=Lemon&family=Poppins&family=Quicksand:wght@400;700&family=Roboto&family=Special+Elite&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Lemon&family=Poppins&family=Quicksand:wght@400;700&family=Roboto&family=Special+Elite&display=swap");
 
 div.page {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  }
-  
-  div.page h1 {
-    background: url("https://i.imgur.com/NlliMd8.gif") ;
+}
+
+div.page h1 {
+    background: url("https://i.imgur.com/NlliMd8.gif");
     background-size: cover;
     background-position: center;
-    text-align: center;  
+    text-align: center;
     padding-top: 15px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
     border-bottom: 1px solid #ccc;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  }
+}
 
 .page > h1 {
     line-height: 100px;
 }
 
-.page > h1 > img {
-    display: inline-block; 
+@keyframes rotateAnimation {
+    0%,
+    100% {
+        transform: rotate(-10deg);
+    }
+    25% {
+        transform: rotate(0deg);
+    }
+    50% {
+        transform: rotate(-10deg);
+    }
+    75% {
+        transform: rotate(0deg);
+    }
+}
+
+.logo {
+    display: inline-block;
     vertical-align: middle;
     padding-bottom: 15px;
+    animation: rotateAnimation 10s infinite;
 }
 
 .page > a {
@@ -48,14 +65,25 @@ header > .display-page {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
+
+    background: url("https://i.imgur.com/inRXNie.jpg");
+    background-size: cover;
+    background-position: center;
+
+    border-radius: 5px;
+    position: relative;
+
+    z-index: 2;
 }
 
 .left-content {
     flex: 1;
+    z-index: 3;
 }
 
 .right-content {
     flex: 2;
+    z-index: 3;
 }
 
 #author {
@@ -65,6 +93,86 @@ header > .display-page {
 
 #author:hover {
     color: #333;
+}
+
+.avatar-container {
+    z-index: 3;
+}
+
+.avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    padding-right: 0px !important;
+    margin-right: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    object-fit: cover;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 70%;
+    border-radius: 0 5px 5px 0px;
+    /* background-color: rgba(0, 0, 0, 0.1); */
+    pointer-events: none;
+    background: linear-gradient(#e3a27993, #c0b48a71);
+
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 8% 50%, 0% 0%);
+
+    z-index: 1;
+}
+
+#author {
+    color: #0c9371;
+    text-shadow: 0px 0px 0.5px rgba(0, 0, 0, 0.5);
+}
+
+.cheep-message {
+    color: #021525;
+}
+
+.reactions-container {
+    display: flex;
+    justify-content: right;
+    /* justify-content: center; */
+    align-items: center;
+    padding: 3px 10px;
+    /* margin: 10px 0; */
+    border-radius: 5px;
+    gap: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+    background-color: #ffffff69;
+}
+
+.grey,
+.red {
+    color: #464646;
+    transition: color 0.2s;
+}
+
+.red {
+    color: #e0245e;
+    text-shadow: 0 0 3px #e0245eb3;
+}
+
+.reaction-btn {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.reaction-count {
+    font-size: 12px;
+}
+
+.test {
+    color: #c8c8c8;
+    cursor: not-allowed;
 }
 
 /* Privacy */

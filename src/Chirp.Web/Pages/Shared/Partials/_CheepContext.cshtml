@@ -3,6 +3,13 @@
     {
         <li>
             <div class="cheep-container">
+                @* User Avatar *@
+                <div class="avatar-container">
+                    @* TODO - @if... github avatar... else default avatar *@
+                    <img class="avatar" src="https://i.imgur.com/D61mmPL.jpg" alt="Icon1" />
+                </div>
+
+                @* Cheep Context *@
                 <div class="left-content">
                     <p id="cheep-content">
                         <strong>
@@ -14,11 +21,44 @@
                     </p>
                 </div>
                 <div class="right-content">
-                    <p id="cheep-content">
+                    <p id="cheep-content" class="cheep-message">
                         @cheep.Message
                     </p>
+                </div>
+
+                <div class="overlay"></div>
+            </div>
+
+            @* Reactions *@
+            <div class="reactions-container">
+                <div class="reaction-item test">
+                    <button class="reaction-btn test" title="Reply">
+                        <i class="fa-regular fa-comment"></i>
+                    </button>
+                    <span class="reaction-count">0</span>
+                </div>
+                
+                <div class="reaction-item">
+                    @* TODO - needs to interfact with database *@
+                    <button class="reaction-btn likes-btn" title="Like">
+                        <i class="fa-regular fa-heart grey"></i>
+                    </button>
+                    @* TODO - count = number of likes by users *@
+                    <span class="reaction-count">0</span>
                 </div>
             </div>
         </li>
     }
 </ul>
+
+<script>
+    var buttons = document.querySelectorAll('.likes-btn');
+
+    buttons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var likesBtn = this.querySelector('i.fa-heart');
+            likesBtn.classList.toggle('fa-solid');
+            likesBtn.classList.toggle('red');
+        });
+    });
+</script>
