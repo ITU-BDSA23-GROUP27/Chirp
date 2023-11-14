@@ -6,12 +6,12 @@
     @if (User.Identity?.IsAuthenticated == true)
     {
         <div>
-            <a class='@(Context.Request.Path == "/"        ? "active" : "")' href="/"       >Home   </a>
+            <a class='@(Context.Request.Path == "/"        ? "active" : "")' href="/">Home </a>
             <a class='@(Context.Request.Path == "/Privacy" ? "active" : "")' href="/Privacy">Privacy</a>
-            @* <a class='@(Context.Request.Path == "/Chirp"   ? "active" : "")' href="Chirp"   >Chirp! </a> *@
-            <a class='@(Context.Request.Path == "/Profile" ? "active" : "")' href="Profile" >Profile</a>
-            <a class='@(Context.Request.Path == "/Claims"  ? "active" : "")' href="/Claims" >Claims </a>
-            <a class='@(Context.Request.Path == "/SeedDB"  ? "active" : "")' href="/SeedDB" >SeedDB </a>
+            @* <a class='@(Context.Request.Path == "/Chirp" ? "active" : "")' href="Chirp" >Chirp! </a> *@
+            <a class='@(Context.Request.Path == "/Profile" ? "active" : "")' href="Profile">Profile</a>
+            <a class='@(Context.Request.Path == "/Claims"  ? "active" : "")' href="/Claims">Claims </a>
+            <a class='@(Context.Request.Path == "/SeedDB"  ? "active" : "")' href="/SeedDB">SeedDB </a>
         </div>
         <div>
             <form asp-page-handler="LogOut" method="post">
@@ -24,7 +24,7 @@
     else
     {
         <div>
-            <a class='@(Context.Request.Path == "/"        ? "active" : "")' href="/"       >Home   </a>
+            <a class='@(Context.Request.Path == "/"        ? "active" : "")' href="/">Home </a>
             <a class='@(Context.Request.Path == "/Privacy" ? "active" : "")' href="/Privacy">Privacy</a>
         </div>
         <div>
@@ -34,3 +34,28 @@
         </div>
     }
 </nav>
+
+
+<script>
+    document.addEventListener('keydown', function (event) {
+        if (event.altKey) {
+            switch (event.key) {
+                case '1':
+                    window.location.href = '/';
+                    break;
+                case '2':
+                    window.location.href = '/Privacy';
+                    break;
+                case '3':
+                    window.location.href = '/Profile';
+                    break;
+                case '4':
+                    window.location.href = '/Claims';
+                    break;
+                case '5':
+                    window.location.href = '/SeedDB';
+                    break;
+            }
+        }
+    });
+</script>
