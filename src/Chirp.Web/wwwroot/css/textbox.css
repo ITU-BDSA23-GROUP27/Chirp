@@ -1,5 +1,5 @@
 .textbox-container {
-    background-color: rgb(233, 228, 228);
+    background-color: #e9e4e4;
     background-color: transparent;
     max-height: 300px;
     overflow: hidden;
@@ -47,7 +47,7 @@ textarea::placeholder {
 }
 
 .bottom-container button {
-    background: linear-gradient(to bottom right, #6399b496, #1e3cd2);
+    background: linear-gradient(to bottom right, #b4636396, #1e3cd2);
     color: #fff;
     border: none;
     border-radius: 2px;
@@ -82,6 +82,7 @@ textarea::placeholder {
 
 .toggleButton {
     background: linear-gradient(to right, #3498db, #2980b9);
+    background: #3498db;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -94,6 +95,7 @@ textarea::placeholder {
 
 .toggleButton:hover {
     background: linear-gradient(to right, #2980b9, #3498db);
+    background: #1575b5;
     transform: scale(1.05);
 }
 
@@ -101,7 +103,12 @@ textarea::placeholder {
     background: linear-gradient(to right, #e74c3c, #c0392b);
     background: linear-gradient(to right, #7e7676, #908e8e);
     background: linear-gradient(to right, #66a7d2, #6d8fa7);
+    background: #e74c3c;
     transform: scale(1);
+}
+
+.toggleButton.active-color:hover {
+    background: #d53624;
 }
 
 .char-count {
