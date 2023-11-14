@@ -1,0 +1,44 @@
+<button class="toggleButton">Write Cheep</button>
+
+<hr/>
+
+<div class="textbox-container">
+    <h2>Write Cheep</h2>
+
+    <div class="form-container">
+        <form method="post" asp-page-handler="Chirp">
+            <div class="form-group">
+                <textarea name="CheepMessage" id="text" rows="5" maxlength="@Model.CheepMaxLength" 
+                required placeholder="Write your cheep here!"></textarea> @*asp-for does not correctly update CheepMessage value*@
+            </div>
+            <div class="bottom-container">
+                <div>
+                    <button type="submit">Chirp!</button>
+                </div>
+                <div>
+                    <p class="char-count">Characters: <span id="char-counter">0</span>/@Model.CheepMaxLength</p>
+                </div>
+            </div>
+        </form>
+    </div>
+    <hr/>
+</div>
+
+<script>
+    // textarea - character counter
+    const textArea = document.getElementById("text");
+    const charCounter = document.getElementById("char-counter");
+    
+    textArea.addEventListener("input", function () {
+        charCounter.textContent = textArea.value.length;
+    });
+
+    // toggle button
+    const toggleButton = document.querySelector(".toggleButton");
+    const textboxContainer = document.querySelector(".textbox-container");
+
+    toggleButton.addEventListener("click", function () {
+        textboxContainer.classList.toggle("collapsed");
+        toggleButton.classList.toggle("active-color")
+    });
+</script>

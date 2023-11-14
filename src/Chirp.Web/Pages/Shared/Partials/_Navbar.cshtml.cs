@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Web.Pages.Shared;
 
-public class LoginPartialModel : PageModel
+public class NavigationPartialModel : PageModel
 {
     public void OnGet()
     {

@@ -1,0 +1,20 @@
+﻿@page
+@model Chirp.Web.Pages.ClaimsModel
+@{
+}
+
+@{
+    if (!User.Identity?.IsAuthenticated == true)
+    {
+        RedirectToPage("/"); // Redirect to another page when the user is not authenticated
+    }
+}
+
+<h2>User Claims</h2>
+<div class="user-info">
+    <p><span class="label">ID:</span> @Model.NameID</p>
+    <p><span class="label">Username:</span> @Model.Username</p>
+    <p class="github-info"><span class="label">Name:</span> @Model.Name</p>
+    <p class="github-url"><span class="label">GitHub URL:</span> <a href="@Model.GithubURL"
+            target="_blank">@Model.GithubURL</a></p>
+</div>

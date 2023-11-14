@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<nav class="navbar">
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <div>
+            <a class='@(Context.Request.Path == "/"        ? "active" : "")' href="/"       >Home   </a>
+            <a class='@(Context.Request.Path == "/Privacy" ? "active" : "")' href="/Privacy">Privacy</a>
+            @* <a class='@(Context.Request.Path == "/Chirp"   ? "active" : "")' href="Chirp"   >Chirp! </a> *@
+            <a class='@(Context.Request.Path == "/Profile" ? "active" : "")' href="Profile" >Profile</a>
+            <a class='@(Context.Request.Path == "/Claims"  ? "active" : "")' href="/Claims" >Claims </a>
+            <a class='@(Context.Request.Path == "/SeedDB"  ? "active" : "")' href="/SeedDB" >SeedDB </a>
+        </div>
+        <div>
+            <form asp-page-handler="LogOut" method="post">
+                <span>Hello <span class="username"><b>@(User.Identity?.Name)</b></span>!</span>
+                <button class='login @(Context.Request.Path == "/#" ? "active" : "")'><i
+                        class="fa-solid fa-right-from-bracket"></i> Sign out</button>
+            </form>
+        </div>
+    }
+    else
+    {
+        <div>
+            <a class='@(Context.Request.Path == "/"        ? "active" : "")' href="/"       >Home   </a>
+            <a class='@(Context.Request.Path == "/Privacy" ? "active" : "")' href="/Privacy">Privacy</a>
+        </div>
+        <div>
+            <form asp-page-handler="AuthenticateLogin" method="post">
+                <button class="login"><i class="fab fa-github"></i> Sign in</button>
+            </form>
+        </div>
+    }
+</nav>
