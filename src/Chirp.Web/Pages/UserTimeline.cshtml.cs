@@ -1,4 +1,5 @@
-﻿using Chirp.Core;
+﻿using System.ComponentModel.DataAnnotations;
+using Chirp.Core;
 using Chirp.Core.DTOs;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ namespace Chirp.Web.Pages;
 public class UserTimelineModel : PageModel
 {
     private readonly ICheepRepository _cheepRepository;
+    private readonly IAuthorRepository _authorRepository;    
     public IEnumerable<CheepDto> Cheeps { get; set; } = new List<CheepDto>();
     public int CurrentPage { get; set; } = 1;
     public int MaxCheepsPerPage { get; set; } = 32;
@@ -17,10 +19,16 @@ public class UserTimelineModel : PageModel
     public int EndPage { get; set; }
     public int DisplayRange { get; set; } = 5;
     public string? RouteName { get; set; }
+    public int CheepMaxLength { get; set; } = 160;
 
-    public UserTimelineModel(ICheepRepository cheepRepository)
+
+    [BindProperty, StringLength(160), Required]
+    public string? CheepMessage { get; set; }
+
+    public UserTimelineModel(ICheepRepository cheepRepository, IAuthorRepository authorRepository)
     {
         _cheepRepository = cheepRepository;
+        _authorRepository = authorRepository;
     }
 
     public ActionResult OnGet(string author)
@@ -79,4 +87,38 @@ public class UserTimelineModel : PageModel
         HttpContext.SignOutAsync();
         return RedirectToPage("Public");
     }
+
+    public ActionResult OnPostChirp()
+    {
+        if (CheepMessage.Length > 160) //TODO Enters accounts for 2 characters
+        {
+            throw new ArgumentException($"Message cannot be longer than 160 characters. Message was: {CheepMessage.Length} characters long");
+        }
+
+        try
+        {
+            var author = new AuthorDto
+            {
+                Name = User.Identity.Name, //Might need to be changed to use only User.Identity (Does not work until users are implemented)
+                Email = User.Identity.Name + "@chirp.com" //TODO: Needs to be removed
+            };
+
+            _authorRepository.CreateAuthor(author);
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        
+        var cheep = new CheepDto
+        {
+            Message = CheepMessage,
+            TimeStamp = DateTime.Now.ToString(),
+            AuthorName = User.Identity.Name //Might need to be changed to use only User.Identity (Does not work until users are implemented)
+        };
+        
+        _cheepRepository.CreateCheep(cheep);
+        
+        return RedirectToPage("Public");
+    }    
 }

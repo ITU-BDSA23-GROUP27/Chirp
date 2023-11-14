@@ -13,12 +13,15 @@
     </h3>
 
     <p> This will clear the database and seed it with test data. </p>
-    <form method="post" asp-page-handler="SeedDatabase">
-        <button class="seed-btn" onclick="confirmSeed()">Seed Database</button>
-    </form>
-    <form method="post" asp-page-handler="ClearDatabase">
-        <button class="unseed-btn" onclick="confirmClear()">Clear Database</button>
-    </form>
+    <div class="seed-container">
+        <form method="post" asp-page-handler="SeedDatabase">
+            <button class="seed-btn" onclick="confirmSeed()">Reset Database</button>
+        </form>
+            
+        <form method="post" asp-page-handler="ClearDatabase">
+            <button class="unseed-btn" onclick="confirmClear()">Clear Database</button>
+        </form>
+    </div>
 </div>
 
 @*! temporary todo list *@
@@ -30,7 +33,7 @@
 
 <script>
     function confirmSeed() {
-        if (confirm("Are you sure you want to seed the database?")) {
+        if (confirm("Are you sure you want to reset the database?")) {
 
         }
     }
