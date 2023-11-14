@@ -13,15 +13,17 @@
     </h3>
 
     <p> This will clear the database and seed it with test data. </p>
-
-    <button class="seed-btn" onclick="confirmSeed()">Seed Database</button>
-    <button class="unseed-btn" onclick="confirmClear()">Clear Database</button>
+    <form method="post" asp-page-handler="SeedDatabase">
+        <button class="seed-btn" onclick="confirmSeed()">Seed Database</button>
+    </form>
+    <form method="post" asp-page-handler="ClearDatabase">
+        <button class="unseed-btn" onclick="confirmClear()">Clear Database</button>
+    </form>
 </div>
 
 @*! temporary todo list *@
 <div class="seed-info" style="text-align: left; color: red">
     <ul>
-        <li>Unimplemented - you can safely click the buttons</li>
         <li>This page will be restricted to certain users later</li>
     </ul>
 </div>
