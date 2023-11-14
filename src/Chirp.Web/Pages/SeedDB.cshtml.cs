@@ -26,6 +26,8 @@ public class SeedDBModel : PageModel
 
     public IActionResult OnPostSeedDatabase()
     {
+        _context.Database.EnsureDeleted();
+        _context.Database.Migrate();
         DbInitializer.SeedDatabase(_context);
         return Page();
     }
