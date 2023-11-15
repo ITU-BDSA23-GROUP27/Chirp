@@ -88,13 +88,13 @@ public class PublicModel : PageModel
         
         // TODO Refactor to a class called Utility
         // Convert the time zone to Copenhagen 
-        TimeZoneInfo copenhagenTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/Copenhagen");
-        DateTime copenhagenTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, copenhagenTimeZone);
+        //TimeZoneInfo copenhagenTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/Copenhagen");
+        //DateTime copenhagenTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, copenhagenTimeZone);
 
         var cheep = new CheepDto
         {
             Message = CheepMessage?.Replace("\r\n", " ") ?? "",
-            TimeStamp = copenhagenTime.ToString(),
+            TimeStamp = DateTime.Now.ToString(),
             AuthorName = User.Identity?.Name ?? "Anonymous"
         };
 
