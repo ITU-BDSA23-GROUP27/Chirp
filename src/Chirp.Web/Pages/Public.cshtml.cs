@@ -75,24 +75,31 @@ public class PublicModel : PageModel
 
         try
         {
-            var author = new AuthorDto
+            if (User.Identity?.Name != null)
             {
-                Name = User.Identity.Name, //Might need to be changed to use only User.Identity (Does not work until users are implemented)
-                Email = User.Identity.Name + "@chirp.com" //TODO: Needs to be removed
-            };
+                var author = new AuthorDto
+                {
+                    Name = User.Identity.Name, //Might need to be changed to use only User.Identity (Does not work until users are implemented)
+                    Email = User.Identity.Name + "@chirp.com" //TODO: Needs to be removed
+                };
 
-            _authorRepository.CreateAuthor(author);
+                _authorRepository.CreateAuthor(author);
+            }
         }
         catch (ArgumentException ex)
         {
             Console.WriteLine(ex.Message);
         }
         
+        // Convert the time zone to Copenhagen 
+        TimeZoneInfo copenhagenTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/Copenhagen");
+        DateTime copenhagenTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, copenhagenTimeZone);
+
         var cheep = new CheepDto
         {
-            Message = CheepMessage,
-            TimeStamp = DateTime.Now.ToString(),
-            AuthorName = User.Identity.Name //Might need to be changed to use only User.Identity (Does not work until users are implemented)
+            Message = CheepMessage ?? throw new ArgumentNullException(nameof(CheepMessage)),
+            TimeStamp = copenhagenTime.ToString(),
+            AuthorName = User.Identity?.Name ?? "Anonymous"
         };
         
         ValidationResult result = _validator.Validate(cheep);
