@@ -87,14 +87,13 @@ public class PublicModel : PageModel
         }
         
         // TODO Refactor to a class called Utility
-        // Convert the time zone to Copenhagen 
-        TimeZoneInfo copenhagenTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/Copenhagen");
-        DateTime copenhagenTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, copenhagenTimeZone);
-
+        // Added one hour to UTC time to match the time of Copenhagen
+        DateTime currentUtcTime = DateTime.UtcNow.AddHours(1);
+        
         var cheep = new CheepDto
         {
             Message = CheepMessage?.Replace("\r\n", " ") ?? "",
-            TimeStamp = copenhagenTime.ToString(),
+            TimeStamp = currentUtcTime.ToString(),
             AuthorName = User.Identity?.Name ?? "Anonymous"
         };
 
