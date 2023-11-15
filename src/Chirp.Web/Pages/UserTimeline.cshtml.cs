@@ -114,11 +114,15 @@ public class UserTimelineModel : PageModel
         {
             Console.WriteLine(ex.Message);
         }
+
+        // Convert the time zone to Copenhagen 
+        TimeZoneInfo copenhagenTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/Copenhagen");
+        DateTime copenhagenTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, copenhagenTimeZone);
         
         var cheep = new CheepDto
         {
             Message = CheepMessage,
-            TimeStamp = DateTime.Now.ToString(),
+            TimeStamp = copenhagenTime.ToString(),
             AuthorName = User.Identity.Name //Might need to be changed to use only User.Identity (Does not work until users are implemented)
         };
         
