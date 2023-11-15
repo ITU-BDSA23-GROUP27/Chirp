@@ -2,14 +2,19 @@
 using Chirp.Core;
 using Chirp.Core.DTOs;
 using Chirp.Web.Areas.Identity.Pages;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace Chirp.Web.Pages;
 
 public class PublicModel : PageModel
 {
+    private IValidator<CheepDto> _validator;
+    
     private readonly ICheepRepository _cheepRepository;
     private readonly IAuthorRepository _authorRepository;
     public IEnumerable<CheepDto> Cheeps { get; set; } = new List<CheepDto>();
@@ -25,10 +30,11 @@ public class PublicModel : PageModel
     [BindProperty, StringLength(160), Required]
     public string? CheepMessage { get; set; }
 
-    public PublicModel(ICheepRepository cheepRepository, IAuthorRepository authorRepository)
+    public PublicModel(ICheepRepository cheepRepository, IAuthorRepository authorRepository, IValidator<CheepDto> validator)
     {
         _cheepRepository = cheepRepository;
         _authorRepository = authorRepository;
+        _validator = validator;
     }
 
     public ActionResult OnGet()
@@ -62,10 +68,10 @@ public class PublicModel : PageModel
     }
     public ActionResult OnPostChirp()
     {
-        if (CheepMessage.Length > 160) //TODO Enters accounts for 2 characters
+        /*if (CheepMessage.Length > 160) //TODO Enters accounts for 2 characters
         {
             throw new ArgumentException($"Message cannot be longer than 160 characters. Message was: {CheepMessage.Length} characters long");
-        }
+        }*/
 
         try
         {
@@ -89,7 +95,12 @@ public class PublicModel : PageModel
             AuthorName = User.Identity.Name //Might need to be changed to use only User.Identity (Does not work until users are implemented)
         };
         
-        _cheepRepository.CreateCheep(cheep);
+        ValidationResult result = _validator.Validate(cheep);
+
+        if (result.IsValid)
+        {
+            _cheepRepository.CreateCheep(cheep);
+        }
         
         return RedirectToPage("Public");
     }
