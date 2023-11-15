@@ -2,14 +2,19 @@
 using Chirp.Core;
 using Chirp.Core.DTOs;
 using Chirp.Web.Areas.Identity.Pages;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace Chirp.Web.Pages;
 
 public class PublicModel : PageModel
 {
+    private IValidator<CheepDto> _validator;
+    
     private readonly ICheepRepository _cheepRepository;
     private readonly IAuthorRepository _authorRepository;
     public IEnumerable<CheepDto> Cheeps { get; set; } = new List<CheepDto>();
@@ -25,10 +30,11 @@ public class PublicModel : PageModel
     [BindProperty, StringLength(160), Required]
     public string? CheepMessage { get; set; }
 
-    public PublicModel(ICheepRepository cheepRepository, IAuthorRepository authorRepository)
+    public PublicModel(ICheepRepository cheepRepository, IAuthorRepository authorRepository, IValidator<CheepDto> validator)
     {
         _cheepRepository = cheepRepository;
         _authorRepository = authorRepository;
+        _validator = validator;
     }
 
     public ActionResult OnGet()
@@ -62,34 +68,40 @@ public class PublicModel : PageModel
     }
     public ActionResult OnPostChirp()
     {
-        if (CheepMessage.Length > 160) //TODO Enters accounts for 2 characters
-        {
-            throw new ArgumentException($"Message cannot be longer than 160 characters. Message was: {CheepMessage.Length} characters long");
-        }
-
         try
         {
-            var author = new AuthorDto
+            if (User.Identity?.Name != null)
             {
-                Name = User.Identity.Name, //Might need to be changed to use only User.Identity (Does not work until users are implemented)
-                Email = User.Identity.Name + "@chirp.com" //TODO: Needs to be removed
-            };
+                var author = new AuthorDto
+                {
+                    Name = User.Identity.Name, //Might need to be changed to use only User.Identity (Does not work until users are implemented)
+                    Email = User.Identity.Name + "@chirp.com" //TODO: Needs to be removed
+                };
 
-            _authorRepository.CreateAuthor(author);
+                _authorRepository.CreateAuthor(author);
+            }
         }
         catch (ArgumentException ex)
         {
             Console.WriteLine(ex.Message);
         }
         
+        // TODO Refactor to a class called Utility
+        // Convert the time zone to Copenhagen 
+        TimeZoneInfo copenhagenTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/Copenhagen");
+        DateTime copenhagenTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, copenhagenTimeZone);
+
         var cheep = new CheepDto
         {
-            Message = CheepMessage,
-            TimeStamp = DateTime.Now.ToString(),
-            AuthorName = User.Identity.Name //Might need to be changed to use only User.Identity (Does not work until users are implemented)
+            Message = CheepMessage.Replace("\r\n", " "),
+            TimeStamp = copenhagenTime.ToString(),
+            AuthorName = User.Identity?.Name ?? "Anonymous"
         };
         
-        _cheepRepository.CreateCheep(cheep);
+        ValidationResult result = _validator.Validate(cheep);
+
+        if (result.IsValid) _cheepRepository.CreateCheep(cheep);
+
         
         return RedirectToPage("Public");
     }

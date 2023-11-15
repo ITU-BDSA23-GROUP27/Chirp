@@ -1,7 +1,10 @@
 using Chirp.Core;
+using Chirp.Core.DTOs;
 using Chirp.Infrastructure;
 using Chirp.Infrastructure.Data;
+using Chirp.Infrastructure.Entities;
 using Chirp.Web.Data;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.CookiePolicy;
@@ -56,6 +59,8 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ChirpContext>(options => options.UseSqlite($"Data Source={path}"));
 builder.Services.AddScoped<ICheepRepository, Chirp.Infrastructure.CheepRepository>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+
+builder.Services.AddScoped<IValidator<CheepDto>, CheepValidator>();
 
 var app = builder.Build();
 
