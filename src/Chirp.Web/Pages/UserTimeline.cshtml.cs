@@ -124,6 +124,7 @@ public class UserTimelineModel : PageModel
             Console.WriteLine(ex.Message);
         }
 
+        // TODO Refactor to a class called Utility
         // Convert the time zone to Copenhagen 
         TimeZoneInfo copenhagenTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Europe/Copenhagen");
         DateTime copenhagenTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, copenhagenTimeZone);
