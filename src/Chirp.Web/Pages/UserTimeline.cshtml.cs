@@ -1,14 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Chirp.Core;
 using Chirp.Core.DTOs;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using FluentValidation.Results;
+using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace Chirp.Web.Pages;
 
 public class UserTimelineModel : PageModel
 {
+    private IValidator<CheepDto> _validator;
+
     private readonly ICheepRepository _cheepRepository;
     private readonly IAuthorRepository _authorRepository;    
     public IEnumerable<CheepDto> Cheeps { get; set; } = new List<CheepDto>();
@@ -25,10 +30,11 @@ public class UserTimelineModel : PageModel
     [BindProperty, StringLength(160), Required]
     public string? CheepMessage { get; set; }
 
-    public UserTimelineModel(ICheepRepository cheepRepository, IAuthorRepository authorRepository)
+    public UserTimelineModel(ICheepRepository cheepRepository, IAuthorRepository authorRepository, IValidator<CheepDto> validator)
     {
         _cheepRepository = cheepRepository;
         _authorRepository = authorRepository;
+        _validator = validator;
     }
 
     public ActionResult OnGet(string author)
@@ -95,10 +101,10 @@ public class UserTimelineModel : PageModel
 
     public ActionResult OnPostChirp()
     {
-        if (CheepMessage is not null && CheepMessage.Length > 160) //TODO Enters accounts for 2 characters
+        /*if (CheepMessage is not null && CheepMessage.Length > 160) //TODO Enters accounts for 2 characters
         {
             throw new ArgumentException($"Message cannot be longer than 160 characters. Message was: {CheepMessage.Length} characters long");
-        }
+        }*/
 
         try
         {
@@ -124,12 +130,15 @@ public class UserTimelineModel : PageModel
 
         var cheep = new CheepDto
         {
-            Message = CheepMessage ?? throw new ArgumentNullException(nameof(CheepMessage)),
+            Message = CheepMessage,
             TimeStamp = copenhagenTime.ToString(),
             AuthorName = User.Identity?.Name ?? "Anonymous"
         };
         
-        _cheepRepository.CreateCheep(cheep);
+        ValidationResult result = _validator.Validate(cheep);
+
+        if (result.IsValid) _cheepRepository.CreateCheep(cheep);
+
         
         return RedirectToPage("Public");
     }    

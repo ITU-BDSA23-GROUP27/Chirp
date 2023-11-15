@@ -68,7 +68,7 @@ public class PublicModel : PageModel
     }
     public ActionResult OnPostChirp()
     {
-        /*if (CheepMessage.Length > 160) //TODO Enters accounts for 2 characters
+        /*if (CheepMessage.Length > 160) 
         {
             throw new ArgumentException($"Message cannot be longer than 160 characters. Message was: {CheepMessage.Length} characters long");
         }*/
@@ -97,17 +97,15 @@ public class PublicModel : PageModel
 
         var cheep = new CheepDto
         {
-            Message = CheepMessage ?? throw new ArgumentNullException(nameof(CheepMessage)),
+            Message = CheepMessage,
             TimeStamp = copenhagenTime.ToString(),
             AuthorName = User.Identity?.Name ?? "Anonymous"
         };
         
         ValidationResult result = _validator.Validate(cheep);
 
-        if (result.IsValid)
-        {
-            _cheepRepository.CreateCheep(cheep);
-        }
+        if (result.IsValid) _cheepRepository.CreateCheep(cheep);
+
         
         return RedirectToPage("Public");
     }

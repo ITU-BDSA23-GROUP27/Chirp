@@ -17,6 +17,6 @@ public class CheepValidator : AbstractValidator<CheepDto>
     public CheepValidator()
     {
         RuleFor(c => c.Message).NotEmpty().WithMessage("Please write a cheep containing at least one character.");
-        RuleFor(c => c.Message).Length(0, 20);
+        RuleFor(c => c.Message).Length(0, 160);
     }
 }
