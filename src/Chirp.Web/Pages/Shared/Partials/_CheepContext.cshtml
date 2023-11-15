@@ -6,17 +6,18 @@
                 @* User Avatar *@
                 <div class="avatar-container">
 
-                    @* TODO - @add a new imgage (string) attribute to the DB = github avatar.. *@
+                    @* TODO - add github avatar (not the default one) *@
                     @if (cheep.AuthorName == "PhiVaLo")
                     {
-                        <img class="avatar" src="https://i.imgur.com/7x96COw.jpg" alt="Icon1" />
+                        <img class="avatar avatar-glow" src="https://i.imgur.com/7x96COw.jpg" alt="Icon1"/>
                     }
                     else 
                     {
-                        @* default avatar *@
-                        <img class="avatar" src="https://i.imgur.com/D61mmPL.jpg" alt="Icon1" />
+                        @* default github avatar / test avatar *@
+                        <img class="avatar" alt="User's Default Avatar" 
+                            src="https://github.com/identicons/@(cheep.AuthorName).png"
+                            onerror="this.onerror=null; this.src='https://i.imgur.com/D61mmPL.jpg';" />
                     }
-                    
                 </div>
                 @* Cheep Context *@
                 <div class="left-content">

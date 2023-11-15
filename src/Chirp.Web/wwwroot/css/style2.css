@@ -109,6 +109,10 @@ header > .display-page {
     object-fit: cover;
 }
 
+.avatar-glow {
+    box-shadow: 0 0 5px 2px crimson;
+}
+
 .overlay {
     position: absolute;
     top: 0;
