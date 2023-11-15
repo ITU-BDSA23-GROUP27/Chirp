@@ -14,12 +14,12 @@
 
     <p> This will clear the database and seed it with test data. </p>
     <div class="seed-container">
-        <form method="post" asp-page-handler="SeedDatabase">
-            <button class="seed-btn" onclick="confirmSeed()">Reset Database</button>
+        <form method="post" asp-page-handler="SeedDatabase" onsubmit="return confirmAction('reset')">
+            <button class="seed-btn">Reset Database</button>
         </form>
-            
-        <form method="post" asp-page-handler="ClearDatabase">
-            <button class="unseed-btn" onclick="confirmClear()">Clear Database</button>
+
+        <form method="post" asp-page-handler="ClearDatabase" onsubmit="return confirmAction('clear')">
+            <button class="unseed-btn">Clear Database</button>
         </form>
     </div>
 </div>
@@ -31,4 +31,4 @@
     </ul>
 </div>
 
-@* <script src="/js/seedDB.js"></script> *@
+<script src="/js/seedDB.js"></script>
