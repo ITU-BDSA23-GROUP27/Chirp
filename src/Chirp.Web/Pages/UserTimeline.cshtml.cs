@@ -101,11 +101,6 @@ public class UserTimelineModel : PageModel
 
     public ActionResult OnPostChirp()
     {
-        /*if (CheepMessage is not null && CheepMessage.Length > 160) //TODO Enters accounts for 2 characters
-        {
-            throw new ArgumentException($"Message cannot be longer than 160 characters. Message was: {CheepMessage.Length} characters long");
-        }*/
-
         try
         {
             if (User.Identity?.Name != null)
@@ -131,7 +126,7 @@ public class UserTimelineModel : PageModel
 
         var cheep = new CheepDto
         {
-            Message = CheepMessage,
+            Message = CheepMessage.Replace("\r\n", " "),
             TimeStamp = copenhagenTime.ToString(),
             AuthorName = User.Identity?.Name ?? "Anonymous"
         };

@@ -68,11 +68,6 @@ public class PublicModel : PageModel
     }
     public ActionResult OnPostChirp()
     {
-        /*if (CheepMessage.Length > 160) 
-        {
-            throw new ArgumentException($"Message cannot be longer than 160 characters. Message was: {CheepMessage.Length} characters long");
-        }*/
-
         try
         {
             if (User.Identity?.Name != null)
@@ -98,7 +93,7 @@ public class PublicModel : PageModel
 
         var cheep = new CheepDto
         {
-            Message = CheepMessage,
+            Message = CheepMessage.Replace("\r\n", " "),
             TimeStamp = copenhagenTime.ToString(),
             AuthorName = User.Identity?.Name ?? "Anonymous"
         };
