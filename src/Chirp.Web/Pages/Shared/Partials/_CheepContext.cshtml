@@ -9,7 +9,7 @@
                     @* TODO - @add a new imgage (string) attribute to the DB = github avatar.. *@
                     @if (cheep.AuthorName == "PhiVaLo")
                     {
-                        <img class="avatar" src="https://avatars.githubusercontent.com/u/67863684?v=4" alt="Icon1" />
+                        <img class="avatar" src="https://i.imgur.com/7x96COw.jpg" alt="Icon1" />
                     }
                     else 
                     {
@@ -60,14 +60,4 @@
     }
 </ul>
 
-<script>
-    var buttons = document.querySelectorAll('.likes-btn');
-
-    buttons.forEach(function(button) {
-        button.addEventListener('click', function() {
-            var likesBtn = this.querySelector('i.fa-heart');
-            likesBtn.classList.toggle('fa-solid');
-            likesBtn.classList.toggle('red');
-        });
-    });
-</script>
+<script src="/js/cheepContext.js"></script>

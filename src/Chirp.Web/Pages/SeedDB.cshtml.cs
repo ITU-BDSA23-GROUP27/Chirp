@@ -29,14 +29,14 @@ public class SeedDBModel : PageModel
         _context.Database.EnsureDeleted();
         _context.Database.Migrate();
         DbInitializer.SeedDatabase(_context);
-        return Page();
+        return RedirectToPage("/Public");
     }
     
     public IActionResult OnPostClearDatabase()
     {
         _context.Database.EnsureDeleted();
         _context.Database.Migrate();
-        return Page();
+        return RedirectToPage("/Public");
     }
     
     public IActionResult OnPostAuthenticateLogin()

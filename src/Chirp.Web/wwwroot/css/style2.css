@@ -132,6 +132,9 @@ header > .display-page {
 
 .cheep-message {
     color: #021525;
+    width: 340px;
+    word-wrap: break-word;
+    /* border: 1px solid red; */
 }
 
 .reactions-container {
