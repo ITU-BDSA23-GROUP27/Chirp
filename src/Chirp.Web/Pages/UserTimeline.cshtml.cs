@@ -126,7 +126,7 @@ public class UserTimelineModel : PageModel
 
         var cheep = new CheepDto
         {
-            Message = CheepMessage.Replace("\r\n", " "),
+            Message = CheepMessage?.Replace("\r\n", " ") ?? "",
             TimeStamp = copenhagenTime.ToString(),
             AuthorName = User.Identity?.Name ?? "Anonymous"
         };

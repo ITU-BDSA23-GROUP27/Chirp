@@ -93,11 +93,11 @@ public class PublicModel : PageModel
 
         var cheep = new CheepDto
         {
-            Message = CheepMessage.Replace("\r\n", " "),
+            Message = CheepMessage?.Replace("\r\n", " ") ?? "",
             TimeStamp = copenhagenTime.ToString(),
             AuthorName = User.Identity?.Name ?? "Anonymous"
         };
-        
+
         ValidationResult result = _validator.Validate(cheep);
 
         if (result.IsValid) _cheepRepository.CreateCheep(cheep);
