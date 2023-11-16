@@ -8,11 +8,12 @@
                 <div class="avatar-container">
                     @if (cheep.AuthorName == "PhiVaLo" || cheep.AuthorName == "Tien197")
                     {
-                        <img class="avatar avatar-glow" src="https://avatars.githubusercontent.com/@(cheep.AuthorName)" alt="Icon1"/>
+                        <img class="avatar avatar-glow" src="https://avatars.githubusercontent.com/@(cheep.AuthorName)"
+                            alt="Icon1" />
                     }
-                    else 
+                    else
                     {
-                        <img class="avatar" src="https://avatars.githubusercontent.com/@(cheep.AuthorName)" alt="Icon1"/>
+                        <img class="avatar" src="https://avatars.githubusercontent.com/@(cheep.AuthorName)" alt="Icon1" />
                     }
                 </div>
 
@@ -38,20 +39,36 @@
 
             @* Reactions *@
             <div class="reactions-container">
-                <div class="reaction-item test">
-                    <button class="reaction-btn test" title="Reply">
-                        <i class="fa-regular fa-comment"></i>
-                    </button>
-                    <span class="reaction-count">0</span>
-                </div>
-                
-                <div class="reaction-item">
-                    @* TODO - needs to interfact with database *@
-                    <button class="reaction-btn likes-btn" title="Like">
-                        <i class="fa-regular fa-heart grey"></i>
-                    </button>
-                    @* TODO - count = number of likes by users *@
-                    <span class="reaction-count">0</span>
+
+                @* Follower *@
+                @if (User.Identity?.IsAuthenticated == true && cheep.AuthorName == User.Identity.Name)
+                {
+                    <div></div>                    
+                }
+                else
+                {
+                    <div>
+                        <button class="follow-btn follow">Follow</button>
+                        <button class="follow-btn unfollow">Unfollow</button>
+                    </div>
+                }
+
+                <div class="reactions-right-container">
+                    <div class="reaction-item test">
+                        <button class="reaction-btn test" title="Reply">
+                            <i class="fa-regular fa-comment"></i>
+                        </button>
+                        <span class="reaction-count">0</span>
+                    </div>
+
+                    <div class="reaction-item">
+                        @* TODO - needs to interfact with database *@
+                        <button class="reaction-btn likes-btn" title="Like">
+                            <i class="fa-regular fa-heart grey"></i>
+                        </button>
+                        @* TODO - count = number of likes by users *@
+                        <span class="reaction-count">0</span>
+                    </div>
                 </div>
             </div>
         </li>
