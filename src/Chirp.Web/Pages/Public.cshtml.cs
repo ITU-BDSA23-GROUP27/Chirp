@@ -43,7 +43,20 @@ public class PublicModel : PageModel
     {
         if (User.Identity?.IsAuthenticated == true)
         {
-            Console.WriteLine(User.Identity.Name);
+            try
+            {
+                var author = new AuthorDto
+                {
+                    Name = User.Identity.Name, //Might need to be changed to use only User.Identity (Does not work until users are implemented)
+                    Email = User.Identity.Name + "@chirp.com" //TODO: Needs to be removed
+                };
+
+                _authorRepository.CreateAuthor(author);
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
         else
         {
@@ -70,24 +83,6 @@ public class PublicModel : PageModel
     }
     public ActionResult OnPostChirp()
     {
-        try
-        {
-            if (User.Identity?.Name != null)
-            {
-                var author = new AuthorDto
-                {
-                    Name = User.Identity.Name, //Might need to be changed to use only User.Identity (Does not work until users are implemented)
-                    Email = User.Identity.Name + "@chirp.com" //TODO: Needs to be removed
-                };
-
-                _authorRepository.CreateAuthor(author);
-            }
-        }
-        catch (ArgumentException ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
-        
         // TODO Refactor to a class called Utility
         // Added one hour to UTC time to match the time of Copenhagen
         DateTime currentUtcTime = DateTime.UtcNow.AddHours(1);
@@ -102,7 +97,6 @@ public class PublicModel : PageModel
         ValidationResult result = _validator.Validate(cheep);
 
         if (result.IsValid) _cheepRepository.CreateCheep(cheep);
-
         
         return RedirectToPage("Public");
     }
