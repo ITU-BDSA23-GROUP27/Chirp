@@ -1,4 +1,6 @@
+using System.Globalization;
 using Chirp.Core;
+using Chirp.Core.DTOs;
 using Chirp.Infrastructure.Entities;
 
 namespace Chirp.Infrastructure;
@@ -6,11 +8,43 @@ namespace Chirp.Infrastructure;
 public class FollowerRepository : IFollowerRepository
 {
     private readonly ChirpContext _context;
-    
     public FollowerRepository(ChirpContext context)
     {
         _context = context;
     }
+    
+    //Followers are the ones that follows the author/user
+    public IEnumerable<AuthorDto> GetFollowersFromAuthor(int page, string authorName)
+    {
+        var followers = _context.Followers
+            .Where(f => f.FollowerAuthor.Name == authorName)
+            .Select(f => f.FolloweeAuthor)
+            .Select<Author, AuthorDto>(a => new AuthorDto()
+            {
+                Id = a.AuthorId,
+                Name = a.Name,
+                Email = a.Email
+            });
+
+        return followers;
+    }
+    
+    //Followees are the ones the author/user follows
+    public IEnumerable<AuthorDto> GetFolloweesFromAuthor(int page, string authorName)
+    {
+        var followees = _context.Followers
+            .Where(f => f.FolloweeAuthor.Name == authorName)
+            .Select(f => f.FollowerAuthor)
+            .Select<Author, AuthorDto>(a => new AuthorDto()
+            {
+                Id = a.AuthorId,
+                Name = a.Name,
+                Email = a.Email
+            });
+
+        return followees;
+    }
+    
     
     public void AddFollower(string authorName, string followerName)
     {
