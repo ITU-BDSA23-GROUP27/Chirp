@@ -57,12 +57,12 @@ public class AuthorRepository : IAuthorRepository
         _context.Authors.Add(newAuthor);
         _context.SaveChanges();
     }
-
-    public void AddFollower(string authorName, string followerName)
+    
+    public void AddFollower(string authorName, string followerName) //Should maybe be in own repository
     {
-        var author = _context.Authors.Include(a => a.Followers).SingleOrDefault(a => a.Name == authorName);
-        var follower = _context.Authors.Include(f => f.Followees).SingleOrDefault(a => a.Name == followerName);
-
+        var author = _context.Authors.SingleOrDefault(a => a.Name == authorName);
+        var follower = _context.Authors.SingleOrDefault(a => a.Name == followerName);
+        
         if (author == follower)
         {
             throw new ArgumentException("Author and follower cannot be equal to one another: ", nameof(authorName));
@@ -78,23 +78,23 @@ public class AuthorRepository : IAuthorRepository
             throw new ArgumentException("Follower does not exist: ", nameof(followerName));
         }
 
-        if (author.Followers.Contains(follower))
+        var newFollower = new Follower()
         {
-            author.Followers = author.Followers.Where(f => f != follower);
-        }
-        else
-        {
-            author.Followers = author.Followers.Append(follower);
-        }
+            FollowerId = follower.AuthorId,
+            FolloweeId = author.AuthorId,
+            FollowerAuthor = follower,
+            FolloweeAuthor = author
+        };
         
-        if (follower.Followees.Contains(author))
+        if (_context.Followers.Contains(newFollower))
         {
-            follower.Followees = follower.Followees.Where(f => f != author);
+            _context.Followers.Remove(newFollower);
         }
         else
         {
-            follower.Followees = follower.Followees.Append(author);
+            _context.Followers.Add(newFollower);
         }
+        _context.SaveChanges();
     }
     
 }

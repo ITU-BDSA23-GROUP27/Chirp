@@ -48,8 +48,11 @@
                 else
                 {
                     <div>
-                        <button class="follow-btn follow">Follow</button>
-                        <button class="follow-btn unfollow">Unfollow</button>
+                        <form method="post" asp-page-handler="Follow" asp-route-authorName="@cheep.AuthorName" asp-route-followerName="@User.Identity?.Name">
+                            <button class="follow-btn follow">Follow</button>
+                            <button class="follow-btn unfollow">Unfollow</button> 
+                        </form>
+
                     </div>
                 }
 
