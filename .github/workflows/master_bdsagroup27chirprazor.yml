@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - master
+      - features/avatar
   workflow_dispatch:
 
 jobs:
