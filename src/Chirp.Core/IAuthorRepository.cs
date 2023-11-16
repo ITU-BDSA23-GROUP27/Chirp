@@ -7,4 +7,5 @@ public interface IAuthorRepository
     public AuthorDto GetAuthorByName(string authorName);
     public AuthorDto GetAuthorByEmail(string authorEmail);
     public void CreateAuthor(AuthorDto author);
+    public void AddFollower(string authorName, string followerName);
 }

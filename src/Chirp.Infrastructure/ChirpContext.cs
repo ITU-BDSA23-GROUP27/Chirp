@@ -31,6 +31,10 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
     modelBuilder.Entity<Cheep>().Property(c => c.Text).HasMaxLength(160);
     modelBuilder.Entity<Author>().Property(a => a.Name).HasMaxLength(50);
     modelBuilder.Entity<Author>().Property(c => c.Email).HasMaxLength(50);
+    modelBuilder.Entity<Author>().HasMany(a => a.Followers);
+    modelBuilder.Entity<Author>().HasMany(a => a.Followees);
+    
+    
     modelBuilder.Entity<Follower>().HasKey(f => new {f.FollowerId, f.FolloweeId});
 }
 }

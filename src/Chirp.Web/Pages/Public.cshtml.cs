@@ -105,6 +105,21 @@ public class PublicModel : PageModel
         return RedirectToPage("Public");
     }
 
+    public IActionResult OnPostFollow(string authorName, string followerName)
+    {
+        if (authorName is null)
+        {
+            throw new ArgumentNullException($"Authorname is null {nameof(authorName)}");
+        }
+        if (followerName is null)
+        {
+            throw new ArgumentNullException($"Followername is null {nameof(followerName)}");
+        }
+        
+        _authorRepository.AddFollower(authorName, followerName);
+        return Page();
+    }
+
     public IActionResult OnPostAuthenticateLogin()
     {
         var props = new AuthenticationProperties

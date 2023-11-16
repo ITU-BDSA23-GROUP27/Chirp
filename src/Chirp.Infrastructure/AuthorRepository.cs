@@ -1,6 +1,7 @@
 using Chirp.Core;
 using Chirp.Core.DTOs;
 using Chirp.Infrastructure.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure;
 
@@ -56,4 +57,44 @@ public class AuthorRepository : IAuthorRepository
         _context.Authors.Add(newAuthor);
         _context.SaveChanges();
     }
+
+    public void AddFollower(string authorName, string followerName)
+    {
+        var author = _context.Authors.Include(a => a.Followers).SingleOrDefault(a => a.Name == authorName);
+        var follower = _context.Authors.Include(f => f.Followees).SingleOrDefault(a => a.Name == followerName);
+
+        if (author == follower)
+        {
+            throw new ArgumentException("Author and follower cannot be equal to one another: ", nameof(authorName));
+        }
+        
+        if (author is null)
+        {
+            throw new ArgumentException("Author does not exist: ", nameof(authorName));
+        }
+        
+        if (follower is null)
+        {
+            throw new ArgumentException("Follower does not exist: ", nameof(followerName));
+        }
+
+        if (author.Followers.Contains(follower))
+        {
+            author.Followers = author.Followers.Where(f => f != follower);
+        }
+        else
+        {
+            author.Followers = author.Followers.Append(follower);
+        }
+        
+        if (follower.Followees.Contains(author))
+        {
+            follower.Followees = follower.Followees.Where(f => f != author);
+        }
+        else
+        {
+            follower.Followees = follower.Followees.Append(author);
+        }
+    }
+    
 }
