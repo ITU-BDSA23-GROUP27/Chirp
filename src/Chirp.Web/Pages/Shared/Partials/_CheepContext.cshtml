@@ -25,7 +25,9 @@
                         </strong>
                     </p>
                     <p id="cheep-content">
-                        <small>@cheep.TimeStamp</small>
+                        @* <small>@cheep.TimeStamp</small> *@
+                        <small class="date">@DateTime.ParseExact(cheep.TimeStamp, "MM/dd/yyyy HH:mm:ss", null).ToString("MM/dd/yyyy")</small><br>
+                        <small class="time">@DateTime.ParseExact(cheep.TimeStamp, "MM/dd/yyyy HH:mm:ss", null).ToString("HH:mm:ss")</small>                        
                     </p>
                 </div>
                 <div class="right-content">
@@ -34,7 +36,8 @@
                     </p>
                 </div>
 
-                <div class="overlay"></div>
+                <div class="overlay-2"></div>
+
             </div>
 
             @* Reactions *@
@@ -49,8 +52,8 @@
                 {
                     <div>
                         <form method="post" asp-page-handler="Follow" asp-route-authorName="@cheep.AuthorName" asp-route-followerName="@User.Identity?.Name">
-                            <button class="follow-btn follow">Follow</button>
-                            <button class="follow-btn unfollow">Unfollow</button> 
+                            <button class="follow-btn follow">follow</button>
+                            <button class="follow-btn unfollow">unfollow</button> 
                         </form>
 
                     </div>

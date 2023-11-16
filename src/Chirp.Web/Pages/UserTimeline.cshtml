@@ -16,6 +16,15 @@
         <span class="display-page"> Page @Model.CurrentPage/@Model.TotalPageCount </span>
     </header>
 
+    @*
+        TODO - show cheeps based on your login and follower
+        if 
+            (User.Identity?.IsAuthenticated == true && cheep.AuthorName == User.Identity.Name)
+                your own timeline = display your cheeps + all your followers cheeps
+        else
+            display cheeps of the user you are visiting only
+    *@
+    
     @if (Model.Cheeps.Any())
     {
         <partial name="Partials/_CheepContext" model="Model"/>

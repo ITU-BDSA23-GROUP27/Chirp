@@ -114,24 +114,42 @@ header > .display-page {
     box-shadow: 0 0 5px 2px crimson;
 }
 
-.overlay {
+.overlay-2 {
     position: absolute;
     top: 0;
     right: 0;
     height: 100%;
     width: 70%;
     border-radius: 0 5px 5px 0px;
-    /* background-color: rgba(0, 0, 0, 0.1); */
+    background-color: rgba(0, 0, 0, 0.1);
     pointer-events: none;
     background: linear-gradient(#e3a27993, #c0b48a71);
-
-    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 8% 50%, 0% 0%);
-
+    background: linear-gradient(#e3a2794c, #c0b48a3d);
+    
+    clip-path: polygon(
+        0% 0%, 
+        100% 0%, 
+        100% 100%, 
+        0% 100%, 
+        8% 50%, 
+        0% 0%
+    );
+        
     z-index: 1;
 }
 
 #author {
     color: #0c9371;
+    text-shadow: 0px 0px 0.5px rgba(0, 0, 0, 0.5);
+}
+
+.date {
+    color: rgb(80, 127, 156) !important;
+    text-shadow: 0px 0px 0.5px rgba(0, 0, 0, 0.5);
+}
+
+.time {
+    color: #9c9c9c;
     text-shadow: 0px 0px 0.5px rgba(0, 0, 0, 0.5);
 }
 
@@ -224,8 +242,6 @@ header > .display-page {
 .unfollow:hover {
     background-color: #ba1f50;
 }
-
-
 
 /* Privacy */
 .privacy-container {
