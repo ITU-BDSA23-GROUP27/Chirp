@@ -17,6 +17,7 @@ public class PublicModel : PageModel
     
     private readonly ICheepRepository _cheepRepository;
     private readonly IAuthorRepository _authorRepository;
+    private readonly IFollowerRepository _followerRepository;
     public IEnumerable<CheepDto> Cheeps { get; set; } = new List<CheepDto>();
     public int CurrentPage { get; set; } = 1;
     public int MaxCheepsPerPage { get; } = 32;
@@ -30,10 +31,11 @@ public class PublicModel : PageModel
     [BindProperty, StringLength(160), Required]
     public string? CheepMessage { get; set; }
 
-    public PublicModel(ICheepRepository cheepRepository, IAuthorRepository authorRepository, IValidator<CheepDto> validator)
+    public PublicModel(ICheepRepository cheepRepository, IAuthorRepository authorRepository, IFollowerRepository followerRepository, IValidator<CheepDto> validator)
     {
         _cheepRepository = cheepRepository;
         _authorRepository = authorRepository;
+        _followerRepository = followerRepository;
         _validator = validator;
     }
 
@@ -116,7 +118,7 @@ public class PublicModel : PageModel
             throw new ArgumentNullException($"Followername is null {nameof(followerName)}");
         }
         
-        _authorRepository.AddFollower(authorName, followerName);
+        _followerRepository.AddFollower(authorName, followerName);
         return Page();
     }
 

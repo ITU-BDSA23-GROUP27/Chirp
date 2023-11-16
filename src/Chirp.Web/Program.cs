@@ -59,6 +59,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<ChirpContext>(options => options.UseSqlite($"Data Source={path}"));
 builder.Services.AddScoped<ICheepRepository, Chirp.Infrastructure.CheepRepository>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+builder.Services.AddScoped<IFollowerRepository, FollowerRepository>();
 
 builder.Services.AddScoped<IValidator<CheepDto>, CheepValidator>();
 
