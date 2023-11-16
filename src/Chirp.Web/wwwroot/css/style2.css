@@ -145,15 +145,21 @@ header > .display-page {
 .reactions-container {
     display: flex;
     justify-content: right;
+    justify-content: space-between;
     /* justify-content: center; */
     align-items: center;
     padding: 3px 10px;
     /* margin: 10px 0; */
     border-radius: 5px;
-    gap: 40px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-
+    
     background-color: #ffffff69;
+    height: 25px;
+}
+
+.reactions-right-container {
+    gap: 40px;
+    display: flex;
 }
 
 .grey,
@@ -182,6 +188,44 @@ header > .display-page {
     color: #c8c8c8;
     cursor: not-allowed;
 }
+
+
+.follow-btn {
+    background-color: transparent;
+    color: #040404;
+    border-radius: 5px;
+    border: none;
+    width: 80px;
+    height: 20px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.follow {
+    background-color: #0c9371;
+    color: #fff;
+    border-radius: 5px;
+    width: 80px;
+    transition: background-color 0.3s ease, color 0.3s ease;    
+}
+
+.unfollow {
+    background-color: #e0245e;
+    color: #fff;
+    border-radius: 5px;
+    width: 80px;
+    transition: background-color 0.3s ease, color 0.3s ease;    
+}
+
+.follow:hover {
+    background-color: #0a785d;
+}
+
+.unfollow:hover {
+    background-color: #ba1f50;
+}
+
+
 
 /* Privacy */
 .privacy-container {
