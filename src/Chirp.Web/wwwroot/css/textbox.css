@@ -81,8 +81,7 @@ textarea::placeholder {
 
 
 .toggleButton {
-    background: linear-gradient(to right, #3498db, #2980b9);
-    background: #3498db;
+    background: linear-gradient(to right, #42b123, #5eb929);
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -94,21 +93,17 @@ textarea::placeholder {
 }
 
 .toggleButton:hover {
-    background: linear-gradient(to right, #2980b9, #3498db);
-    background: #1575b5;
+    background: linear-gradient(to right, #37911e, #5eb929);
     transform: scale(1.05);
 }
 
 .toggleButton.active-color {
-    background: linear-gradient(to right, #e74c3c, #c0392b);
-    background: linear-gradient(to right, #7e7676, #908e8e);
-    background: linear-gradient(to right, #66a7d2, #6d8fa7);
-    background: #e74c3c;
+    background: linear-gradient(#726d6d, #a5b6c2);
     transform: scale(1);
 }
 
 .toggleButton.active-color:hover {
-    background: #d53624;
+    background: linear-gradient(#564f4f, #a5b6c2);
 }
 
 .char-count {
