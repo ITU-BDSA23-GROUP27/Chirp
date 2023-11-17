@@ -8,7 +8,12 @@
         <div>
             <a class='@(Context.Request.Path == "/"        ? "active" : "")' href="/">Home </a>
             <a class='@(Context.Request.Path == "/Privacy" ? "active" : "")' href="/Privacy">Privacy</a>
-            @* <a class='@(Context.Request.Path == "/Chirp" ? "active" : "")' href="Chirp" >Chirp! </a> *@
+            <a class='@(Context.Request.Path != "/" && 
+                        Context.Request.Path != "/Privacy" && 
+                        Context.Request.Path != "/Profile" &&
+                        Context.Request.Path != "/Claims" &&
+                        Context.Request.Path != "/SeedDB" ? "active" : "")' 
+                        href="@(User.Identity?.Name)">User-Timeline</a>
             <a class='@(Context.Request.Path == "/Profile" ? "active" : "")' href="Profile">Profile</a>
             <a class='@(Context.Request.Path == "/Claims"  ? "active" : "")' href="/Claims">Claims </a>
             <a class='@(Context.Request.Path == "/SeedDB"  ? "active" : "")' href="/SeedDB">SeedDB </a>
