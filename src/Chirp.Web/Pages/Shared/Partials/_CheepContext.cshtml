@@ -44,27 +44,35 @@
             <div class="reactions-container">
 
                 @* Follower *@
-                @if (User.Identity?.IsAuthenticated == true)
+                @if (User.Identity?.IsAuthenticated == true && cheep.AuthorName != User.Identity.Name)
                 {
-                    @if (cheep.AuthorName != User.Identity.Name)
-                    {
-                        <div>
-                            <form method="post" asp-page-handler="Follow" asp-route-authorName="@cheep.AuthorName" asp-route-followerName="@User.Identity?.Name">
-                                <button class="follow-btn follow">follow</button>
-                                <button class="follow-btn unfollow">unfollow</button> 
-                            </form>
-
-                        </div>
-                    }
-                    else
-                    {
-                        <div></div>  // necessary for how the css is set up
-                    }
-                } 
-                else 
+                    <div>
+                        <form method="post" asp-page-handler="Follow" asp-route-authorName="@cheep.AuthorName" asp-route-followerName="@User.Identity?.Name">
+                            @if (Model.FollowStatus.TryGetValue(cheep.AuthorName, out bool isFollowing) && isFollowing)
+                            {
+                                <button class="follow-btn unfollow" type="submit">Unfollow</button>
+                            }
+                            else
+                            {
+                                <button class="follow-btn follow" type="submit">Follow</button>
+                            }
+                        </form>
+                    </div>
+                }
+                else
                 {
                     <div></div>
                 }
+
+
+
+
+
+
+
+
+
+                
 
                 <div class="reactions-right-container">
                     <div class="reaction-item test">

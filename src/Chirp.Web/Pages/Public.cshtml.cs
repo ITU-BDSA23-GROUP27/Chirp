@@ -26,7 +26,8 @@ public class PublicModel : PageModel
     public int EndPage { get; set; }
     public int DisplayRange { get; set; } = 5;
     public int CheepMaxLength { get; set; } = 160;
-    
+    public Dictionary<string, bool> FollowStatus { get; set; } = new Dictionary<string, bool>();
+
     
     [BindProperty, StringLength(160), Required]
     public string? CheepMessage { get; set; }
@@ -63,6 +64,22 @@ public class PublicModel : PageModel
             Console.WriteLine("Not Authenticated");
         }
         
+        Cheeps = _cheepRepository.GetCheepsFromPage(CurrentPage);
+
+        // Set follow status for each cheep author
+        if (User.Identity?.IsAuthenticated == true)
+        {
+            foreach (var cheep in Cheeps)
+            {
+                var authorName = cheep.AuthorName;
+                var isFollowing = _followerRepository
+                    .GetFollowersFromAuthor(authorName)
+                    .Any(follower => follower.Name == User.Identity.Name);
+
+                FollowStatus[authorName] = isFollowing;
+            }
+        }
+
         //The following if statement has been made with the help of CHAT-GPT
         if (int.TryParse(Request.Query["page"], out int parsedPage) && parsedPage > 0)
         {
@@ -81,6 +98,7 @@ public class PublicModel : PageModel
 
         return Page();
     }
+
     public ActionResult OnPostChirp()
     {
         // TODO Refactor to a class called Utility

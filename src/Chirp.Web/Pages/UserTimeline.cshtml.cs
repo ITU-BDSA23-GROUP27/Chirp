@@ -28,6 +28,7 @@ public class UserTimelineModel : PageModel
     public int DisplayRange { get; set; } = 5;
     public string? RouteName { get; set; }
     public int CheepMaxLength { get; set; } = 160;
+    public Dictionary<string, bool> FollowStatus { get; set; } = new Dictionary<string, bool>();
 
 
     [BindProperty, StringLength(160), Required]
@@ -57,6 +58,21 @@ public class UserTimelineModel : PageModel
         foreach (var authorDto in Followers)
         {
             Cheeps = Cheeps.Union(_cheepRepository.GetCheepsFromAuthor(authorDto.Name));
+        }
+
+
+        // Set follow status for each cheep author
+        if (User.Identity?.IsAuthenticated == true)
+        {
+            foreach (var cheep in Cheeps)
+            {
+                var authorName = cheep.AuthorName;
+                var isFollowing = _followerRepository
+                    .GetFollowersFromAuthor(authorName)
+                    .Any(follower => follower.Name == User.Identity.Name);
+
+                FollowStatus[authorName] = isFollowing;
+            }
         }
         
         Cheeps = Cheeps
