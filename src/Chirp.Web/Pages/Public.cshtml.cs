@@ -112,8 +112,9 @@ public class PublicModel : PageModel
             throw new ArgumentNullException($"Followername is null {nameof(followerName)}");
         }
         
-        _followerRepository.AddFollower(authorName, followerName);
-        return Page();
+        _followerRepository.AddOrRemoveFollower(authorName, followerName);
+
+        return RedirectToPage(""); //TODO Needs to be changes so it does not redirect but instead refreshes at the same point
     }
 
     public IActionResult OnPostAuthenticateLogin()
