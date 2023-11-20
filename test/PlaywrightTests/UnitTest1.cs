@@ -7,13 +7,12 @@ namespace PlaywrightTests
     [TestFixture]
     public class Tests
     {
-        //? How to run the test
-        // pwsh bin/Debug/net7.0/playwright.ps1 codegen http://localhost:5273/
+        //? Recording test with Playwright
+        //# pwsh bin/Debug/net7.0/playwright.ps1 codegen http://localhost:5273/
 
         private IBrowserContext _context;
         private IPage page;
-
-        // Set your own password in the environment variable PASSWORD (security reason)
+        private string account1 = "PhiVaGoo@gmail.com";
         private string password = Environment.GetEnvironmentVariable("PASSWORD");
 
         [SetUp]
@@ -32,7 +31,7 @@ namespace PlaywrightTests
         }
 
         [Test]
-        public async Task AppHasPlaywrightTest()
+        public async Task LoginAndSeedDbInitializer2AndFollowUnfollowAuthorsAndCheckUserTimeline()
         {
             await page.GotoAsync("http://localhost:5273/");
             await Task.Delay(1000);
@@ -43,7 +42,7 @@ namespace PlaywrightTests
             await page.GetByLabel("Username or email address").ClickAsync();
             await Task.Delay(1000);
 
-            await page.GetByLabel("Username or email address").FillAsync("PhiVaGoo@gmail.com");
+            await page.GetByLabel("Username or email address").FillAsync(account1);
             await Task.Delay(1000);
 
             await page.GetByLabel("Username or email address").PressAsync("Tab");
@@ -58,51 +57,41 @@ namespace PlaywrightTests
             await page.GetByRole(AriaRole.Link, new() { Name = "SeedDB" }).ClickAsync();
             await Task.Delay(1000);
 
-            void page_Dialog_EventHandler(object sender, IDialog dialog)
-            {
-                Console.WriteLine($"Dialog message: {dialog.Message}");
-                dialog.DismissAsync();
-                page.Dialog -= page_Dialog_EventHandler;
-            }
-            page.Dialog += page_Dialog_EventHandler;
             await page.GetByRole(AriaRole.Button, new() { Name = "Seed DB2" }).ClickAsync();
-
             await Task.Delay(2000);
 
-            await page.Locator("li").Filter(new() { HasText = "HelgeCPH 12-01-1992 04:00:00 Follows ondfisk Follow 0 0" }).GetByRole(AriaRole.Button).First.ClickAsync();
-            await Task.Delay(1000);
-            await page.EvaluateAsync("window.scrollBy(0, 300)");
+            // await page.Locator("li").Filter(new() { HasText = "HelgeCPH 12-01-1992 04:00:00 Follows ondfisk Follow 0 0" }).GetByRole(AriaRole.Button).First.ClickAsync();
+            await page.GetByRole(AriaRole.Button, new() { Name = "Write Cheep" }).ClickAsync();
+            await Task.Delay(2000);
+            await page.Locator("li").Filter(new() { HasText = "HelgeCPH" }).GetByRole(AriaRole.Button).First.ClickAsync();
             await Task.Delay(2000);
 
-            await page.Locator("li").Filter(new() { HasText = "Tien197 12-01-1991 06:00:00 Follows HelgeCPH & ondfisk Follow 0 0" }).GetByRole(AriaRole.Button).First.ClickAsync();
-            await Task.Delay(1000);
-            await page.EvaluateAsync("window.scrollBy(0, 300)");
+            await page.GetByRole(AriaRole.Button, new() { Name = "Write Cheep" }).ClickAsync();
+            await Task.Delay(2000);
+            await page.Locator("li").Filter(new() { HasText = "Tien197" }).GetByRole(AriaRole.Button).First.ClickAsync();
             await Task.Delay(2000);
 
-            await page.GetByText("Home Privacy User-Timeline Profile SeedDB").ClickAsync();
-            await Task.Delay(1000);
-            await page.EvaluateAsync("window.scrollBy(0, 300)");
+            await page.GetByText("User-Timeline").ClickAsync();
             await Task.Delay(2000);
 
+            await page.GetByRole(AriaRole.Button, new() { Name = "Write Cheep" }).ClickAsync();
+            await Task.Delay(2000);
             await page.Locator("li").Filter(new() { HasText = "HelgeCPH 12-01-1992 04:00:00 Follows ondfisk Unfollow 0 0" }).GetByRole(AriaRole.Button).First.ClickAsync();
-            await Task.Delay(1000);
-            await page.EvaluateAsync("window.scrollBy(0, 300)");
             await Task.Delay(2000);
 
+            await page.GetByRole(AriaRole.Button, new() { Name = "Write Cheep" }).ClickAsync();
+            await Task.Delay(2000);
             await page.Locator("li").Filter(new() { HasText = "Tien197 12-01-1991 06:00:00 Follows HelgeCPH & ondfisk Unfollow 0 0" }).Locator("#author").ClickAsync();
-            await Task.Delay(1000);
-            await page.EvaluateAsync("window.scrollBy(0, 300)");
             await Task.Delay(2000);
 
+            await page.GetByRole(AriaRole.Button, new() { Name = "Write Cheep" }).ClickAsync();
+            await Task.Delay(2000);
             await page.GetByRole(AriaRole.Button, new() { Name = "Unfollow" }).First.ClickAsync();
-            await Task.Delay(1000);
-            await page.EvaluateAsync("window.scrollBy(0, 300)");
-            await Task.Delay(3000);
-
-            await page.GetByText("Home Privacy User-Timeline Profile SeedDB").ClickAsync();
-            await Task.Delay(1000);
-            await page.EvaluateAsync("window.scrollBy(0, 300)");
             await Task.Delay(2000);
+
+            await page.GetByText("User-Timeline").ClickAsync();
+            await Task.Delay(5000);
+            // await page.EvaluateAsync("window.scrollBy(0, 300)");
 
         }
     }
