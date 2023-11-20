@@ -1,7 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Lemon&family=Poppins&family=Quicksand:wght@400;700&family=Roboto&family=Special+Elite&display=swap");
 
+.center {
+    text-align: center;
+}
+
+.end {
+    text-align: end;
+}
+
 div.page {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    margin-top: 120px;
 }
 
 div.page h1 {
@@ -114,24 +123,42 @@ header > .display-page {
     box-shadow: 0 0 5px 2px crimson;
 }
 
-.overlay {
+.overlay-2 {
     position: absolute;
     top: 0;
     right: 0;
     height: 100%;
     width: 70%;
     border-radius: 0 5px 5px 0px;
-    /* background-color: rgba(0, 0, 0, 0.1); */
+    background-color: rgba(0, 0, 0, 0.1);
     pointer-events: none;
     background: linear-gradient(#e3a27993, #c0b48a71);
-
-    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 8% 50%, 0% 0%);
-
+    background: linear-gradient(#e3a2794c, #c0b48a3d);
+    
+    clip-path: polygon(
+        0% 0%, 
+        100% 0%, 
+        100% 100%, 
+        0% 100%, 
+        8% 50%, 
+        0% 0%
+    );
+        
     z-index: 1;
 }
 
 #author {
     color: #0c9371;
+    text-shadow: 0px 0px 0.5px rgba(0, 0, 0, 0.5);
+}
+
+.date {
+    color: rgb(80, 127, 156) !important;
+    text-shadow: 0px 0px 0.5px rgba(0, 0, 0, 0.5);
+}
+
+.time {
+    color: #9c9c9c;
     text-shadow: 0px 0px 0.5px rgba(0, 0, 0, 0.5);
 }
 
@@ -145,15 +172,21 @@ header > .display-page {
 .reactions-container {
     display: flex;
     justify-content: right;
+    justify-content: space-between;
     /* justify-content: center; */
     align-items: center;
     padding: 3px 10px;
     /* margin: 10px 0; */
     border-radius: 5px;
-    gap: 40px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-
+    
     background-color: #ffffff69;
+    height: 25px;
+}
+
+.reactions-right-container {
+    gap: 40px;
+    display: flex;
 }
 
 .grey,
@@ -181,6 +214,42 @@ header > .display-page {
 .test {
     color: #c8c8c8;
     cursor: not-allowed;
+}
+
+
+.follow-btn {
+    background-color: transparent;
+    color: #040404;
+    border-radius: 5px;
+    border: none;
+    width: 80px;
+    height: 20px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.follow {
+    background-color: #0c9371;
+    color: #fff;
+    border-radius: 5px;
+    width: 80px;
+    transition: background-color 0.3s ease, color 0.3s ease;    
+}
+
+.unfollow {
+    background-color: #e0245e;
+    color: #fff;
+    border-radius: 5px;
+    width: 80px;
+    transition: background-color 0.3s ease, color 0.3s ease;    
+}
+
+.follow:hover {
+    background-color: #0a785d;
+}
+
+.unfollow:hover {
+    background-color: #ba1f50;
 }
 
 /* Privacy */

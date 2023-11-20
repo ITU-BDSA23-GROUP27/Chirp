@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Chirp.Core;
 using Chirp.Core.DTOs;
+using Chirp.Infrastructure.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
@@ -15,8 +16,10 @@ public class UserTimelineModel : PageModel
     private IValidator<CheepDto> _validator;
 
     private readonly ICheepRepository _cheepRepository;
-    private readonly IAuthorRepository _authorRepository;    
+    private readonly IAuthorRepository _authorRepository;
+    private readonly IFollowerRepository _followerRepository;
     public IEnumerable<CheepDto> Cheeps { get; set; } = new List<CheepDto>();
+    public IEnumerable<AuthorDto> Followers { get; set; } = new List<AuthorDto>();
     public int CurrentPage { get; set; } = 1;
     public int MaxCheepsPerPage { get; set; } = 32;
     public int TotalPageCount { get; set; }
@@ -25,15 +28,17 @@ public class UserTimelineModel : PageModel
     public int DisplayRange { get; set; } = 5;
     public string? RouteName { get; set; }
     public int CheepMaxLength { get; set; } = 160;
+    public Dictionary<string, bool> FollowStatus { get; set; } = new Dictionary<string, bool>();
 
 
     [BindProperty, StringLength(160), Required]
     public string? CheepMessage { get; set; }
 
-    public UserTimelineModel(ICheepRepository cheepRepository, IAuthorRepository authorRepository, IValidator<CheepDto> validator)
+    public UserTimelineModel(ICheepRepository cheepRepository, IAuthorRepository authorRepository, IFollowerRepository followerRepository, IValidator<CheepDto> validator)
     {
         _cheepRepository = cheepRepository;
         _authorRepository = authorRepository;
+        _followerRepository = followerRepository;
         _validator = validator;
     }
 
@@ -44,8 +49,39 @@ public class UserTimelineModel : PageModel
         {
             CurrentPage = parsedPage;
         }
+        
+        //Creates timeline from original cheeps and followees cheeps
+        Followers = _followerRepository.GetFolloweesFromAuthor(author);
+        Cheeps = _cheepRepository.GetCheepsFromAuthor(author);
 
-        Cheeps = _cheepRepository.GetCheepsFromAuthorPage(author, CurrentPage);
+        // Set follow status for each cheep author
+        if (User.Identity?.IsAuthenticated == true)
+        {
+            // Include followers' cheeps only for the logged-in user's timeline
+            if (author == User.Identity.Name)
+            {
+                foreach (var authorDto in Followers)
+                {
+                    Cheeps = Cheeps.Union(_cheepRepository.GetCheepsFromAuthor(authorDto.Name));
+                }
+            }   
+            foreach (var cheep in Cheeps)
+            {
+                var authorName = cheep.AuthorName;
+                var isFollowing = _followerRepository
+                    .GetFollowersFromAuthor(authorName)
+                    .Any(follower => follower.Name == User.Identity.Name);
+
+                FollowStatus[authorName] = isFollowing;
+            }
+        }
+        
+        Cheeps = Cheeps
+            .OrderByDescending(c => c.TimeStamp)
+            .Skip((CurrentPage - 1) * MaxCheepsPerPage)
+            .Take(MaxCheepsPerPage);
+        
+        // ----------------------------------------------------------
 
         if (GetTotalPages(author) == 0)
         {
@@ -97,6 +133,22 @@ public class UserTimelineModel : PageModel
     {
         HttpContext.SignOutAsync();
         return RedirectToPage("Public");
+    }
+    
+    public IActionResult OnPostFollow(string authorName, string followerName)
+    {
+        if (authorName is null)
+        {
+            throw new ArgumentNullException($"Authorname is null {nameof(authorName)}");
+        }
+        if (followerName is null)
+        {
+            throw new ArgumentNullException($"Followername is null {nameof(followerName)}");
+        }
+        
+        _followerRepository.AddOrRemoveFollower(authorName, followerName);
+
+        return RedirectToPage(""); //TODO Needs to be changes so it does not redirect but instead refreshes at the same point
     }
 
     public ActionResult OnPostChirp()

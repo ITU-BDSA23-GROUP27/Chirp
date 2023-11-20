@@ -11,6 +11,7 @@ public sealed class ChirpContext : DbContext
 {
     public DbSet<Cheep> Cheeps => Set<Cheep>();
     public DbSet<Author> Authors => Set<Author>();
+    public DbSet<Follower> Followers => Set<Follower>();
 
     public ChirpContext(DbContextOptions<ChirpContext> options): base(options)
     {

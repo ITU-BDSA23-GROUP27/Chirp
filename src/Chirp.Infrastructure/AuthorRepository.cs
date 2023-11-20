@@ -1,6 +1,7 @@
 using Chirp.Core;
 using Chirp.Core.DTOs;
 using Chirp.Infrastructure.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure;
 

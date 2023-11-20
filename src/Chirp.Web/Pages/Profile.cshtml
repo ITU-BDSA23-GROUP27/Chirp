@@ -3,4 +3,47 @@
 @{
 }
 
-<h2>Unimplemented</h2>
+@{
+    if (!User.Identity?.IsAuthenticated == true)
+    {
+        RedirectToPage("/");
+    }
+}
+
+<h2>Profile</h2>
+
+<div class="user-info">
+    <img class="api-avatar_url claim-img" alt="">
+    <p>
+        <span class="label">ID:</span> 
+        <span class="api-id"><span/>
+    </p>
+    <p>
+        <span class="label">Username:</span> 
+        <span class="api-login"><span/>
+    <p>
+        <span class="label">Name:</span> 
+        <span class="api-name"><span/>
+    </p>
+    <p>
+        <span class="label">GitHub URL:</span> 
+        <a href="@Model.GithubURL" target="_blank">@Model.GithubURL</a>
+    </p>
+</div>
+
+<div>
+    <h3>Followers</h3>
+    <p>List of followers</p>
+</div>
+
+
+
+<script>
+    var GithubURL = '@Model.GithubURL';
+</script>
+
+<script src="/js/claims.js"></script>
+
+<div class="end">
+    <button class="unseed-btn">Delete Account</button>
+</div>

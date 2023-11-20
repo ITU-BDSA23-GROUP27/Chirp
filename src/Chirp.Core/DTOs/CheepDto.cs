@@ -10,6 +10,8 @@ public class CheepDto
     public required string Message { get; set; }
     public required string TimeStamp { get; set; }
     public required string AuthorName { get; set; }
+    public bool IsCurrentUserFollowing { get; set; }
+
 }
 
 public class CheepValidator : AbstractValidator<CheepDto>

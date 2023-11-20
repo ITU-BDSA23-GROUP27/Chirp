@@ -8,11 +8,12 @@
                 <div class="avatar-container">
                     @if (cheep.AuthorName == "PhiVaLo" || cheep.AuthorName == "Tien197")
                     {
-                        <img class="avatar avatar-glow" src="https://avatars.githubusercontent.com/@(cheep.AuthorName)" alt="Icon1"/>
+                        <img class="avatar avatar-glow" src="https://avatars.githubusercontent.com/@(cheep.AuthorName)"
+                            alt="Icon1" />
                     }
-                    else 
+                    else
                     {
-                        <img class="avatar" src="https://avatars.githubusercontent.com/@(cheep.AuthorName)" alt="Icon1"/>
+                        <img class="avatar" src="https://avatars.githubusercontent.com/@(cheep.AuthorName)" alt="Icon1" />
                     }
                 </div>
 
@@ -24,7 +25,9 @@
                         </strong>
                     </p>
                     <p id="cheep-content">
-                        <small>@cheep.TimeStamp</small>
+                        @* <small>@cheep.TimeStamp</small> *@
+                        <small class="date">@DateTime.ParseExact(cheep.TimeStamp, "MM/dd/yyyy HH:mm:ss", null).ToString("MM/dd/yyyy")</small><br>
+                        <small class="time">@DateTime.ParseExact(cheep.TimeStamp, "MM/dd/yyyy HH:mm:ss", null).ToString("HH:mm:ss")</small>                        
                     </p>
                 </div>
                 <div class="right-content">
@@ -33,25 +36,60 @@
                     </p>
                 </div>
 
-                <div class="overlay"></div>
+                <div class="overlay-2"></div>
+
             </div>
 
             @* Reactions *@
             <div class="reactions-container">
-                <div class="reaction-item test">
-                    <button class="reaction-btn test" title="Reply">
-                        <i class="fa-regular fa-comment"></i>
-                    </button>
-                    <span class="reaction-count">0</span>
-                </div>
+
+                @* Follower *@
+                @if (User.Identity?.IsAuthenticated == true && cheep.AuthorName != User.Identity.Name)
+                {
+                    <div>
+                        <form method="post" asp-page-handler="Follow" asp-route-authorName="@cheep.AuthorName" asp-route-followerName="@User.Identity?.Name">
+                            @if (Model.FollowStatus.TryGetValue(cheep.AuthorName, out bool isFollowing) && isFollowing)
+                            {
+                                <button class="follow-btn unfollow" type="submit">Unfollow</button>
+                            }
+                            else
+                            {
+                                <button class="follow-btn follow" type="submit">Follow</button>
+                            }
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <div></div>
+                }
+
+
+
+
+
+
+
+
+
                 
-                <div class="reaction-item">
-                    @* TODO - needs to interfact with database *@
-                    <button class="reaction-btn likes-btn" title="Like">
-                        <i class="fa-regular fa-heart grey"></i>
-                    </button>
-                    @* TODO - count = number of likes by users *@
-                    <span class="reaction-count">0</span>
+
+                <div class="reactions-right-container">
+                    <div class="reaction-item test">
+                        <button class="reaction-btn test" title="Reply">
+                            <i class="fa-regular fa-comment"></i>
+                        </button>
+                        <span class="reaction-count">0</span>
+                    </div>
+
+                    <div class="reaction-item">
+                        @* TODO - needs to interfact with database *@
+                        <button class="reaction-btn likes-btn" title="Like">
+                            <i class="fa-regular fa-heart grey"></i>
+                        </button>
+                        @* TODO - count = number of likes by users *@
+                        <span class="reaction-count">0</span>
+                    </div>
                 </div>
             </div>
         </li>
