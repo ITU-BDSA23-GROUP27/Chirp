@@ -24,6 +24,7 @@ public class SeedDBModel : PageModel
         return Page();
     }
 
+    // button for seeding DbInitializer
     public IActionResult OnPostSeedDatabase()
     {
         _context.Database.EnsureDeleted();
@@ -31,7 +32,17 @@ public class SeedDBModel : PageModel
         DbInitializer.SeedDatabase(_context);
         return RedirectToPage("/Public");
     }
+
+    // button for seeding DbInitializer2 (authors with followers)
+    public IActionResult OnPostSeedDatabase2()
+    {
+        _context.Database.EnsureDeleted();
+        _context.Database.Migrate();
+        DbInitializer2.SeedDatabase2(_context);
+        return RedirectToPage("/Public");
+    }
     
+    // button for deleting all data from database (table remains)
     public IActionResult OnPostClearDatabase()
     {
         _context.Database.EnsureDeleted();
