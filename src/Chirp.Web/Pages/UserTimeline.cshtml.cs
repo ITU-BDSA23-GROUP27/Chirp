@@ -50,20 +50,21 @@ public class UserTimelineModel : PageModel
             CurrentPage = parsedPage;
         }
         
-        
         //Creates timeline from original cheeps and followees cheeps
         Followers = _followerRepository.GetFolloweesFromAuthor(author);
         Cheeps = _cheepRepository.GetCheepsFromAuthor(author);
 
-        foreach (var authorDto in Followers)
-        {
-            Cheeps = Cheeps.Union(_cheepRepository.GetCheepsFromAuthor(authorDto.Name));
-        }
-
-
         // Set follow status for each cheep author
         if (User.Identity?.IsAuthenticated == true)
         {
+            // Include followers' cheeps only for the logged-in user's timeline
+            if (author == User.Identity.Name)
+            {
+                foreach (var authorDto in Followers)
+                {
+                    Cheeps = Cheeps.Union(_cheepRepository.GetCheepsFromAuthor(authorDto.Name));
+                }
+            }   
             foreach (var cheep in Cheeps)
             {
                 var authorName = cheep.AuthorName;
