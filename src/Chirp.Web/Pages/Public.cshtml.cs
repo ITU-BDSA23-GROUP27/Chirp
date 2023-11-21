@@ -56,6 +56,8 @@ public class PublicModel : BasePageModel
             }
         }
         
+        Cheeps = _cheepRepository.GetCheepsFromPage(CurrentPage);
+        
         // Set follow status for each cheep author
         if (User.Identity?.IsAuthenticated == true)
         {
