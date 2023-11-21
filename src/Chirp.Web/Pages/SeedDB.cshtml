@@ -15,20 +15,28 @@
     <p> This will clear the database and seed it with test data. </p>
     <div class="seed-container">
         <form method="post" asp-page-handler="SeedDatabase" onsubmit="return confirmAction('reset')">
-            <button class="seed-btn">Reset Database</button>
+            <button class="seed-btn">Seed DB1</button>
+        </form>
+
+        <form method="post" asp-page-handler="SeedDatabase2" onsubmit="return confirmAction('reset')">
+            <button class="seed-btn">Seed DB2</button>
         </form>
 
         <form method="post" asp-page-handler="ClearDatabase" onsubmit="return confirmAction('clear')">
             <button class="unseed-btn">Clear Database</button>
         </form>
     </div>
+
 </div>
+   <ul>
+        <li><b>Seed DB1</b>: Seed test data from DbInitializer</li>
+        <li><b>Seed DB2</b>: Seed test data from DbInitializer2 (includes author following other authors)</li>
+    </ul>
 
 @*! temporary todo list *@
-<div class="seed-info" style="text-align: left; color: red">
-    <ul>
-        <li>This page will be restricted to certain users later</li>
-    </ul>
+<div class="seed-info" style="text-align: center; color: red">
+    <p>This page will be restricted to certain users later</p>
 </div>
 
-<script src="/js/seedDB.js"></script>
+@*! Alert boxes is fine in production - For UI-Test (Playwright), a slightly different code is needed to trigger this!  *@
+@* <script src="/js/seedDB.js"></script> *@
