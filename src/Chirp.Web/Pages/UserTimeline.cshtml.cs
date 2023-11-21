@@ -28,7 +28,6 @@ public class UserTimelineModel : BasePageModel
     public Dictionary<string, bool> FollowStatus { get; set; } = new Dictionary<string, bool>();
     public int TotalFollowerCheepCount { get; set; }
 
-
     [BindProperty, StringLength(160), Required]
     public string? CheepMessage { get; set; }
 
@@ -55,7 +54,6 @@ public class UserTimelineModel : BasePageModel
             {
                 return RedirectToPage("/Public");
             }
-            
         }
         
         //The following if statement has been made with the help of CHAT-GPT
@@ -97,8 +95,7 @@ public class UserTimelineModel : BasePageModel
             .Skip((CurrentPage - 1) * MaxCheepsPerPage)
             .Take(MaxCheepsPerPage);
         
-        // ----------------------------------------------------------
-
+        // Pagination
         TotalPageCount = GetTotalPages(author) == 0 ? 1 : GetTotalPages(author);
         CalculatePagination();
 
