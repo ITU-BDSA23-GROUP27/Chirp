@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using Chirp.Core;
 using Chirp.Core.DTOs;
 using Chirp.Infrastructure.Entities;
@@ -92,7 +93,7 @@ public class UserTimelineModel : BasePageModel
         }
         
         Cheeps = Cheeps
-            .OrderByDescending(c => c.TimeStamp)
+            .OrderByDescending(c => DateTime.ParseExact(c.TimeStamp, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture))
             .Skip((CurrentPage - 1) * MaxCheepsPerPage)
             .Take(MaxCheepsPerPage);
         
