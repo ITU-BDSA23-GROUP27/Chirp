@@ -2,7 +2,6 @@
 using Chirp.Core;
 using Chirp.Core.DTOs;
 using FluentValidation;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Chirp.Web.Pages;
@@ -90,27 +89,6 @@ public class PublicModel : BasePageModel
 
         return Page();
     }
-
-    public IActionResult OnPostChirp()
-    {
-        return Chirp(CheepMessage, _validator, _cheepRepository);
-    }    
-
-    public IActionResult OnPostFollow(string authorName, string followerName)
-    {
-        return HandleFollow(authorName, followerName, _followerRepository);
-
-    }
-
-    public IActionResult OnPostAuthenticateLogin()
-    {
-        return HandleAuthenticateLogin();
-    }
-
-    public IActionResult OnPostLogOut()
-    {
-        return HandleLogOut();
-    }
     
     public int GetTotalPages()
     {
@@ -134,5 +112,26 @@ public class PublicModel : BasePageModel
                 EndPage = Math.Min(TotalPageCount, StartPage + DisplayRange - 1);
             }
         }
+    }
+    
+    public IActionResult OnPostChirp()
+    {
+        return Chirp(CheepMessage, _validator, _cheepRepository);
+    }    
+
+    public IActionResult OnPostFollow(string authorName, string followerName)
+    {
+        return HandleFollow(authorName, followerName, _followerRepository);
+
+    }
+    
+    public IActionResult OnPostAuthenticateLogin()
+    {
+        return HandleAuthenticateLogin();
+    }
+
+    public IActionResult OnPostLogOut()
+    {
+        return HandleLogOut();
     }
 }

@@ -1,14 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Chirp.Core;
 using Chirp.Core.DTOs;
-using Chirp.Infrastructure.Entities;
-using Chirp.Web.Areas.Identity.Pages;
 using FluentValidation;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using FluentValidation.Results;
-using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace Chirp.Web.Pages;
 
@@ -49,7 +43,6 @@ public class UserTimelineModel : BasePageModel
         {
             try
             {
-                
                 //TODO Problem: Can't find github authors in http since it makes it lowercase e.g. "/Tien197" -> "/tien197"   
                 var existingAuthor = _authorRepository.GetAuthorByName(author);
                 
@@ -101,12 +94,7 @@ public class UserTimelineModel : BasePageModel
         
         // ----------------------------------------------------------
 
-        if (GetTotalPages(author) == 0)
-        {
-            TotalPageCount = 1;
-        } else {
-            TotalPageCount = GetTotalPages(author);
-        }
+        TotalPageCount = GetTotalPages(author) == 0 ? 1 : GetTotalPages(author);
         CalculatePagination();
 
         // Author's name
@@ -138,6 +126,17 @@ public class UserTimelineModel : BasePageModel
             }
         }
     }
+    
+    public IActionResult OnPostChirp()
+    {
+        return Chirp(CheepMessage, _validator, _cheepRepository);
+    }   
+    
+    public IActionResult OnPostFollow(string authorName, string followerName)
+    {
+        return HandleFollow(authorName, followerName, _followerRepository);
+    }
+    
     public IActionResult OnPostAuthenticateLogin()
     {
         return HandleAuthenticateLogin();
@@ -147,14 +146,4 @@ public class UserTimelineModel : BasePageModel
     {
         return HandleLogOut();
     }
-    
-    public IActionResult OnPostFollow(string authorName, string followerName)
-    {
-        return HandleFollow(authorName, followerName, _followerRepository);
-    }
-    
-    public IActionResult OnPostChirp()
-    {
-        return Chirp(CheepMessage, _validator, _cheepRepository);
-    }    
 }

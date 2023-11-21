@@ -1,23 +1,16 @@
 using Chirp.Infrastructure;
 using Chirp.Infrastructure.Data;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Web.Pages;
-public class SeedDBModel : BasePageModel
+public class SeedDbModel : BasePageModel
 {
     private readonly ChirpContext _context;
     
-    public SeedDBModel(ChirpContext context)
+    public SeedDbModel(ChirpContext context)
     {
         _context = context;
-    }
-    
-    public IActionResult OnGet()
-    {
-        return HandleNotAuthenticated();
     }
 
     public IActionResult OnPostSeedDatabase()
@@ -33,6 +26,11 @@ public class SeedDBModel : BasePageModel
         _context.Database.EnsureDeleted();
         _context.Database.Migrate();
         return RedirectToPage("/Public");
+    }
+    
+    public IActionResult OnGet()
+    {
+        return HandleNotAuthenticated();
     }
 
     public IActionResult OnPostLogOut()
