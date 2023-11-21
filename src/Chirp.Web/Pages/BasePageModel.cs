@@ -2,6 +2,7 @@ using Chirp.Core;
 using Chirp.Core.DTOs;
 using FluentValidation;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -37,5 +38,14 @@ public class BasePageModel : PageModel
         if (result.IsValid) cheepRepository.CreateCheep(cheep);
         
         return RedirectToPage("Public");
+    }
+
+    protected IActionResult HandleAuthenticateLogin()
+    {
+        var props = new AuthenticationProperties
+        {
+            RedirectUri = Url.Page("/"),
+        };
+        return Challenge(props);
     }
 }

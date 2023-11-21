@@ -114,11 +114,7 @@ public class PublicModel : BasePageModel
 
     public IActionResult OnPostAuthenticateLogin()
     {
-        var props = new AuthenticationProperties
-        {
-            RedirectUri = Url.Page("/"),
-        };
-        return Challenge(props);
+        return HandleAuthenticateLogin();
     }
 
     public IActionResult OnPostLogOut()

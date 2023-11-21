@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Web.Pages;
 
-public class PrivacyModel : PageModel
+public class PrivacyModel : BasePageModel
 {
     private readonly ILogger<PrivacyModel> _logger;
 
@@ -15,13 +15,8 @@ public class PrivacyModel : PageModel
     
     public IActionResult OnPostAuthenticateLogin()
     {
-        var props = new AuthenticationProperties
-        {
-            RedirectUri = Url.Page("/"),
-        };
-        return Challenge(props);
+        return HandleAuthenticateLogin();
     }
-
     public IActionResult OnPostLogOut()
     {
         HttpContext.SignOutAsync();

@@ -34,15 +34,6 @@ public class SeedDBModel : BasePageModel
         _context.Database.Migrate();
         return RedirectToPage("/Public");
     }
-    
-    public IActionResult OnPostAuthenticateLogin()
-    {
-        var props = new AuthenticationProperties
-        {
-            RedirectUri = Url.Page("/"),
-        };
-        return Challenge(props);
-    }
 
     public IActionResult OnPostLogOut()
     {

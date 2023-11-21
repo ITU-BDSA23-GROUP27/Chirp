@@ -22,15 +22,6 @@ public class ProfileModel : BasePageModel
         return Page();
     }
     
-    public IActionResult OnPostAuthenticateLogin()
-    {
-        var props = new AuthenticationProperties
-        {
-            RedirectUri = Url.Page("/"),
-        };
-        return Challenge(props);
-    }
-
     public IActionResult OnPostLogOut()
     {
         HttpContext.SignOutAsync();
