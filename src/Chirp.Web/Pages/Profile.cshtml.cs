@@ -4,25 +4,21 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Web.Pages;
 
-public class ProfileModel : PageModel
+public class ProfileModel : BasePageModel
 {
     public string? GithubURL { get; set; }
 
     public IActionResult OnGet()
     {
-        if (User.Identity?.IsAuthenticated == false)
+        if (User.Identity?.IsAuthenticated == false) return HandleNotAuthenticated();
+               
+        foreach (var claim in User.Claims)
         {
-            return RedirectToPage("/Public");
-        }        
-        else
-        {
-            foreach (var claim in User.Claims)
-            {
                 Console.WriteLine($"Claim Type: {claim.Type}, Claim Value: {claim.Value}");
-            }
-
-            GithubURL = User.FindFirst("urn:github:url")?.Value;
         }
+
+        GithubURL = User.FindFirst("urn:github:url")?.Value;
+        
         return Page();
     }
     

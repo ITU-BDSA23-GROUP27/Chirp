@@ -59,13 +59,7 @@ public class PublicModel : PageModel
                 Console.WriteLine(ex.Message);
             }
         }
-        else
-        {
-            Console.WriteLine("Not Authenticated");
-        }
         
-        Cheeps = _cheepRepository.GetCheepsFromPage(CurrentPage);
-
         // Set follow status for each cheep author
         if (User.Identity?.IsAuthenticated == true)
         {
