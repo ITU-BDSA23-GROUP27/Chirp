@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Chirp.Core;
 using Chirp.Core.DTOs;
+using Chirp.Infrastructure.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,6 +25,7 @@ public class UserTimelineModel : BasePageModel
     public string? RouteName { get; set; }
     public int CheepMaxLength { get; set; } = 160;
     public Dictionary<string, bool> FollowStatus { get; set; } = new Dictionary<string, bool>();
+    public int TotalFollowerCheepCount { get; set; }
 
 
     [BindProperty, StringLength(160), Required]
@@ -73,7 +75,9 @@ public class UserTimelineModel : BasePageModel
             {
                 foreach (var authorDto in Followers)
                 {
-                    Cheeps = Cheeps.Union(_cheepRepository.GetCheepsFromAuthor(authorDto.Name));
+                    var followerCheeps = _cheepRepository.GetCheepsFromAuthor(authorDto.Name);
+                    Cheeps = Cheeps.Union(followerCheeps);
+                    TotalFollowerCheepCount += followerCheeps.Count();
                 }
             }   
             foreach (var cheep in Cheeps)
@@ -105,7 +109,7 @@ public class UserTimelineModel : BasePageModel
 
     public int GetTotalPages(string author)
     {
-        int totalCheeps = _cheepRepository.GetCheepsFromAuthor(author).Count();
+        int totalCheeps = _cheepRepository.GetCheepsFromAuthor(author).Count() + TotalFollowerCheepCount;
         return (int)Math.Ceiling((double)totalCheeps / MaxCheepsPerPage);
     }
 
