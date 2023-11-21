@@ -1,17 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Chirp.Core;
 using Chirp.Core.DTOs;
-using Chirp.Infrastructure.Entities;
 using FluentValidation;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using FluentValidation.Results;
-using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace Chirp.Web.Pages;
 
-public class UserTimelineModel : PageModel
+public class UserTimelineModel : BasePageModel
 {
     private IValidator<CheepDto> _validator;
 
@@ -44,6 +39,22 @@ public class UserTimelineModel : PageModel
 
     public ActionResult OnGet(string author)
     {
+        if (User.Identity?.IsAuthenticated == false)
+        {
+            try
+            {
+                //TODO Problem: Can't find github authors in http since it makes it lowercase e.g. "/Tien197" -> "/tien197"   
+                var existingAuthor = _authorRepository.GetAuthorByName(author);
+                
+                // show cheeps of author
+            }
+            catch (ArgumentException e)
+            {
+                return RedirectToPage("/Public");
+            }
+            
+        }
+        
         //The following if statement has been made with the help of CHAT-GPT
         if (Request.Query.TryGetValue("page", out var pageValues) && int.TryParse(pageValues, out int parsedPage) && parsedPage > 0)
         {
@@ -83,12 +94,7 @@ public class UserTimelineModel : PageModel
         
         // ----------------------------------------------------------
 
-        if (GetTotalPages(author) == 0)
-        {
-            TotalPageCount = 1;
-        } else {
-            TotalPageCount = GetTotalPages(author);
-        }
+        TotalPageCount = GetTotalPages(author) == 0 ? 1 : GetTotalPages(author);
         CalculatePagination();
 
         // Author's name
@@ -120,74 +126,24 @@ public class UserTimelineModel : PageModel
             }
         }
     }
+    
+    public IActionResult OnPostChirp()
+    {
+        return Chirp(CheepMessage, _validator, _cheepRepository);
+    }   
+    
+    public IActionResult OnPostFollow(string authorName, string followerName)
+    {
+        return HandleFollow(authorName, followerName, _followerRepository);
+    }
+    
     public IActionResult OnPostAuthenticateLogin()
     {
-        var props = new AuthenticationProperties
-        {
-            RedirectUri = Url.Page("/"),
-        };
-        return Challenge(props);
+        return HandleAuthenticateLogin();
     }
 
     public IActionResult OnPostLogOut()
     {
-        HttpContext.SignOutAsync();
-        return RedirectToPage("Public");
+        return HandleLogOut();
     }
-    
-    public IActionResult OnPostFollow(string authorName, string followerName)
-    {
-        if (authorName is null)
-        {
-            throw new ArgumentNullException($"Authorname is null {nameof(authorName)}");
-        }
-        if (followerName is null)
-        {
-            throw new ArgumentNullException($"Followername is null {nameof(followerName)}");
-        }
-        
-        _followerRepository.AddOrRemoveFollower(authorName, followerName);
-
-        return RedirectToPage(""); //TODO Needs to be changes so it does not redirect but instead refreshes at the same point
-    }
-
-    public ActionResult OnPostChirp()
-    {
-        try
-        {
-            if (User.Identity?.Name != null)
-            {
-                var author = new AuthorDto
-                {
-                    Name = User.Identity.Name, //Might need to be changed to use only User.Identity (Does not work until users are implemented)
-                    Email = User.Identity.Name + "@chirp.com" //TODO: Needs to be removed
-                };
-
-                _authorRepository.CreateAuthor(author);
-            }
-        }
-        catch (ArgumentException ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
-
-        // TODO Refactor to a class called Utility
-        // Added one hour to UTC time to match the time of Copenhagen
-        DateTime currentUtcTime = DateTime.UtcNow.AddHours(1);
-
-
-        var cheep = new CheepDto
-        {
-            Message = CheepMessage?.Replace("\r\n", " ") ?? "",
-            TimeStamp = currentUtcTime.ToString(),
-            AuthorName = User.Identity?.Name ?? "Anonymous"
-        };
-        
-        ValidationResult result = _validator.Validate(cheep);
-
-        if (result.IsValid) _cheepRepository.CreateCheep(cheep);
-
-        
-        return RedirectToPage("Public");
-    }    
 }

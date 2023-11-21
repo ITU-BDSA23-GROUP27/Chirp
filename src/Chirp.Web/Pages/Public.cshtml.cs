@@ -1,17 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Chirp.Core;
 using Chirp.Core.DTOs;
-using Chirp.Web.Areas.Identity.Pages;
 using FluentValidation;
-using FluentValidation.Results;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace Chirp.Web.Pages;
 
-public class PublicModel : PageModel
+public class PublicModel : BasePageModel
 {
     private IValidator<CheepDto> _validator;
     
@@ -59,13 +54,9 @@ public class PublicModel : PageModel
                 Console.WriteLine(ex.Message);
             }
         }
-        else
-        {
-            Console.WriteLine("Not Authenticated");
-        }
         
         Cheeps = _cheepRepository.GetCheepsFromPage(CurrentPage);
-
+        
         // Set follow status for each cheep author
         if (User.Identity?.IsAuthenticated == true)
         {
@@ -98,57 +89,6 @@ public class PublicModel : PageModel
 
         return Page();
     }
-
-    public ActionResult OnPostChirp()
-    {
-        // TODO Refactor to a class called Utility
-        // Added one hour to UTC time to match the time of Copenhagen
-        DateTime currentUtcTime = DateTime.UtcNow.AddHours(1);
-        
-        var cheep = new CheepDto
-        {
-            Message = CheepMessage?.Replace("\r\n", " ") ?? "",
-            TimeStamp = currentUtcTime.ToString(),
-            AuthorName = User.Identity?.Name ?? "Anonymous"
-        };
-
-        ValidationResult result = _validator.Validate(cheep);
-
-        if (result.IsValid) _cheepRepository.CreateCheep(cheep);
-        
-        return RedirectToPage("Public");
-    }
-
-    public IActionResult OnPostFollow(string authorName, string followerName)
-    {
-        if (authorName is null)
-        {
-            throw new ArgumentNullException($"Authorname is null {nameof(authorName)}");
-        }
-        if (followerName is null)
-        {
-            throw new ArgumentNullException($"Followername is null {nameof(followerName)}");
-        }
-        
-        _followerRepository.AddOrRemoveFollower(authorName, followerName);
-
-        return RedirectToPage(""); //TODO Needs to be changes so it does not redirect but instead refreshes at the same point
-    }
-
-    public IActionResult OnPostAuthenticateLogin()
-    {
-        var props = new AuthenticationProperties
-        {
-            RedirectUri = Url.Page("/"),
-        };
-        return Challenge(props);
-    }
-
-    public IActionResult OnPostLogOut()
-    {
-        HttpContext.SignOutAsync();
-        return RedirectToPage("Public");
-    }
     
     public int GetTotalPages()
     {
@@ -172,5 +112,26 @@ public class PublicModel : PageModel
                 EndPage = Math.Min(TotalPageCount, StartPage + DisplayRange - 1);
             }
         }
+    }
+    
+    public IActionResult OnPostChirp()
+    {
+        return Chirp(CheepMessage, _validator, _cheepRepository);
+    }    
+
+    public IActionResult OnPostFollow(string authorName, string followerName)
+    {
+        return HandleFollow(authorName, followerName, _followerRepository);
+
+    }
+    
+    public IActionResult OnPostAuthenticateLogin()
+    {
+        return HandleAuthenticateLogin();
+    }
+
+    public IActionResult OnPostLogOut()
+    {
+        return HandleLogOut();
     }
 }

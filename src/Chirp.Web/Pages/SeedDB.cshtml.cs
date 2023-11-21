@@ -1,27 +1,16 @@
 using Chirp.Infrastructure;
 using Chirp.Infrastructure.Data;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Web.Pages;
-public class SeedDBModel : PageModel
+public class SeedDbModel : BasePageModel
 {
     private readonly ChirpContext _context;
     
-    public SeedDBModel(ChirpContext context)
+    public SeedDbModel(ChirpContext context)
     {
         _context = context;
-    }
-    
-    public IActionResult OnGet()
-    {
-        if (User.Identity?.IsAuthenticated == false)
-        {
-            return RedirectToPage("/Public");
-        }        
-        return Page();
     }
 
     // button for seeding DbInitializer
@@ -50,18 +39,13 @@ public class SeedDBModel : PageModel
         return RedirectToPage("/Public");
     }
     
-    public IActionResult OnPostAuthenticateLogin()
+    public IActionResult OnGet()
     {
-        var props = new AuthenticationProperties
-        {
-            RedirectUri = Url.Page("/"),
-        };
-        return Challenge(props);
+        return HandleNotAuthenticated();
     }
 
     public IActionResult OnPostLogOut()
     {
-        HttpContext.SignOutAsync();
-        return RedirectToPage("Public");
+        return HandleLogOut();
     }
 }

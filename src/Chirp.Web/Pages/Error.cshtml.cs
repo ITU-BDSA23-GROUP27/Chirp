@@ -6,7 +6,7 @@ namespace Chirp.Web.Pages;
 
 [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 [IgnoreAntiforgeryToken]
-public class ErrorModel : PageModel
+public class ErrorModel : BasePageModel
 {
     public string? RequestId { get; set; }
 
@@ -22,6 +22,16 @@ public class ErrorModel : PageModel
     public void OnGet()
     {
         RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+    }
+    
+    public IActionResult OnPostAuthenticateLogin()
+    {
+        return HandleAuthenticateLogin();
+    }
+    
+    public IActionResult OnPostLogOut()
+    {
+        return HandleLogOut();
     }
 }
 
