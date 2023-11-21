@@ -16,8 +16,13 @@ public class AuthorRepository : IAuthorRepository
 
     public AuthorDto GetAuthorByName(string authorName)
     {
-        var author = _context.Authors.First(a => a.Name == authorName);
+        var author = _context.Authors.FirstOrDefault(a => a.Name == authorName);
 
+        if (author is null)
+        {
+            throw new ArgumentException("Author doesn't exists: ", nameof(author));
+        }
+        
         return new AuthorDto()
         {
             Id = author.AuthorId,
