@@ -1,17 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Chirp.Core;
 using Chirp.Core.DTOs;
-using Chirp.Web.Areas.Identity.Pages;
 using FluentValidation;
-using FluentValidation.Results;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace Chirp.Web.Pages;
 
-public class PublicModel : PageModel
+public class PublicModel : BasePageModel
 {
     private IValidator<CheepDto> _validator;
     
@@ -93,25 +89,10 @@ public class PublicModel : PageModel
         return Page();
     }
 
-    public ActionResult OnPostChirp()
+    public IActionResult OnPostChirp()
     {
-        // TODO Refactor to a class called Utility
-        // Added one hour to UTC time to match the time of Copenhagen
-        DateTime currentUtcTime = DateTime.UtcNow.AddHours(1);
-        
-        var cheep = new CheepDto
-        {
-            Message = CheepMessage?.Replace("\r\n", " ") ?? "",
-            TimeStamp = currentUtcTime.ToString(),
-            AuthorName = User.Identity?.Name ?? "Anonymous"
-        };
-
-        ValidationResult result = _validator.Validate(cheep);
-
-        if (result.IsValid) _cheepRepository.CreateCheep(cheep);
-        
-        return RedirectToPage("Public");
-    }
+        return Chirp(CheepMessage, _validator, _cheepRepository);
+    }    
 
     public IActionResult OnPostFollow(string authorName, string followerName)
     {

@@ -12,7 +12,7 @@ using ValidationResult = FluentValidation.Results.ValidationResult;
 
 namespace Chirp.Web.Pages;
 
-public class UserTimelineModel : PageModel
+public class UserTimelineModel : BasePageModel
 {
     private IValidator<CheepDto> _validator;
 
@@ -168,44 +168,9 @@ public class UserTimelineModel : PageModel
 
         return RedirectToPage(""); //TODO Needs to be changes so it does not redirect but instead refreshes at the same point
     }
-
-    public ActionResult OnPostChirp()
+    
+    public IActionResult OnPostChirp()
     {
-        try
-        {
-            if (User.Identity?.Name != null)
-            {
-                var author = new AuthorDto
-                {
-                    Name = User.Identity.Name, //Might need to be changed to use only User.Identity (Does not work until users are implemented)
-                    Email = User.Identity.Name + "@chirp.com" //TODO: Needs to be removed
-                };
-
-                _authorRepository.CreateAuthor(author);
-            }
-        }
-        catch (ArgumentException ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
-
-        // TODO Refactor to a class called Utility
-        // Added one hour to UTC time to match the time of Copenhagen
-        DateTime currentUtcTime = DateTime.UtcNow.AddHours(1);
-
-
-        var cheep = new CheepDto
-        {
-            Message = CheepMessage?.Replace("\r\n", " ") ?? "",
-            TimeStamp = currentUtcTime.ToString(),
-            AuthorName = User.Identity?.Name ?? "Anonymous"
-        };
-        
-        ValidationResult result = _validator.Validate(cheep);
-
-        if (result.IsValid) _cheepRepository.CreateCheep(cheep);
-
-        
-        return RedirectToPage("Public");
+        return Chirp(CheepMessage, _validator, _cheepRepository);
     }    
 }
