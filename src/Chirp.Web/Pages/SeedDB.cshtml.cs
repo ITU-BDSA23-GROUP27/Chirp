@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Web.Pages;
-public class SeedDBModel : PageModel
+public class SeedDBModel : BasePageModel
 {
     private readonly ChirpContext _context;
     
@@ -17,11 +17,7 @@ public class SeedDBModel : PageModel
     
     public IActionResult OnGet()
     {
-        if (User.Identity?.IsAuthenticated == false)
-        {
-            return RedirectToPage("/Public");
-        }        
-        return Page();
+        return HandleNotAuthenticated();
     }
 
     public IActionResult OnPostSeedDatabase()

@@ -12,10 +12,6 @@ public class PrivacyModel : PageModel
     {
         _logger = logger;
     }
-
-    public void OnGet()
-    {
-    }
     
     public IActionResult OnPostAuthenticateLogin()
     {

@@ -44,6 +44,9 @@ public class UserTimelineModel : PageModel
 
     public ActionResult OnGet(string author)
     {
+        //TODO When user is not authenticated and searches after user-timeline, check if author exists and show all cheeps
+       
+        
         //The following if statement has been made with the help of CHAT-GPT
         if (Request.Query.TryGetValue("page", out var pageValues) && int.TryParse(pageValues, out int parsedPage) && parsedPage > 0)
         {
