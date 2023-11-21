@@ -145,8 +145,7 @@ public class UserTimelineModel : BasePageModel
 
     public IActionResult OnPostLogOut()
     {
-        HttpContext.SignOutAsync();
-        return RedirectToPage("Public");
+        return HandleLogOut();
     }
     
     public IActionResult OnPostFollow(string authorName, string followerName)

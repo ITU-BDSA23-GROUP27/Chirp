@@ -19,8 +19,7 @@ public class PrivacyModel : BasePageModel
     }
     public IActionResult OnPostLogOut()
     {
-        HttpContext.SignOutAsync();
-        return RedirectToPage("Public");
+        return HandleLogOut();
     }
 }
 

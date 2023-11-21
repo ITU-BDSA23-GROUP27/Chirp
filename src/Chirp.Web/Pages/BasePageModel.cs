@@ -48,4 +48,10 @@ public class BasePageModel : PageModel
         };
         return Challenge(props);
     }
+    
+    protected IActionResult HandleLogOut()
+    {
+        HttpContext.SignOutAsync();
+        return RedirectToPage("Public");
+    }
 }

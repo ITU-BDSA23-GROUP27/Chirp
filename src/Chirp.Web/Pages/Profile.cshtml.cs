@@ -24,7 +24,6 @@ public class ProfileModel : BasePageModel
     
     public IActionResult OnPostLogOut()
     {
-        HttpContext.SignOutAsync();
-        return RedirectToPage("Public");
+        return HandleLogOut();
     }
 }

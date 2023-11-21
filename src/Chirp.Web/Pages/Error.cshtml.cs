@@ -28,5 +28,10 @@ public class ErrorModel : BasePageModel
     {
         return HandleAuthenticateLogin();
     }
+    
+    public IActionResult OnPostLogOut()
+    {
+        return HandleLogOut();
+    }
 }
 

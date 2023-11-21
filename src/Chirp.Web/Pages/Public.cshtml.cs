@@ -119,8 +119,7 @@ public class PublicModel : BasePageModel
 
     public IActionResult OnPostLogOut()
     {
-        HttpContext.SignOutAsync();
-        return RedirectToPage("Public");
+        return HandleLogOut();
     }
     
     public int GetTotalPages()
