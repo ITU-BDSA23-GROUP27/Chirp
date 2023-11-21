@@ -20,22 +20,21 @@ public static void SeedDatabase2(ChirpContext chirpContext)
 
         // Cheeps
         var c100 = new Cheep() { CheepId = new Guid(), Author = a1, Text = "UI-Test with Playwright", TimeStamp = DateTime.Parse("1990-12-01 08:00:00") };
-        var c101 = new Cheep() { CheepId = new Guid(), Author = a1, Text = "UI-Test with Playwright", TimeStamp = DateTime.Parse("2023-01-01 07:00:00") };
 
-        var c200 = new Cheep() { CheepId = new Guid(), Author = a2, Text = "Follows HelgeCPH & ondfisk", TimeStamp = DateTime.Parse("1991-12-01 06:00:00") };
-        var c201 = new Cheep() { CheepId = new Guid(), Author = a2, Text = "Follows HelgeCPH & ondfisk", TimeStamp = DateTime.Parse("1990-12-01 05:00:00") };
-        var c202 = new Cheep() { CheepId = new Guid(), Author = a2, Text = "Follows HelgeCPH & ondfisk", TimeStamp = DateTime.Parse("1990-12-01 05:00:00") };
+        var c200 = new Cheep() { CheepId = new Guid(), Author = a2, Text = "Follows → HelgeCPH & ondfisk", TimeStamp = DateTime.Parse("1991-12-01 06:00:00") };
+        var c201 = new Cheep() { CheepId = new Guid(), Author = a2, Text = "Follows → HelgeCPH & ondfisk", TimeStamp = DateTime.Parse("1990-12-01 05:00:00") };
+        var c202 = new Cheep() { CheepId = new Guid(), Author = a2, Text = "Follows → HelgeCPH & ondfisk", TimeStamp = DateTime.Parse("1990-12-01 05:00:00") };
 
-        var c300 = new Cheep() { CheepId = new Guid(), Author = a3, Text = "Follows ondfisk", TimeStamp = DateTime.Parse("1992-12-01 04:00:00") };
-        var c301 = new Cheep() { CheepId = new Guid(), Author = a3, Text = "Follows ondfisk", TimeStamp = DateTime.Parse("1991-12-01 03:00:00") };
-        var c302 = new Cheep() { CheepId = new Guid(), Author = a3, Text = "Follows ondfisk", TimeStamp = DateTime.Parse("1990-12-01 03:00:00") };
+        var c300 = new Cheep() { CheepId = new Guid(), Author = a3, Text = "Follows → ondfisk", TimeStamp = DateTime.Parse("1992-12-01 04:00:00") };
+        var c301 = new Cheep() { CheepId = new Guid(), Author = a3, Text = "Follows → ondfisk", TimeStamp = DateTime.Parse("1991-12-01 03:00:00") };
+        var c302 = new Cheep() { CheepId = new Guid(), Author = a3, Text = "Follows → ondfisk", TimeStamp = DateTime.Parse("1990-12-01 03:00:00") };
         
-        var c400 = new Cheep() { CheepId = new Guid(), Author = a4, Text = "-", TimeStamp = DateTime.Parse("1992-12-01 02:00:00") };
-        var c401 = new Cheep() { CheepId = new Guid(), Author = a4, Text = "-", TimeStamp = DateTime.Parse("1991-12-01 01:00:00") };
-        var c402 = new Cheep() { CheepId = new Guid(), Author = a4, Text = "-", TimeStamp = DateTime.Parse("1990-12-01 00:00:00") };
+        var c400 = new Cheep() { CheepId = new Guid(), Author = a4, Text = "Hello BDSA GR27", TimeStamp = DateTime.Parse("1992-12-01 02:00:00") };
+        var c401 = new Cheep() { CheepId = new Guid(), Author = a4, Text = "Hello BDSA GR27", TimeStamp = DateTime.Parse("1991-12-01 01:00:00") };
+        var c402 = new Cheep() { CheepId = new Guid(), Author = a4, Text = "Hello BDSA GR27", TimeStamp = DateTime.Parse("1990-12-01 00:00:00") };
 
         var cheeps = new List<Cheep>() { 
-            c100, c101, 
+            c100,
             c200, c201, c202,
             c300, c301, c302,
             c400, c401, c402 };
