@@ -98,18 +98,8 @@ public class PublicModel : BasePageModel
 
     public IActionResult OnPostFollow(string authorName, string followerName)
     {
-        if (authorName is null)
-        {
-            throw new ArgumentNullException($"Authorname is null {nameof(authorName)}");
-        }
-        if (followerName is null)
-        {
-            throw new ArgumentNullException($"Followername is null {nameof(followerName)}");
-        }
-        
-        _followerRepository.AddOrRemoveFollower(authorName, followerName);
+        return HandleFollow(authorName, followerName, _followerRepository);
 
-        return RedirectToPage(""); //TODO Needs to be changes so it does not redirect but instead refreshes at the same point
     }
 
     public IActionResult OnPostAuthenticateLogin()

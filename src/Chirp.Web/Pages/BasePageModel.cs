@@ -54,4 +54,20 @@ public class BasePageModel : PageModel
         HttpContext.SignOutAsync();
         return RedirectToPage("Public");
     }
+    
+    protected IActionResult HandleFollow(string authorName, string followerName, IFollowerRepository followerRepository)
+    {
+        if (authorName is null)
+        {
+            throw new ArgumentNullException($"Authorname is null {nameof(authorName)}");
+        }
+        if (followerName is null)
+        {
+            throw new ArgumentNullException($"Followername is null {nameof(followerName)}");
+        }
+        
+        followerRepository.AddOrRemoveFollower(authorName, followerName);
+
+        return RedirectToPage("");
+    }
 }
