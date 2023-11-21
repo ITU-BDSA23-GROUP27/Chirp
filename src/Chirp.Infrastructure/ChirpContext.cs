@@ -7,31 +7,19 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Chirp.Infrastructure;
 
-public sealed class ChirpContext : DbContext
+public sealed class ChirpContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 {
     public DbSet<Cheep> Cheeps => Set<Cheep>();
-    public DbSet<Author> Authors => Set<Author>();
     public DbSet<Follower> Followers => Set<Follower>();
-
     public ChirpContext(DbContextOptions<ChirpContext> options): base(options)
     {
     }
     
-/*private static string DbPath
-{
-    get
-    {
-        string path = Path.GetTempPath();
-        return Path.Join(path, "chirp.db");
-    }
-}*/
-
-
 protected override void OnModelCreating(ModelBuilder modelBuilder)
 {
     modelBuilder.Entity<Cheep>().Property(c => c.Text).HasMaxLength(160);
-    modelBuilder.Entity<Author>().Property(a => a.Name).HasMaxLength(50);
-    modelBuilder.Entity<Author>().Property(c => c.Email).HasMaxLength(50);
+    modelBuilder.Entity<User>().Property(a => a.Name).HasMaxLength(50);
+    modelBuilder.Entity<User>().Property(c => c.Email).HasMaxLength(50);
     modelBuilder.Entity<Follower>().HasKey(f => new {f.FollowerId, f.FolloweeId});
 }
 }

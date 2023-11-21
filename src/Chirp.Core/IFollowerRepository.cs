@@ -4,7 +4,7 @@ namespace Chirp.Core;
 
 public interface IFollowerRepository
 {
-    public IEnumerable<AuthorDto> GetFollowersFromAuthor(string authorName);
-    public IEnumerable<AuthorDto> GetFolloweesFromAuthor(string authorName);
-    public void AddOrRemoveFollower(string authorName, string followerName);
+    public IEnumerable<UserDto> GetFollowersFromUser(string userName);
+    public IEnumerable<UserDto> GetFolloweesFromUser(string userName);
+    public void AddOrRemoveFollower(string userName, string followerName);
 }

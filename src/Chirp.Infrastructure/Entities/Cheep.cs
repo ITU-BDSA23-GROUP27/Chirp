@@ -11,5 +11,5 @@ public class Cheep
     
     public required string Text { get; set; }
     public DateTime TimeStamp { get; set; }
-    public required Author Author { get; set; }
+    public required User User { get; set; }
 }

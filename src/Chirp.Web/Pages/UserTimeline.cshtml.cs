@@ -19,7 +19,7 @@ public class UserTimelineModel : PageModel
     private readonly IAuthorRepository _authorRepository;
     private readonly IFollowerRepository _followerRepository;
     public IEnumerable<CheepDto> Cheeps { get; set; } = new List<CheepDto>();
-    public IEnumerable<AuthorDto> Followers { get; set; } = new List<AuthorDto>();
+    public IEnumerable<UserDto> Followers { get; set; } = new List<UserDto>();
     public int CurrentPage { get; set; } = 1;
     public int MaxCheepsPerPage { get; set; } = 32;
     public int TotalPageCount { get; set; }
@@ -51,8 +51,8 @@ public class UserTimelineModel : PageModel
         }
         
         //Creates timeline from original cheeps and followees cheeps
-        Followers = _followerRepository.GetFolloweesFromAuthor(author);
-        Cheeps = _cheepRepository.GetCheepsFromAuthor(author);
+        Followers = _followerRepository.GetFolloweesFromUser(author);
+        Cheeps = _cheepRepository.GetCheepsFromUser(author);
 
         // Set follow status for each cheep author
         if (User.Identity?.IsAuthenticated == true)
@@ -62,14 +62,14 @@ public class UserTimelineModel : PageModel
             {
                 foreach (var authorDto in Followers)
                 {
-                    Cheeps = Cheeps.Union(_cheepRepository.GetCheepsFromAuthor(authorDto.Name));
+                    Cheeps = Cheeps.Union(_cheepRepository.GetCheepsFromUser(authorDto.Name));
                 }
             }   
             foreach (var cheep in Cheeps)
             {
-                var authorName = cheep.AuthorName;
+                var authorName = cheep.UserName;
                 var isFollowing = _followerRepository
-                    .GetFollowersFromAuthor(authorName)
+                    .GetFollowersFromUser(authorName)
                     .Any(follower => follower.Name == User.Identity.Name);
 
                 FollowStatus[authorName] = isFollowing;
@@ -99,7 +99,7 @@ public class UserTimelineModel : PageModel
 
     public int GetTotalPages(string author)
     {
-        int totalCheeps = _cheepRepository.GetCheepsFromAuthor(author).Count();
+        int totalCheeps = _cheepRepository.GetCheepsFromUser(author).Count();
         return (int)Math.Ceiling((double)totalCheeps / MaxCheepsPerPage);
     }
 
@@ -157,13 +157,13 @@ public class UserTimelineModel : PageModel
         {
             if (User.Identity?.Name != null)
             {
-                var author = new AuthorDto
+                var author = new UserDto
                 {
                     Name = User.Identity.Name, //Might need to be changed to use only User.Identity (Does not work until users are implemented)
                     Email = User.Identity.Name + "@chirp.com" //TODO: Needs to be removed
                 };
 
-                _authorRepository.CreateAuthor(author);
+                _authorRepository.CreateUser(author);
             }
         }
         catch (ArgumentException ex)
@@ -180,7 +180,7 @@ public class UserTimelineModel : PageModel
         {
             Message = CheepMessage?.Replace("\r\n", " ") ?? "",
             TimeStamp = currentUtcTime.ToString(),
-            AuthorName = User.Identity?.Name ?? "Anonymous"
+            UserName = User.Identity?.Name ?? "Anonymous"
         };
         
         ValidationResult result = _validator.Validate(cheep);

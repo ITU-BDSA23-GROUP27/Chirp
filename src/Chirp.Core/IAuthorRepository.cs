@@ -4,7 +4,7 @@ namespace Chirp.Core;
 
 public interface IAuthorRepository
 {
-    public AuthorDto GetAuthorByName(string authorName);
-    public AuthorDto GetAuthorByEmail(string authorEmail);
-    public void CreateAuthor(AuthorDto author);
+    public UserDto GetUserByName(string authorName);
+    public UserDto GetUserByEmail(string authorEmail);
+    public void CreateUser(UserDto user);
 }

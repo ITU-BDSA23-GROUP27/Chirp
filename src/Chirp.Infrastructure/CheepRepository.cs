@@ -25,7 +25,7 @@ public class CheepRepository : ICheepRepository
             Id = c.CheepId,
             Message = c.Text,
             TimeStamp = c.TimeStamp.ToString(CultureInfo.InvariantCulture),
-            AuthorName = c.Author.Name
+            UserName = c.User.Name
         });
         return cheeps;
     }
@@ -35,22 +35,22 @@ public class CheepRepository : ICheepRepository
         return GetCheeps().Skip((page - 1) * PageLimit).Take(PageLimit);
     }
     
-    public IEnumerable<CheepDto> GetCheepsFromAuthor(string authorName)
+    public IEnumerable<CheepDto> GetCheepsFromUser(string userName)
     {
-        return GetCheeps().Where(c => c.AuthorName == authorName);
+        return GetCheeps().Where(c => c.UserName == userName);
     }
     
-    public IEnumerable<CheepDto> GetCheepsFromAuthorPage(string authorName, int page)
+    public IEnumerable<CheepDto> GetCheepsFromUserPage(string userName, int page)
     {
-        return GetCheepsFromAuthor(authorName).Skip((page - 1) * PageLimit).Take(PageLimit);
+        return GetCheepsFromUser(userName).Skip((page - 1) * PageLimit).Take(PageLimit);
     }
     public void CreateCheep(CheepDto cheep)
     {
-        var existingAuthor = _context.Authors.SingleOrDefault(c => c.Name == cheep.AuthorName);
+        var existingUser = _context.Users.SingleOrDefault(u => u.Name == cheep.UserName);
 
-        if (existingAuthor is null)
+        if (existingUser is null)
         {
-            throw new ArgumentException($"No existing author with that name found: {cheep.AuthorName}");
+            throw new ArgumentException($"No existing author with that name found: {cheep.UserName}");
         }
 
         var newCheep = new Cheep()
@@ -58,7 +58,7 @@ public class CheepRepository : ICheepRepository
             CheepId = new Guid(),
             Text = cheep.Message,
             TimeStamp = DateTime.Parse(cheep.TimeStamp),
-            Author = existingAuthor
+            User = existingUser
             
         };
         

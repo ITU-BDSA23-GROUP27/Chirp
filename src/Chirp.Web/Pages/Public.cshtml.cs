@@ -46,13 +46,13 @@ public class PublicModel : PageModel
         {
             try
             {
-                var author = new AuthorDto
+                var author = new UserDto
                 {
                     Name = User.Identity.Name, //Might need to be changed to use only User.Identity (Does not work until users are implemented)
                     Email = User.Identity.Name + "@chirp.com" //TODO: Needs to be removed
                 };
 
-                _authorRepository.CreateAuthor(author);
+                _authorRepository.CreateUser(author);
             }
             catch (ArgumentException ex)
             {
@@ -71,9 +71,9 @@ public class PublicModel : PageModel
         {
             foreach (var cheep in Cheeps)
             {
-                var authorName = cheep.AuthorName;
+                var authorName = cheep.UserName;
                 var isFollowing = _followerRepository
-                    .GetFollowersFromAuthor(authorName)
+                    .GetFollowersFromUser(authorName)
                     .Any(follower => follower.Name == User.Identity.Name);
 
                 FollowStatus[authorName] = isFollowing;
@@ -109,7 +109,7 @@ public class PublicModel : PageModel
         {
             Message = CheepMessage?.Replace("\r\n", " ") ?? "",
             TimeStamp = currentUtcTime.ToString(),
-            AuthorName = User.Identity?.Name ?? "Anonymous"
+            UserName = User.Identity?.Name ?? "Anonymous"
         };
 
         ValidationResult result = _validator.Validate(cheep);

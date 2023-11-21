@@ -14,47 +14,47 @@ public class AuthorRepository : IAuthorRepository
         _context = context;
     }
 
-    public AuthorDto GetAuthorByName(string authorName)
+    public UserDto GetUserByName(string authorName)
     {
-        var author = _context.Authors.First(a => a.Name == authorName);
+        var user = _context.Users.First(u => u.Name == authorName);
 
-        return new AuthorDto()
+        return new UserDto()
         {
-            Id = author.AuthorId,
-            Name = author.Name,
-            Email = author.Email,
+            Id = user.Id,
+            Name = user.Name,
+            Email = user.Email,
         };
     }
 
-    public AuthorDto GetAuthorByEmail(string authorEmail)
+    public UserDto GetUserByEmail(string authorEmail)
     {
-        var author = _context.Authors.First(a => a.Email == authorEmail);
+        var user = _context.Users.First(u => u.Email == authorEmail);
 
-        return new AuthorDto()
+        return new UserDto()
         {
-            Id = author.AuthorId,
-            Name = author.Name,
-            Email = author.Email,
+            Id = user.Id,
+            Name = user.Name,
+            Email = user.Email,
         };
     }
 
-    public void CreateAuthor(AuthorDto author)
+    public void CreateUser(UserDto user)
     {
-        var existingAuthor = _context.Authors.SingleOrDefault(c => c.Name == author.Name);
+        var existingUser = _context.Users.SingleOrDefault(u => u.Name == user.Name);
 
-        if (existingAuthor is not null)
+        if (existingUser is not null)
         {
-            throw new ArgumentException("Author already exists: ", nameof(author));
+            throw new ArgumentException("Author already exists: ", nameof(user));
         }
 
-        var newAuthor = new Author
+        var newUser = new User
         {
-            AuthorId = new Guid(),
-            Name = author.Name,
-            Email = author.Email,
+            Id = new Guid(),
+            Name = user.Name,
+            Email = user.Email,
         };
         
-        _context.Authors.Add(newAuthor);
+        _context.Users.Add(newUser);
         _context.SaveChanges();
     }
 }
