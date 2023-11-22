@@ -2,6 +2,7 @@ using System.Globalization;
 using Chirp.Core;
 using Chirp.Core.DTOs;
 using Chirp.Infrastructure.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure;
 
@@ -16,9 +17,9 @@ public class CheepRepository : ICheepRepository
         _context = context;
     }
     
-    public IEnumerable<CheepDto> GetCheeps()
+    public async Task<IEnumerable<CheepDto>> GetCheeps()
     {
-        var cheeps = _context.Cheeps
+        var cheeps = await _context.Cheeps
             .OrderByDescending(c => c.TimeStamp)
             .Select<Cheep, CheepDto>(c => new CheepDto()
         {
@@ -26,27 +27,31 @@ public class CheepRepository : ICheepRepository
             Message = c.Text,
             TimeStamp = c.TimeStamp.ToString(CultureInfo.InvariantCulture),
             AuthorName = c.Author.Name
-        });
+        }).ToListAsync();
+        
         return cheeps;
     }
     
-    public IEnumerable<CheepDto> GetCheepsFromPage(int page)
+    public async Task<IEnumerable<CheepDto>> GetCheepsFromPage(int page)
     {
-        return GetCheeps().Skip((page - 1) * PageLimit).Take(PageLimit);
+        var cheeps = await GetCheeps();
+        return cheeps.Skip((page - 1) * PageLimit).Take(PageLimit);
     }
     
-    public IEnumerable<CheepDto> GetCheepsFromAuthor(string authorName)
+    public async Task<IEnumerable<CheepDto>> GetCheepsFromAuthor(string authorName)
     {
-        return GetCheeps().Where(c => c.AuthorName == authorName);
+        var cheeps = await GetCheeps();
+        return cheeps.Where(c => c.AuthorName == authorName);
     }
     
-    public IEnumerable<CheepDto> GetCheepsFromAuthorPage(string authorName, int page)
+    public async Task<IEnumerable<CheepDto>> GetCheepsFromAuthorPage(string authorName, int page)
     {
-        return GetCheepsFromAuthor(authorName).Skip((page - 1) * PageLimit).Take(PageLimit);
+        var cheepsFromAuthor = await GetCheepsFromAuthor(authorName);
+        return cheepsFromAuthor.Skip((page - 1) * PageLimit).Take(PageLimit);
     }
-    public void CreateCheep(CheepDto cheep)
+    public async Task CreateCheep(CheepDto cheep)
     {
-        var existingAuthor = _context.Authors.SingleOrDefault(c => c.Name == cheep.AuthorName);
+        var existingAuthor = await _context.Authors.SingleOrDefaultAsync(c => c.Name == cheep.AuthorName);
 
         if (existingAuthor is null)
         {
@@ -63,6 +68,6 @@ public class CheepRepository : ICheepRepository
         };
         
         _context.Cheeps.Add(newCheep);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 }
