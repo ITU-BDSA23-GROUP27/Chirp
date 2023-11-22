@@ -2,19 +2,11 @@
     @foreach (var cheep in Model.Cheeps)
     {
         <li>
-            <div class="cheep-container">
-
+            <div class="cheep-container @(cheep.AuthorName == "PhiVaLo" || cheep.AuthorName == "Tien197" ? "admin-glow" : "")">
                 @* User Avatar *@
                 <div class="avatar-container">
-                    @if (cheep.AuthorName == "PhiVaLo" || cheep.AuthorName == "Tien197")
-                    {
-                        <img class="avatar avatar-glow" src="https://avatars.githubusercontent.com/@(cheep.AuthorName)"
-                            alt="Icon1" />
-                    }
-                    else
-                    {
-                        <img class="avatar" src="https://avatars.githubusercontent.com/@(cheep.AuthorName)" alt="Icon1" />
-                    }
+                    <img class="avatar @(cheep.AuthorName == "PhiVaLo" || cheep.AuthorName == "Tien197" ? "admin-glow" : "")" 
+                    src="https://avatars.githubusercontent.com/@(cheep.AuthorName)" alt="Icon1" />
                 </div>
 
                 @* Cheep Context *@
@@ -25,8 +17,6 @@
                         </strong>
                     </p>
                     <p id="cheep-content">
-                        @* <small>@cheep.TimeStamp</small> *@
-                        @* <small class="date">@DateTime.ParseExact(cheep.TimeStamp, "MM/dd/yyyy HH:mm:ss", null).ToString("yyyy/MM/dd")</small><br> *@
                         <small class="date">@DateTime.ParseExact(cheep.TimeStamp, "MM/dd/yyyy HH:mm:ss", null).ToString("MM/dd/yyyy")</small><br>
                         <small class="time">@DateTime.ParseExact(cheep.TimeStamp, "MM/dd/yyyy HH:mm:ss", null).ToString("HH:mm:ss")</small>                        
                     </p>
@@ -64,16 +54,6 @@
                 {
                     <div></div>
                 }
-
-
-
-
-
-
-
-
-
-                
 
                 <div class="reactions-right-container">
                     <div class="reaction-item test">

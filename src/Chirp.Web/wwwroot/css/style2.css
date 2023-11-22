@@ -119,10 +119,6 @@ header > .display-page {
     border: 2px solid white;
 }
 
-.avatar-glow {
-    box-shadow: 0 0 5px 2px crimson;
-}
-
 .overlay-2 {
     position: absolute;
     top: 0;
@@ -260,4 +256,26 @@ header > .display-page {
     margin: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.admin-glow {
+    box-shadow: 0 0 5px 1px crimson;
+}
+
+
+.admin-glow {
+    position: relative;
+}
+
+.admin-glow::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 5px; /* Adjust the width of the glow as needed */
+    box-shadow: 0 0 5px 2px crimson;
+}
+
+.admin-glow::before {
+    left: -5px;
 }
