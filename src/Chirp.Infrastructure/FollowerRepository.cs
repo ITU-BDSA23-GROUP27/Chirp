@@ -3,6 +3,7 @@ using System.Globalization;
 using Chirp.Core;
 using Chirp.Core.DTOs;
 using Chirp.Infrastructure.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure;
 
@@ -15,9 +16,9 @@ public class FollowerRepository : IFollowerRepository
     }
     
     //Followers are the ones that follows the author/user
-    public IEnumerable<AuthorDto> GetFollowersFromAuthor(string authorName)
+    public async Task<IEnumerable<AuthorDto>> GetFollowersFromAuthor(string authorName)
     {
-        var followers = _context.Followers
+        var followers = await _context.Followers
             .Where(f => f.FolloweeAuthor.Name == authorName)
             .Select(f => f.FollowerAuthor)
             .Select<Author, AuthorDto>(f => new AuthorDto()
@@ -25,15 +26,15 @@ public class FollowerRepository : IFollowerRepository
                 Id = f.AuthorId,
                 Name = f.Name,
                 Email = f.Email
-            });
+            }).ToListAsync();
 
         return followers;
     }
     
     //Followees are the ones the author/user follows
-    public IEnumerable<AuthorDto> GetFolloweesFromAuthor(string authorName)
+    public async Task<IEnumerable<AuthorDto>> GetFolloweesFromAuthor(string authorName)
     {
-        var followees = _context.Followers
+        var followees = await _context.Followers
             .Where(f => f.FollowerAuthor.Name == authorName)
             .Select(f => f.FolloweeAuthor)
             .Select<Author, AuthorDto>(f => new AuthorDto()
@@ -41,14 +42,14 @@ public class FollowerRepository : IFollowerRepository
                 Id = f.AuthorId,
                 Name = f.Name,
                 Email = f.Email
-            });
+            }).ToListAsync();
 
         return followees;
     }
     
-    public void AddOrRemoveFollower(string authorName, string followerName)
+    public async Task AddOrRemoveFollower(string authorName, string followerName)
     {
-        var author = _context.Authors.SingleOrDefault(a => a.Name == authorName);
+        var author = await _context.Authors.SingleOrDefaultAsync(a => a.Name == authorName);
         var follower = _context.Authors.SingleOrDefault(a => a.Name == followerName);
         
         if (author == follower)
@@ -82,6 +83,6 @@ public class FollowerRepository : IFollowerRepository
         {
             _context.Followers.Add(newFollower);
         }
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 }
