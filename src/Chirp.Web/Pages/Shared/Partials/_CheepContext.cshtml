@@ -2,7 +2,7 @@
     @foreach (var cheep in Model.Cheeps)
     {
         <li>
-            <div class="cheep-container @(cheep.AuthorName == "PhiVaLo" || cheep.AuthorName == "Tien197" ? "admin-glow" : "")">
+            <div class="cheep-container @(cheep.AuthorName == "PhiVaLo" || cheep.AuthorName == "Tien197" ? "admin-glow" : "glow")">
                 @* User Avatar *@
                 <div class="avatar-container">
                     <img class="avatar @(cheep.AuthorName == "PhiVaLo" || cheep.AuthorName == "Tien197" ? "admin-glow" : "")" 
@@ -56,8 +56,8 @@
                 }
 
                 <div class="reactions-right-container">
-                    <div class="reaction-item test">
-                        <button class="reaction-btn test" title="Reply">
+                    <div class="reaction-item unimplemented">
+                        <button class="reaction-btn unimplemented" title="Reply">
                             <i class="fa-regular fa-comment"></i>
                         </button>
                         <span class="reaction-count">0</span>
