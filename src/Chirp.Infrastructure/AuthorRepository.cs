@@ -14,9 +14,9 @@ public class AuthorRepository : IAuthorRepository
         _context = context;
     }
 
-    public AuthorDto GetAuthorByName(string authorName)
+    public async Task<AuthorDto> GetAuthorByName(string authorName)
     {
-        var author = _context.Authors.FirstOrDefault(a => a.Name == authorName);
+        var author = await _context.Authors.FirstOrDefaultAsync(a => a.Name == authorName);
 
         if (author is null)
         {
@@ -31,9 +31,9 @@ public class AuthorRepository : IAuthorRepository
         };
     }
 
-    public AuthorDto GetAuthorByEmail(string authorEmail)
+    public async Task<AuthorDto> GetAuthorByEmail(string authorEmail)
     {
-        var author = _context.Authors.First(a => a.Email == authorEmail);
+        var author = await _context.Authors.FirstOrDefaultAsync(a => a.Email == authorEmail);
 
         return new AuthorDto()
         {
@@ -43,9 +43,9 @@ public class AuthorRepository : IAuthorRepository
         };
     }
 
-    public void CreateAuthor(AuthorDto author)
+    public async Task CreateAuthor(AuthorDto author)
     {
-        var existingAuthor = _context.Authors.SingleOrDefault(c => c.Name == author.Name);
+        var existingAuthor = await _context.Authors.SingleOrDefaultAsync(c => c.Name == author.Name);
 
         if (existingAuthor is not null)
         {
@@ -60,6 +60,6 @@ public class AuthorRepository : IAuthorRepository
         };
         
         _context.Authors.Add(newAuthor);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 }

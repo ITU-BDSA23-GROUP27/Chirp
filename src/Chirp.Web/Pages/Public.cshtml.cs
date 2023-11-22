@@ -35,7 +35,7 @@ public class PublicModel : BasePageModel
         _validator = validator;
     }
 
-    public ActionResult OnGet()
+    public async Task<ActionResult> OnGet()
     {
         if (User.Identity?.IsAuthenticated == true)
         {
@@ -47,7 +47,7 @@ public class PublicModel : BasePageModel
                     Email = User.Identity.Name + "@chirp.com" //TODO: Needs to be removed
                 };
 
-                _authorRepository.CreateAuthor(author);
+                await _authorRepository.CreateAuthor(author);
             }
             catch (ArgumentException ex)
             {
@@ -55,7 +55,7 @@ public class PublicModel : BasePageModel
             }
         }
         
-        Cheeps = _cheepRepository.GetCheepsFromPage(CurrentPage);
+        Cheeps = await _cheepRepository.GetCheepsFromPage(CurrentPage);
         
         // Set follow status for each cheep author
         if (User.Identity?.IsAuthenticated == true)
@@ -63,9 +63,8 @@ public class PublicModel : BasePageModel
             foreach (var cheep in Cheeps)
             {
                 var authorName = cheep.AuthorName;
-                var isFollowing = _followerRepository
-                    .GetFollowersFromAuthor(authorName)
-                    .Any(follower => follower.Name == User.Identity.Name);
+                var followersFromAuthor = await _followerRepository.GetFollowersFromAuthor(authorName);
+                var isFollowing = followersFromAuthor.Any(follower => follower.Name == User.Identity.Name);
 
                 FollowStatus[authorName] = isFollowing;
             }
@@ -77,22 +76,22 @@ public class PublicModel : BasePageModel
             CurrentPage = parsedPage;
         }
 
-        Cheeps = _cheepRepository.GetCheepsFromPage(CurrentPage);
+        Cheeps = await _cheepRepository.GetCheepsFromPage(CurrentPage);
 
-        if (GetTotalPages() == 0)
+        if (await GetTotalPages() == 0)
         {
             TotalPageCount = 1;    
         } else {
-            TotalPageCount = GetTotalPages();
+            TotalPageCount = await GetTotalPages();
         }
         CalculatePagination();
 
         return Page();
     }
     
-    public int GetTotalPages()
+    public async Task<int> GetTotalPages()
     {
-        int totalCheeps = _cheepRepository.GetCheeps().Count();
+        int totalCheeps = (await _cheepRepository.GetCheeps()).Count();
         return (int)Math.Ceiling((double)totalCheeps / MaxCheepsPerPage);
     }
 
@@ -114,24 +113,24 @@ public class PublicModel : BasePageModel
         }
     }
     
-    public IActionResult OnPostChirp()
+    public async Task<IActionResult> OnPostChirp()
     {
-        return Chirp(CheepMessage, _validator, _cheepRepository);
+        return await Chirp(CheepMessage, _validator, _cheepRepository);
     }    
 
-    public IActionResult OnPostFollow(string authorName, string followerName)
+    public async Task<IActionResult> OnPostFollow(string authorName, string followerName)
     {
-        return HandleFollow(authorName, followerName, _followerRepository);
+        return await HandleFollow(authorName, followerName, _followerRepository);
 
     }
     
-    public IActionResult OnPostAuthenticateLogin()
+    public async Task<IActionResult> OnPostAuthenticateLogin()
     {
-        return HandleAuthenticateLogin();
+        return await HandleAuthenticateLogin();
     }
 
-    public IActionResult OnPostLogOut()
+    public async Task<IActionResult> OnPostLogOut()
     {
-        return HandleLogOut();
+        return await HandleLogOut();
     }
 }

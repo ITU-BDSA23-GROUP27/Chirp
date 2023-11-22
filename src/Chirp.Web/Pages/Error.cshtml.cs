@@ -19,19 +19,20 @@ public class ErrorModel : BasePageModel
         _logger = logger;
     }
 
-    public void OnGet()
+    public Task OnGet()
     {
         RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+        return Task.CompletedTask;
     }
     
-    public IActionResult OnPostAuthenticateLogin()
+    public async Task<IActionResult> OnPostAuthenticateLogin()
     {
-        return HandleAuthenticateLogin();
+        return await HandleAuthenticateLogin();
     }
     
-    public IActionResult OnPostLogOut()
+    public async Task<IActionResult> OnPostLogOut()
     {
-        return HandleLogOut();
+        return await HandleLogOut();
     }
 }
 

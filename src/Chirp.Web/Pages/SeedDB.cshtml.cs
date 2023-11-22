@@ -14,19 +14,19 @@ public class SeedDbModel : BasePageModel
     }
 
     // button for seeding DbInitializer
-    public IActionResult OnPostSeedDatabase()
+    public async Task<IActionResult> OnPostSeedDatabase()
     {
-        _context.Database.EnsureDeleted();
-        _context.Database.Migrate();
+        await _context.Database.EnsureDeletedAsync();
+        await _context.Database.MigrateAsync();
         DbInitializer.SeedDatabase(_context);
         return RedirectToPage("/Public");
     }
 
     // button for seeding DbInitializer2 (authors with followers)
-    public IActionResult OnPostSeedDatabase2()
+    public async Task<IActionResult> OnPostSeedDatabase2()
     {
-        _context.Database.EnsureDeleted();
-        _context.Database.Migrate();
+        await _context.Database.EnsureDeletedAsync();
+        await _context.Database.MigrateAsync();
         DbInitializer2.SeedDatabase2(_context);
         return RedirectToPage("/Public");
     }
@@ -39,13 +39,13 @@ public class SeedDbModel : BasePageModel
         return RedirectToPage("/Public");
     }
     
-    public IActionResult OnGet()
+    public async Task<IActionResult> OnGet()
     {
-        return HandleNotAuthenticated();
+        return await HandleNotAuthenticated();
     }
 
-    public IActionResult OnPostLogOut()
+    public async Task<IActionResult> OnPostLogOut()
     {
-        return HandleLogOut();
+        return await HandleLogOut();
     }
 }
