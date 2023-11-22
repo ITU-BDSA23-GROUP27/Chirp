@@ -12,13 +12,12 @@ namespace PlaywrightTests
          ? Recording test with Playwright: 
          ! pwsh bin/Debug/net7.0/playwright.ps1 codegen http://localhost:5273/
         */
+
         private IBrowserContext _context;
         private IPage page;
-        // private string email = "PhiVaGoo@gmail.com";
+        //! Note: setup your own environment variables, or hardcode your email and password here to temporarily run the test
         private string email = Environment.GetEnvironmentVariable("EMAIL");
         private string password = Environment.GetEnvironmentVariable("PASSWORD");
-        private int count;
-        private bool isExist;
 
         [SetUp]
         public async Task Setup()
@@ -58,6 +57,7 @@ namespace PlaywrightTests
             await Task.Delay(2000);
         }
 
+
         [Test]
         public async Task LoginAndSeedDbInitializer2AndFollowUnfollowAuthorsAndCheckUserTimeline()
         {
@@ -74,7 +74,6 @@ namespace PlaywrightTests
 
             // Seed new test data with other author following another different author 
             //      Author (B) follows Author (C) and (D), Author (C) follows Author (D) 
-            await DisplayMessage(page, "Seeding a new database...");
             await page.GetByRole(AriaRole.Link, new() { Name = "SeedDB" }).ClickAsync();        await Task.Delay(2000);
             await page.GetByRole(AriaRole.Button, new() { Name = "Seed DB2" }).ClickAsync();    await Task.Delay(2000);
 
@@ -83,8 +82,8 @@ namespace PlaywrightTests
             await page.GetByRole(AriaRole.Button, new() { Name = "Chirp!" }).ClickAsync();                  await Task.Delay(2000);
 
             // I follow two different authors (B, C)
-            await DisplayMessage(page, "I will follow HelgeCPH");
-            await page.Locator("li").Filter(new() { HasText = "HelgeCPH" }).GetByRole(AriaRole.Button).First.ClickAsync();  
+            await DisplayMessage(page, "I will follow Happy");
+            await page.Locator("li").Filter(new() { HasText = "Happy" }).GetByRole(AriaRole.Button).First.ClickAsync();  
             await DisplayMessage(page, "I will follow Chirp27");
             await ScrollDown(page);
             await page.Locator("li").Filter(new() { HasText = "Chirp27" }).GetByRole(AriaRole.Button).First.ClickAsync();   
@@ -95,25 +94,25 @@ namespace PlaywrightTests
             await DisplayMessage(page, "I should see all my followers cheeps + my cheeps");
             await ScrollDown(page);
             Assert.IsTrue(await page.Locator("text='Chirp27'").CountAsync() > 0, "Author not found");
-            Assert.IsTrue(await page.Locator("text='HelgeCPH'").CountAsync() > 0, "Author not found");
-            Assert.IsFalse(await page.Locator("text='ondfisk'").IsVisibleAsync());
+            Assert.IsTrue(await page.Locator("text='Happy'").CountAsync() > 0, "Author not found");
+            Assert.IsFalse(await page.Locator("text='Smiley'").IsVisibleAsync());
 
             // I unfollow one of the author (C) - his cheeps should not appear in my timeline anymore
-            await DisplayMessage(page, "I will unfollow HelgeCPH");
-            await page.Locator("li:has-text('HelgeCPH')").First.GetByRole(AriaRole.Button).GetByText("Unfollow").ClickAsync(); 
-            await DisplayMessage(page, "HelgeCPH's cheeps are now gone in my timeline");
-            Assert.IsFalse(await page.Locator("text='HelgeCPH'").IsVisibleAsync());
+            await DisplayMessage(page, "I will unfollow Happy");
+            await page.Locator("li:has-text('Happy')").First.GetByRole(AriaRole.Button).GetByText("Unfollow").ClickAsync(); 
+            await DisplayMessage(page, "Happy's cheeps are now gone from my timeline");
+            Assert.IsFalse(await page.Locator("text='Happy'").IsVisibleAsync());
 
             // Go to my timeline of author (B) - his timelime should not display his followers cheeps
             await DisplayMessage(page, "Go to Chirp27's timeline");
             await page.Locator("li:has-text('Chirp27')").First.Locator("#author").ClickAsync(); 
             await DisplayMessage(page, "I should only be able to see Chirp27's cheeps");
             await ScrollDown(page);
-            Assert.IsFalse(await page.Locator("text='HelgeCPH'").IsVisibleAsync());
-            Assert.IsFalse(await page.Locator("text='ondfisk'").IsVisibleAsync());
+            Assert.IsFalse(await page.Locator("text='Happy'").IsVisibleAsync());
+            Assert.IsFalse(await page.Locator("text='Smiley'").IsVisibleAsync());
 
             // Unfollowing Author (B) (B's cheeps should not appear in my timeline anymore)
-            await DisplayMessage(page, "I unfollow Chirp27");
+            await DisplayMessage(page, "I will unfollow Chirp27");
             await ScrollDown(page);
             await page.GetByRole(AriaRole.Button, new() { Name = "Unfollow" }).First.ClickAsync(); 
 
@@ -124,7 +123,7 @@ namespace PlaywrightTests
             await DisplayMessage(page, "My timeline should only consists of my own cheeps");
             await ScrollDown(page);
             Assert.IsFalse(await page.Locator("text='Chirp27'").IsVisibleAsync());
-            Assert.IsFalse(await page.Locator("text='HelgeCPH'").IsVisibleAsync());
+            Assert.IsFalse(await page.Locator("text='Happy'").IsVisibleAsync());
             Assert.IsFalse(await page.Locator("text='Follow'").IsVisibleAsync());
             Assert.IsFalse(await page.Locator("text='Unfollow'").IsVisibleAsync());
 
