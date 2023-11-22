@@ -65,21 +65,23 @@ namespace PlaywrightTests
             await page.GotoAsync("http://localhost:5273/"); await Task.Delay(1000);
 
             // Sign in github
-            await page.GetByRole(AriaRole.Button, new() { Name = "Sign in" }).ClickAsync();     await Task.Delay(1000);
-            await page.GetByLabel("Username or email address").ClickAsync();                    await Task.Delay(1000);
-            await page.GetByLabel("Username or email address").FillAsync(email);                await Task.Delay(1000);
-            await page.GetByLabel("Username or email address").PressAsync("Tab");               await Task.Delay(1000);
-            await page.GetByLabel("Password").FillAsync(password);                              await Task.Delay(1000);
-            await page.GetByLabel("Password").PressAsync("Enter");                              await Task.Delay(4000);
+            await page.GetByRole(AriaRole.Button, new() { Name = "Sign in" }).ClickAsync();                             await Task.Delay(1000);
+            await page.GetByLabel("Username or email address").ClickAsync();                                            await Task.Delay(1000);
+            await page.GetByLabel("Username or email address").FillAsync(email);                                        await Task.Delay(1000);
+            await page.GetByLabel("Username or email address").PressAsync("Tab");                                       await Task.Delay(1000);
+            await page.GetByLabel("Password").FillAsync(password);                                                      await Task.Delay(1000);
+            await page.GetByLabel("Password").PressAsync("Enter");                                                      await Task.Delay(4000);
 
             // Seed new test data with other author following another different author 
             //      Author (B) follows Author (C) and (D), Author (C) follows Author (D) 
-            await page.GetByRole(AriaRole.Link, new() { Name = "SeedDB" }).ClickAsync();        await Task.Delay(2000);
-            await page.GetByRole(AriaRole.Button, new() { Name = "Seed DB2" }).ClickAsync();    await Task.Delay(2000);
+            await page.GetByPlaceholder("Write your cheep here!").ClickAsync();                                         await Task.Delay(2000);
+            await page.GetByPlaceholder("Write your cheep here!").FillAsync("I will reset and seed new test data");     await Task.Delay(2000);
+            await page.GetByRole(AriaRole.Link, new() { Name = "SeedDB" }).ClickAsync();                                await Task.Delay(2000);
+            await page.GetByRole(AriaRole.Button, new() { Name = "Seed DB2" }).ClickAsync();                            await Task.Delay(2000);
 
-            await page.GetByPlaceholder("Write your cheep here!").ClickAsync();                             await Task.Delay(2000);
-            await page.GetByPlaceholder("Write your cheep here!").FillAsync("This is a Playwright test");   await Task.Delay(2000);
-            await page.GetByRole(AriaRole.Button, new() { Name = "Chirp!" }).ClickAsync();                  await Task.Delay(2000);
+            await page.GetByPlaceholder("Write your cheep here!").ClickAsync();                                         await Task.Delay(2000);
+            await page.GetByPlaceholder("Write your cheep here!").FillAsync("This is a Playwright test");               await Task.Delay(2000);
+            await page.GetByRole(AriaRole.Button, new() { Name = "Chirp!" }).ClickAsync();                              await Task.Delay(2000);
 
             // I follow two different authors (B, C)
             await DisplayMessage(page, "I will follow Happy");
@@ -120,7 +122,7 @@ namespace PlaywrightTests
             await DisplayMessage(page, "Go to my UserTimeline");
             await ScrollDown(page);
             await page.GetByText("User-Timeline").ClickAsync(); await Task.Delay(2000);
-            await DisplayMessage(page, "My timeline should only consists of my own cheeps");
+            await DisplayMessage(page, "My timeline should only consists of my own cheeps now");
             await ScrollDown(page);
             Assert.IsFalse(await page.Locator("text='Chirp27'").IsVisibleAsync());
             Assert.IsFalse(await page.Locator("text='Happy'").IsVisibleAsync());
