@@ -26,6 +26,7 @@
                     </p>
                     <p id="cheep-content">
                         @* <small>@cheep.TimeStamp</small> *@
+                        @* <small class="date">@DateTime.ParseExact(cheep.TimeStamp, "MM/dd/yyyy HH:mm:ss", null).ToString("yyyy/MM/dd")</small><br> *@
                         <small class="date">@DateTime.ParseExact(cheep.TimeStamp, "MM/dd/yyyy HH:mm:ss", null).ToString("MM/dd/yyyy")</small><br>
                         <small class="time">@DateTime.ParseExact(cheep.TimeStamp, "MM/dd/yyyy HH:mm:ss", null).ToString("HH:mm:ss")</small>                        
                     </p>
