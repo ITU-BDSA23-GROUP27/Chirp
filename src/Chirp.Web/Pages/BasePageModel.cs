@@ -35,7 +35,7 @@ public class BasePageModel : PageModel
 
         ValidationResult result = validator.Validate(cheep);
 
-        if (result.IsValid) cheepRepository.CreateCheep(cheep);
+        if (result.IsValid) await cheepRepository.CreateCheep(cheep);
         
         return await Task.FromResult<IActionResult>(RedirectToPage("Public"));
     }
