@@ -58,7 +58,6 @@ div.page h1 {
 header {
     display: flex;
     justify-content: space-between;
-    /* border: 1px solid red; */
 }
 
 header > h2 {
@@ -119,10 +118,6 @@ header > .display-page {
     border: 2px solid white;
 }
 
-.avatar-glow {
-    box-shadow: 0 0 5px 2px crimson;
-}
-
 .overlay-2 {
     position: absolute;
     top: 0;
@@ -166,22 +161,19 @@ header > .display-page {
     color: #021525;
     width: 340px;
     word-wrap: break-word;
-    /* border: 1px solid red; */
 }
 
 .reactions-container {
     display: flex;
     justify-content: right;
     justify-content: space-between;
-    /* justify-content: center; */
     align-items: center;
     padding: 3px 10px;
-    /* margin: 10px 0; */
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     
     background-color: #ffffff69;
-    height: 25px;
+    height: 30px;
 }
 
 .reactions-right-container {
@@ -211,18 +203,20 @@ header > .display-page {
     font-size: 12px;
 }
 
-.test {
+/* unimplemented buttons (shows a 'not allowed' icon on hover) */
+.unimplemented {
     color: #c8c8c8;
     cursor: not-allowed;
 }
 
-
+/* Follow buttons */
 .follow-btn {
     background-color: transparent;
     color: #040404;
     border-radius: 5px;
     border: none;
-    width: 80px;
+    font-size: 11px;
+    width: 54px;
     height: 20px;
     cursor: pointer;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -232,7 +226,6 @@ header > .display-page {
     background-color: #0c9371;
     color: #fff;
     border-radius: 5px;
-    width: 80px;
     transition: background-color 0.3s ease, color 0.3s ease;    
 }
 
@@ -240,7 +233,6 @@ header > .display-page {
     background-color: #e0245e;
     color: #fff;
     border-radius: 5px;
-    width: 80px;
     transition: background-color 0.3s ease, color 0.3s ease;    
 }
 
@@ -250,6 +242,39 @@ header > .display-page {
 
 .unfollow:hover {
     background-color: #ba1f50;
+}
+
+/* Glow effects */
+.admin-glow {
+    box-shadow: 0 0 5px 1px crimson;
+}
+
+.glow {
+    box-shadow: 0 0 5px 1px #a69e9eb8;
+}
+
+.admin-glow
+.glow {
+    position: relative;
+}
+
+.admin-glow::before,
+.glow::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    box-shadow: 0 0 5px 2px crimson;
+}
+
+.glow::before {
+    box-shadow: 0 0 5px 2px #a69e9eb8;
+}
+
+.admin-glow::before,
+.glow::before {
+    left: -5px;
 }
 
 /* Privacy */
