@@ -58,7 +58,6 @@ namespace PlaywrightTests
             await Task.Delay(2000);
         }
 
-
         [Test]
         public async Task LoginAndSeedDbInitializer2AndFollowUnfollowAuthorsAndCheckUserTimeline()
         {
@@ -75,15 +74,13 @@ namespace PlaywrightTests
 
             // Seed new test data with other author following another different author 
             //      Author (B) follows Author (C) and (D), Author (C) follows Author (D) 
+            await DisplayMessage(page, "Seeding a new database...");
             await page.GetByRole(AriaRole.Link, new() { Name = "SeedDB" }).ClickAsync();        await Task.Delay(2000);
             await page.GetByRole(AriaRole.Button, new() { Name = "Seed DB2" }).ClickAsync();    await Task.Delay(2000);
-
 
             await page.GetByPlaceholder("Write your cheep here!").ClickAsync();                             await Task.Delay(2000);
             await page.GetByPlaceholder("Write your cheep here!").FillAsync("This is a Playwright test");   await Task.Delay(2000);
             await page.GetByRole(AriaRole.Button, new() { Name = "Chirp!" }).ClickAsync();                  await Task.Delay(2000);
-
-
 
             // I follow two different authors (B, C)
             await DisplayMessage(page, "I will follow HelgeCPH");
@@ -102,7 +99,7 @@ namespace PlaywrightTests
             Assert.IsFalse(await page.Locator("text='ondfisk'").IsVisibleAsync());
 
             // I unfollow one of the author (C) - his cheeps should not appear in my timeline anymore
-            await DisplayMessage(page, "I unfollow HelgeCPH");
+            await DisplayMessage(page, "I will unfollow HelgeCPH");
             await page.Locator("li:has-text('HelgeCPH')").First.GetByRole(AriaRole.Button).GetByText("Unfollow").ClickAsync(); 
             await DisplayMessage(page, "HelgeCPH's cheeps are now gone in my timeline");
             Assert.IsFalse(await page.Locator("text='HelgeCPH'").IsVisibleAsync());
@@ -137,7 +134,6 @@ namespace PlaywrightTests
             await page.GetByRole(AriaRole.Button, new() { Name = "Chirp!" }).ClickAsync();                  await Task.Delay(2000);
             await page.GetByPlaceholder("Write your cheep here!").ClickAsync();                             await Task.Delay(2000);
             await page.GetByPlaceholder("Write your cheep here!").FillAsync("Signing out...");              await Task.Delay(2000);
-            await page.GetByRole(AriaRole.Button, new() { Name = "Chirp!" }).ClickAsync();                  await Task.Delay(2000);
 
             // Sign out
             await page.GetByRole(AriaRole.Button, new() { Name = "Sign out" }).ClickAsync();                await Task.Delay(5000);
