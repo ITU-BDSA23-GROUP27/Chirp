@@ -13,13 +13,13 @@ public class PrivacyModel : BasePageModel
         _logger = logger;
     }
     
-    public IActionResult OnPostAuthenticateLogin()
+    public async Task<IActionResult> OnPostAuthenticateLogin()
     {
-        return HandleAuthenticateLogin();
+        return await HandleAuthenticateLogin();
     }
-    public IActionResult OnPostLogOut()
+    public async Task<IActionResult> OnPostLogOut()
     {
-        return HandleLogOut();
+        return await HandleLogOut();
     }
 }
 

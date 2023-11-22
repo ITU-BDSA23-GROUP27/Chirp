@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Chirp.Web.Pages.Shared;
+namespace Chirp.Web.Pages.Shared.Partials;
 
 public class NavigationPartialModel : PageModel
 {
-    public void OnGet()
+    public Task OnGet()
     {
         {
             if (User.Identity?.IsAuthenticated == true)
@@ -18,20 +18,21 @@ public class NavigationPartialModel : PageModel
                 Console.WriteLine("Not Authenticated");
             }
         }
+        return Task.CompletedTask;
     }
 
-    public IActionResult OnPostAuthenticateLogin()
+    public async Task<IActionResult> OnPostAuthenticateLogin()
     {
         var props = new AuthenticationProperties
         {
             RedirectUri = Url.Page("/Error"),
         };
-        return Challenge(props);
+        return await Task.FromResult<IActionResult>(Challenge(props));
     }
 
-    public IActionResult OnPostLogOut()
+    public async Task<IActionResult> OnPostLogOut()
     {
-        HttpContext.SignOutAsync();
+        await HttpContext.SignOutAsync();
         return RedirectToPage();
     }
 }

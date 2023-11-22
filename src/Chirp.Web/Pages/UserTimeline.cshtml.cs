@@ -39,14 +39,14 @@ public class UserTimelineModel : BasePageModel
         _validator = validator;
     }
 
-    public ActionResult OnGet(string author)
+    public async Task<ActionResult> OnGet(string author)
     {
         if (User.Identity?.IsAuthenticated == false)
         {
             try
             {
                 //TODO Problem: Can't find github authors in http since it makes it lowercase e.g. "/Tien197" -> "/tien197"   
-                var existingAuthor = _authorRepository.GetAuthorByName(author);
+                var existingAuthor = await _authorRepository.GetAuthorByName(author);
                 
                 // show cheeps of author
             }
@@ -63,8 +63,8 @@ public class UserTimelineModel : BasePageModel
         }
         
         //Creates timeline from original cheeps and followees cheeps
-        Followers = _followerRepository.GetFolloweesFromAuthor(author);
-        Cheeps = _cheepRepository.GetCheepsFromAuthor(author);
+        Followers = await _followerRepository.GetFolloweesFromAuthor(author);
+        Cheeps = await _cheepRepository.GetCheepsFromAuthor(author);
 
         // Set follow status for each cheep author
         if (User.Identity?.IsAuthenticated == true)
@@ -74,17 +74,19 @@ public class UserTimelineModel : BasePageModel
             {
                 foreach (var authorDto in Followers)
                 {
-                    var followerCheeps = _cheepRepository.GetCheepsFromAuthor(authorDto.Name);
-                    Cheeps = Cheeps.Union(followerCheeps);
-                    TotalFollowerCheepCount += followerCheeps.Count();
+                    var followerCheeps = await _cheepRepository.GetCheepsFromAuthor(authorDto.Name);
+                    var cheepDtos = followerCheeps.ToList();
+                    Cheeps = Cheeps.Union(cheepDtos);
+                    TotalFollowerCheepCount += cheepDtos.Count();
                 }
             }   
             foreach (var cheep in Cheeps)
             {
                 var authorName = cheep.AuthorName;
-                var isFollowing = _followerRepository
-                    .GetFollowersFromAuthor(authorName)
-                    .Any(follower => follower.Name == User.Identity.Name);
+                var followersFromAuthor = await _followerRepository
+                    .GetFollowersFromAuthor(authorName);
+                    
+                    var isFollowing = followersFromAuthor.Any(follower => follower.Name == User.Identity.Name);
 
                 FollowStatus[authorName] = isFollowing;
             }
@@ -96,8 +98,8 @@ public class UserTimelineModel : BasePageModel
             .Take(MaxCheepsPerPage);
         
         // Pagination
-        TotalPageCount = GetTotalPages(author) == 0 ? 1 : GetTotalPages(author);
-        CalculatePagination();
+        TotalPageCount = await GetTotalPages(author) == 0 ? 1 : await GetTotalPages(author);
+        await CalculatePagination();
 
         // Author's name
         RouteName = HttpContext.GetRouteValue("author")?.ToString() ?? "";
@@ -105,13 +107,13 @@ public class UserTimelineModel : BasePageModel
         return Page();
     }
 
-    public int GetTotalPages(string author)
+    public async Task<int> GetTotalPages(string author)
     {
-        int totalCheeps = _cheepRepository.GetCheepsFromAuthor(author).Count() + TotalFollowerCheepCount;
+        int totalCheeps = (await _cheepRepository.GetCheepsFromAuthor(author)).Count() + TotalFollowerCheepCount;
         return (int)Math.Ceiling((double)totalCheeps / MaxCheepsPerPage);
     }
 
-    private void CalculatePagination()
+    private Task CalculatePagination()
     {
         StartPage = Math.Max(1, CurrentPage - DisplayRange / 2);
         EndPage = Math.Min(TotalPageCount, StartPage + DisplayRange - 1);
@@ -127,25 +129,27 @@ public class UserTimelineModel : BasePageModel
                 EndPage = Math.Min(TotalPageCount, StartPage + DisplayRange - 1);
             }
         }
+
+        return Task.CompletedTask;
     }
     
-    public IActionResult OnPostChirp()
+    public async Task<IActionResult> OnPostChirp()
     {
-        return Chirp(CheepMessage, _validator, _cheepRepository);
+        return await Chirp(CheepMessage, _validator, _cheepRepository);
     }   
     
-    public IActionResult OnPostFollow(string authorName, string followerName)
+    public async Task<IActionResult> OnPostFollow(string authorName, string followerName)
     {
-        return HandleFollow(authorName, followerName, _followerRepository);
+        return await HandleFollow(authorName, followerName, _followerRepository);
     }
     
-    public IActionResult OnPostAuthenticateLogin()
+    public async Task<IActionResult> OnPostAuthenticateLogin()
     {
-        return HandleAuthenticateLogin();
+        return await HandleAuthenticateLogin();
     }
 
-    public IActionResult OnPostLogOut()
+    public async Task<IActionResult> OnPostLogOut()
     {
-        return HandleLogOut();
+        return await HandleLogOut();
     }
 }

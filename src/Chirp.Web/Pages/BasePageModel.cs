@@ -10,17 +10,17 @@ namespace Chirp.Web.Pages;
 
 public class BasePageModel : PageModel
 {
-    protected IActionResult HandleNotAuthenticated()
+    protected async Task<IActionResult> HandleNotAuthenticated()
     {
         if (User.Identity?.IsAuthenticated == false)
         {
-            return RedirectToPage("/Public");
+            return await Task.FromResult<IActionResult>(RedirectToPage("/Public"));
         }
 
-        return Page();
+        return await Task.FromResult<IActionResult>(Page());
     }
     
-    protected IActionResult Chirp(string? cheepMessage, IValidator<CheepDto> validator, ICheepRepository cheepRepository)
+    protected async Task<IActionResult> Chirp(string? cheepMessage, IValidator<CheepDto> validator, ICheepRepository cheepRepository)
     {
         // TODO Refactor to a class called Utility
         // Added one hour to UTC time to match the time of Copenhagen
@@ -37,25 +37,25 @@ public class BasePageModel : PageModel
 
         if (result.IsValid) cheepRepository.CreateCheep(cheep);
         
-        return RedirectToPage("Public");
+        return await Task.FromResult<IActionResult>(RedirectToPage("Public"));
     }
 
-    protected IActionResult HandleAuthenticateLogin()
+    protected async Task<IActionResult> HandleAuthenticateLogin()
     {
         var props = new AuthenticationProperties
         {
             RedirectUri = Url.Page("/"),
         };
-        return Challenge(props);
+        return await Task.FromResult<IActionResult>(Challenge(props));
     }
     
-    protected IActionResult HandleLogOut()
+    protected async Task<IActionResult> HandleLogOut()
     {
-        HttpContext.SignOutAsync();
-        return RedirectToPage("Public");
+        await HttpContext.SignOutAsync();
+        return await Task.FromResult<IActionResult>(RedirectToPage("Public"));
     }
     
-    protected IActionResult HandleFollow(string authorName, string followerName, IFollowerRepository followerRepository)
+    protected async Task<IActionResult> HandleFollow(string authorName, string followerName, IFollowerRepository followerRepository)
     {
         if (authorName is null)
         {
@@ -66,8 +66,8 @@ public class BasePageModel : PageModel
             throw new ArgumentNullException($"Followername is null {nameof(followerName)}");
         }
         
-        followerRepository.AddOrRemoveFollower(authorName, followerName);
+        await followerRepository.AddOrRemoveFollower(authorName, followerName);
 
-        return RedirectToPage("");
+        return await Task.FromResult<IActionResult>(RedirectToPage(""));
     }
 }

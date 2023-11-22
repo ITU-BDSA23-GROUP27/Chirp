@@ -8,9 +8,9 @@ public class ProfileModel : BasePageModel
 {
     public string? GithubURL { get; set; }
 
-    public IActionResult OnGet()
+    public async Task<IActionResult> OnGet()
     {
-        if (User.Identity?.IsAuthenticated == false) return HandleNotAuthenticated();
+        if (User.Identity?.IsAuthenticated == false) return await HandleNotAuthenticated();
                
         foreach (var claim in User.Claims)
         {
@@ -19,11 +19,11 @@ public class ProfileModel : BasePageModel
 
         GithubURL = User.FindFirst("urn:github:url")?.Value;
         
-        return Page();
+        return await Task.FromResult<IActionResult>(Page());
     }
     
-    public IActionResult OnPostLogOut()
+    public async Task<IActionResult> OnPostLogOut()
     {
-        return HandleLogOut();
+        return await HandleLogOut();
     }
 }
