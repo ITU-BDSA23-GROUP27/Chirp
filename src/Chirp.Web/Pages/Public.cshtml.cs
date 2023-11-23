@@ -79,15 +79,19 @@ public class PublicModel : BasePageModel
 
         Cheeps = await _cheepRepository.GetCheepsFromPage(CurrentPage);
 
-        if (await GetTotalPages() == 0)
-        {
-            TotalPageCount = 1;
-        }
-        else
-        {
-            TotalPageCount = await GetTotalPages();
-        }
-        CalculatePagination();
+        // if (await GetTotalPages() == 0)
+        // {
+        //     TotalPageCount = 1;
+        // }
+        // else
+        // {
+        //     TotalPageCount = await GetTotalPages();
+        // }
+        // CalculatePagination();
+
+
+        TotalPageCount = await GetTotalPages() == 0 ? 1 : await GetTotalPages();
+        await CalculatePagination();        
 
         return Page();
     }
@@ -98,7 +102,7 @@ public class PublicModel : BasePageModel
         return (int)Math.Ceiling((double)totalCheeps / MaxCheepsPerPage);
     }
 
-    private void CalculatePagination()
+    public Task CalculatePagination()
     {
         StartPage = Math.Max(1, CurrentPage - DisplayRange / 2);
         EndPage = Math.Min(TotalPageCount, StartPage + DisplayRange - 1);
@@ -114,6 +118,8 @@ public class PublicModel : BasePageModel
                 EndPage = Math.Min(TotalPageCount, StartPage + DisplayRange - 1);
             }
         }
+
+        return Task.CompletedTask;
     }
 
     public async Task<IActionResult> OnPostChirp()
