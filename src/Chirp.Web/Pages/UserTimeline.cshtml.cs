@@ -17,6 +17,7 @@ public class UserTimelineModel : BasePageModel
     private readonly IFollowerRepository _followerRepository;
     public IEnumerable<CheepDto> Cheeps { get; set; } = new List<CheepDto>();
     public IEnumerable<AuthorDto> Followers { get; set; } = new List<AuthorDto>();
+    public IEnumerable<AuthorDto> Followees { get; set; } = new List<AuthorDto>();
     public int CurrentPage { get; set; } = 1;
     public int MaxCheepsPerPage { get; set; } = 32;
     public int TotalPageCount { get; set; }
@@ -64,6 +65,7 @@ public class UserTimelineModel : BasePageModel
         
         //Creates timeline from original cheeps and followees cheeps
         Followers = await _followerRepository.GetFolloweesFromAuthor(author);
+        Followees = await _followerRepository.GetFollowersFromAuthor(author);
         Cheeps = await _cheepRepository.GetCheepsFromAuthor(author);
 
         // Set follow status for each cheep author
