@@ -1,3 +1,8 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
 body {
   /* background: #eccaca; */
   background: linear-gradient(#ffd0b3, #ffefb6ee) no-repeat fixed;
@@ -5,6 +10,7 @@ body {
   background: linear-gradient(#b3d9ff, #000000) no-repeat fixed;
   font-family: 'Trebuchet MS', sans-serif;
   font-size: 14px;
+  background-size: cover;
 }
 
 a {
