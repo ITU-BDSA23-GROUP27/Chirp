@@ -64,8 +64,8 @@ public class UserTimelineModel : BasePageModel
         }
         
         //Creates timeline from original cheeps and followees cheeps
-        Followers = await _followerRepository.GetFolloweesFromAuthor(author);
-        Followees = await _followerRepository.GetFollowersFromAuthor(author);
+        Followers = (await _followerRepository.GetFolloweesFromAuthor(author)).OrderBy(a => a.Name).ToList();
+        Followees = (await _followerRepository.GetFollowersFromAuthor(author)).OrderBy(a => a.Name).ToList();
         Cheeps = await _cheepRepository.GetCheepsFromAuthor(author);
 
         // Set follow status for each cheep author
