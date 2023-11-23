@@ -1,0 +1,11 @@
+.followers-container {
+    display: flex;
+    justify-content: space-between;
+    justify-content: start;
+    gap: 3rem;
+}
+
+hr {
+    border: 1px solid #e6e6e6;
+    margin: 1rem 0;
+}
