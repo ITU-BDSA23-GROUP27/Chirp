@@ -8,12 +8,22 @@ namespace Chirp.Web.Pages;
 
 public class AboutMeModel : BasePageModel
 {
+    // Cheeps and Followers
     private readonly ICheepRepository _cheepRepository;
     private readonly IFollowerRepository _followerRepository;
     public IEnumerable<CheepDto> Cheeps { get; set; } = new List<CheepDto>();
     public IEnumerable<UserDto> Followers { get; set; } = new List<UserDto>();
     public IEnumerable<UserDto> Followees { get; set; } = new List<UserDto>();
 
+    // Pagination
+    public int CurrentPage { get; set; } = 1;
+    public int MaxCheepsPerPage { get; set; } = 32;
+    public int TotalPageCount { get; set; }
+    public int StartPage { get; set; }
+    public int EndPage { get; set; }
+    public int DisplayRange { get; set; } = 5;
+
+    // User Claims
     public string? ID { get; set; }
     public string? Username { get; set; }
     public string? Name { get; set; }
@@ -53,9 +63,42 @@ public class AboutMeModel : BasePageModel
             Followees = (await _followerRepository.GetFollowersFromUser(Username)).OrderBy(u => u.Name).ToList();
         }
 
+        // Pagination
+        if (Username != null)
+        {
+            TotalPageCount = await GetTotalPages(Username) == 0 ? 1 : await GetTotalPages(Username);
+        }
+        await CalculatePagination();
+
+
         return await Task.FromResult<IActionResult>(Page());
     }
-    
+    public async Task<int> GetTotalPages(string user)
+    {
+        int totalCheeps = (await _cheepRepository.GetCheepsFromUser(user)).Count();
+        return (int)Math.Ceiling((double)totalCheeps / MaxCheepsPerPage);
+    }
+
+    public Task CalculatePagination()
+    {
+        StartPage = Math.Max(1, CurrentPage - DisplayRange / 2);
+        EndPage = Math.Min(TotalPageCount, StartPage + DisplayRange - 1);
+
+        if (EndPage - StartPage + 1 < DisplayRange)
+        {
+            if (StartPage > 1)
+            {
+                StartPage = Math.Max(1, EndPage - DisplayRange + 1);
+            }
+            else if (EndPage < TotalPageCount)
+            {
+                EndPage = Math.Min(TotalPageCount, StartPage + DisplayRange - 1);
+            }
+        }
+
+        return Task.CompletedTask;
+    }
+
     public async Task<IActionResult> OnPostLogOut()
     {
         return await HandleLogOut();
