@@ -31,14 +31,14 @@
 @*! Follower and Followee names are reverse... *@
 
 <!-- Your Followers -->
-<h3>Your Followers:</h3>
+<h3>Users You Are Following:</h3>
 @foreach (var follower in Model.Followers)
 {
     <p>Follower: @follower.Name</p>
 }
 
 <!-- Your Followees -->
-<h3>Users You Are Following:</h3>
+<h3>Your Followers:</h3>
 @foreach (var followee in Model.Followees)
 {
     <p>Following: @followee.Name</p>
