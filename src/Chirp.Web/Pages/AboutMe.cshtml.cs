@@ -70,7 +70,6 @@ public class AboutMeModel : BasePageModel
         }
         await CalculatePagination();
 
-
         return await Task.FromResult<IActionResult>(Page());
     }
     public async Task<int> GetTotalPages(string user)
