@@ -76,7 +76,7 @@ namespace PlaywrightTests
             //      Author (B) follows Author (C) and (D), Author (C) follows Author (D) 
             await page.GetByPlaceholder("Write your cheep here!").ClickAsync();                                         await Task.Delay(2000);
             await page.GetByPlaceholder("Write your cheep here!").FillAsync("I will reset and seed new test data");     await Task.Delay(2000);
-            await page.GetByRole(AriaRole.Link, new() { Name = "SeedDB" }).ClickAsync();                                await Task.Delay(2000);
+            await page.GetByRole(AriaRole.Link, new() { Name = "Seed DB" }).ClickAsync();                               await Task.Delay(2000);
             await page.GetByRole(AriaRole.Button, new() { Name = "Seed DB2" }).ClickAsync();                            await Task.Delay(2000);
 
             await page.GetByPlaceholder("Write your cheep here!").ClickAsync();                                         await Task.Delay(2000);
@@ -91,8 +91,8 @@ namespace PlaywrightTests
             await page.Locator("li").Filter(new() { HasText = "Chirp27" }).GetByRole(AriaRole.Button).First.ClickAsync();   
 
             // Go into my UserTimeline - both of these authors cheeps should appear in my user-timeline
-            await DisplayMessage(page, "Go to my UserTimeline");
-            await page.GetByText("User-Timeline").ClickAsync(); 
+            await DisplayMessage(page, "Go to my User Timeline");
+            await page.GetByText("User Timeline").ClickAsync(); 
             await DisplayMessage(page, "I should see all my followers cheeps + my cheeps");
             await ScrollDown(page);
             Assert.IsTrue(await page.Locator("text='Chirp27'").CountAsync() > 0, "Author not found");
@@ -121,7 +121,7 @@ namespace PlaywrightTests
             // Go to my timeline
             await DisplayMessage(page, "Go to my UserTimeline");
             await ScrollDown(page);
-            await page.GetByText("User-Timeline").ClickAsync(); await Task.Delay(2000);
+            await page.GetByText("User Timeline").ClickAsync(); await Task.Delay(2000);
             await DisplayMessage(page, "My timeline should only consists of my own cheeps now");
             await ScrollDown(page);
             Assert.IsFalse(await page.Locator("text='Chirp27'").IsVisibleAsync());
