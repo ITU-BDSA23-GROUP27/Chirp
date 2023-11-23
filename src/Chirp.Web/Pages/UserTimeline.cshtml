@@ -27,3 +27,19 @@
     }
 </div>
 
+
+@*! Follower and Followee names are reverse... *@
+
+<!-- Your Followers -->
+<h3>Following:</h3>
+@foreach (var follower in Model.Followers)
+{
+    <p>Follower: @follower.Name</p>
+}
+
+<!-- Your Followees -->
+<h3>Followers:</h3>
+@foreach (var followee in Model.Followees)
+{
+    <p>Following: @followee.Name</p>
+}

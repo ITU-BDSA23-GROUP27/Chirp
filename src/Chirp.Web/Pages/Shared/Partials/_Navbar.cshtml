@@ -8,15 +8,15 @@
     {
         <div>
             <a class='@(Context.Request.Path == "/"        ? "active" : "")' href="/">Home </a>
-            <a class='@(Context.Request.Path == "/Privacy" ? "active" : "")' href="/Privacy">Privacy</a>
+            <a class='@(Context.Request.Path == "/AboutMe" ? "active" : "")' href="AboutMe">About me</a>
             <a class='@(Context.Request.Path != "/" && 
                         Context.Request.Path != "/Privacy" && 
-                        Context.Request.Path != "/Profile" &&
+                        Context.Request.Path != "/AboutMe" &&
                         Context.Request.Path != "/Claims" &&
                         Context.Request.Path != "/SeedDB" ? "active" : "")' 
-                        href="@(User.Identity?.Name)">User-Timeline</a>
-            <a class='@(Context.Request.Path == "/Profile" ? "active" : "")' href="Profile">Profile</a>
-            <a class='@(Context.Request.Path == "/SeedDB"  ? "active" : "")' href="/SeedDB">SeedDB </a>
+                        href="@(User.Identity?.Name)">User timeline</a>
+            <a class='@(Context.Request.Path == "/Privacy" ? "active" : "")' href="/Privacy">Privacy</a>
+            <a class='@(Context.Request.Path == "/SeedDB"  ? "active" : "")' href="/SeedDB">Seed DB </a>
         </div>
         <div>
             <form asp-page-handler="LogOut" method="post">
