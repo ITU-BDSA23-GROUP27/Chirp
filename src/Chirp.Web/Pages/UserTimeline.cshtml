@@ -5,16 +5,21 @@
     Layout = "Shared/_Layout";
 }
 
+
 <div>
     @if (User.Identity?.IsAuthenticated == true)
     {
         <partial name="Partials/_Textbox"/>
     }
-        
+
     <header>
         <h2> @Model.RouteName's Timeline </h2>
         <span class="display-page"> Page @Model.CurrentPage/@Model.TotalPageCount </span>
     </header>
+
+    <!-- Followers -->
+    <partial name="Partials/_FollowersTracker" model="Model"/>
+    <hr>    
 
     @if (Model.Cheeps.Any())
     {
@@ -27,19 +32,4 @@
     }
 </div>
 
-
-@*! Follower and Followee names are reverse... *@
-
-<!-- Your Followers -->
-<h3>Following:</h3>
-@foreach (var follower in Model.Followers)
-{
-    <p><a href="/@follower.Name">@follower.Name</a></p>
-}
-
-<!-- Your Followees -->
-<h3>Followers:</h3>
-@foreach (var followee in Model.Followees)
-{
-    <p><a href="/@followee.Name">@followee.Name</a></p>
-}
+ <script src="/js/menuToggle.js"></script>
