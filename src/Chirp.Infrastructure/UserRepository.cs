@@ -14,9 +14,9 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public UserDto GetUserByName(string authorName)
+    public async Task<UserDto> GetUserByName(string userName)
     {
-        var user = _context.Users.First(u => u.Name == authorName);
+        var user = await _context.Users.FirstAsync(u => u.Name == userName);
 
         return new UserDto()
         {
@@ -26,9 +26,9 @@ public class UserRepository : IUserRepository
         };
     }
 
-    public UserDto GetUserByEmail(string authorEmail)
+    public async Task<UserDto> GetUserByEmail(string authorEmail)
     {
-        var user = _context.Users.First(u => u.Email == authorEmail);
+        var user = await _context.Users.FirstAsync(u => u.Email == authorEmail);
 
         return new UserDto()
         {
@@ -38,9 +38,9 @@ public class UserRepository : IUserRepository
         };
     }
 
-    public void CreateUser(UserDto user)
+    public async Task CreateUser(UserDto user)
     {
-        var existingUser = _context.Users.SingleOrDefault(u => u.Name == user.Name);
+        var existingUser = await _context.Users.SingleOrDefaultAsync(u => u.Name == user.Name);
 
         if (existingUser is not null)
         {
@@ -55,6 +55,6 @@ public class UserRepository : IUserRepository
         };
         
         _context.Users.Add(newUser);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 }

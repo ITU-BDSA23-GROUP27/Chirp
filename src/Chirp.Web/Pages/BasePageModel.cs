@@ -30,7 +30,7 @@ public class BasePageModel : PageModel
         {
             Message = cheepMessage?.Replace("\r\n", " ") ?? "",
             TimeStamp = currentUtcTime.ToString(),
-            AuthorName = User.Identity?.Name ?? "Anonymous"
+            UserName = User.Identity?.Name ?? "Anonymous"
         };
 
         ValidationResult result = validator.Validate(cheep);

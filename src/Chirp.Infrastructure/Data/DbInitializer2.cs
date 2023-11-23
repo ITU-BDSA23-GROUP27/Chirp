@@ -31,7 +31,7 @@ public static void SeedDatabase2(ChirpContext chirpContext)
         
         var c400 = new Cheep() { CheepId = new Guid(), User = a4, Text = "Hello BDSA GR27", TimeStamp = DateTime.Parse("1992-12-01 02:00:00") };
         var c401 = new Cheep() { CheepId = new Guid(), User = a4, Text = "Hello BDSA GR27", TimeStamp = DateTime.Parse("1991-12-01 01:00:00") };
-        var c402 = new Cheep() { Che = a4, Text = "Hello BDSA GR27", TimeStamp = DateTime.Parse("1990-12-01 00:00:00") };
+        var c402 = new Cheep() { CheepId = new Guid(), User = a4, Text = "Hello BDSA GR27", TimeStamp = DateTime.Parse("1990-12-01 00:00:00") };
 
         var cheeps = new List<Cheep>() { 
             c100,

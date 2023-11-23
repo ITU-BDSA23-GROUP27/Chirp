@@ -4,7 +4,7 @@ namespace Chirp.Core;
 
 public interface IUserRepository
 {
-    public UserDto GetUserByName(string authorName);
-    public UserDto GetUserByEmail(string authorEmail);
-    public void CreateUser(UserDto user);
+    public Task<UserDto> GetUserByName(string authorName);
+    public Task<UserDto> GetUserByEmail(string authorEmail);
+    public Task CreateUser(UserDto user);
 }
