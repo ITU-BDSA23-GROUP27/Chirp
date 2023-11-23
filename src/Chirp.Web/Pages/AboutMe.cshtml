@@ -10,26 +10,40 @@
     }
 }
 
+@* 
+@foreach (var claim in User.Claims)
+{
+    <p>@claim.Type: <span style="color: crimson">@claim.Value<span/></p>
+} 
+*@
+
 <h2>About Me</h2>
 
 <div class="user-info">
-    <img class="api-avatar_url claim-img" alt="">
+    <img src=@Model.Avatar class="claim-img" alt="1">
     <p>
         <span class="label">ID:</span> 
-        <span class="api-id"><span/>
+        <span class="">@Model.ID<span/>
     </p>
     <p>
         <span class="label">Username:</span> 
-        <span class="api-login"><span/>
+        <span class="">@Model.Username<span/>
     <p>
         <span class="label">Name:</span> 
-        <span class="api-name"><span/>
+        <span class="">@Model.Name<span/>
+    </p>
+    <p>
+        <span class="label">Email:</span> 
+        <span class="">@Model.Email<span/>
     </p>
     <p>
         <span class="label">GitHub URL:</span> 
         <a href="@Model.GithubURL" target="_blank">@Model.GithubURL</a>
     </p>
 </div>
+
+
+
 
 <div>
     <h3>Followers</h3>
@@ -39,7 +53,6 @@
 <hr/>
 
 @*! Download My Data *@
-
 <div class="">
     <h3>Get user data</h3>
     <p>Get a copy of your user data.</p>
@@ -61,8 +74,8 @@
 </div>
 
 
-<script>
+@* <script>
     var GithubURL = '@Model.GithubURL';
 </script>
 
-<script src="/js/claims.js"></script>
+<script src="/js/claims.js"></script> *@
