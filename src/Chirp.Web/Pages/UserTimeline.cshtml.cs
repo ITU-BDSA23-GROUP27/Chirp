@@ -32,7 +32,8 @@ public class UserTimelineModel : BasePageModel
     [BindProperty, StringLength(160), Required]
     public string? CheepMessage { get; set; }
 
-    public UserTimelineModel(ICheepRepository cheepRepository, IUserRepository userRepository, IFollowerRepository followerRepository, IValidator<CheepDto> validator)
+    public UserTimelineModel(ICheepRepository cheepRepository, IUserRepository userRepository, 
+                             IFollowerRepository followerRepository, IValidator<CheepDto> validator)
     {
         _cheepRepository = cheepRepository;
         _userRepository = userRepository;
@@ -51,7 +52,7 @@ public class UserTimelineModel : BasePageModel
                 
                 // show cheeps of user
             }
-            catch (ArgumentException e)
+            catch (ArgumentException)
             {
                 return RedirectToPage("/Public");
             }
