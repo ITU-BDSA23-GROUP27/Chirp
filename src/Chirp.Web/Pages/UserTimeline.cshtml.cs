@@ -13,10 +13,10 @@ public class UserTimelineModel : BasePageModel
     private IValidator<CheepDto> _validator;
 
     private readonly ICheepRepository _cheepRepository;
-    private readonly IAuthorRepository _authorRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IFollowerRepository _followerRepository;
     public IEnumerable<CheepDto> Cheeps { get; set; } = new List<CheepDto>();
-    public IEnumerable<AuthorDto> Followers { get; set; } = new List<AuthorDto>();
+    public IEnumerable<UserDto> Followers { get; set; } = new List<UserDto>();
     public int CurrentPage { get; set; } = 1;
     public int MaxCheepsPerPage { get; set; } = 32;
     public int TotalPageCount { get; set; }
@@ -31,24 +31,24 @@ public class UserTimelineModel : BasePageModel
     [BindProperty, StringLength(160), Required]
     public string? CheepMessage { get; set; }
 
-    public UserTimelineModel(ICheepRepository cheepRepository, IAuthorRepository authorRepository, IFollowerRepository followerRepository, IValidator<CheepDto> validator)
+    public UserTimelineModel(ICheepRepository cheepRepository, IUserRepository userRepository, IFollowerRepository followerRepository, IValidator<CheepDto> validator)
     {
         _cheepRepository = cheepRepository;
-        _authorRepository = authorRepository;
+        _userRepository = userRepository;
         _followerRepository = followerRepository;
         _validator = validator;
     }
 
-    public async Task<ActionResult> OnGet(string author)
+    public async Task<ActionResult> OnGet(string user)
     {
         if (User.Identity?.IsAuthenticated == false)
         {
             try
             {
                 //TODO Problem: Can't find github authors in http since it makes it lowercase e.g. "/Tien197" -> "/tien197"   
-                var existingAuthor = await _authorRepository.GetAuthorByName(author);
+                var existingAuthor = await _userRepository.GetUserByName(user);
                 
-                // show cheeps of author
+                // show cheeps of user
             }
             catch (ArgumentException e)
             {
@@ -63,18 +63,18 @@ public class UserTimelineModel : BasePageModel
         }
         
         //Creates timeline from original cheeps and followees cheeps
-        Followers = await _followerRepository.GetFolloweesFromAuthor(author);
-        Cheeps = await _cheepRepository.GetCheepsFromAuthor(author);
+        Followers = await _followerRepository.GetFolloweesFromUser(user);
+        Cheeps = await _cheepRepository.GetCheepsFromUser(user);
 
-        // Set follow status for each cheep author
+        // Set follow status for each cheep user
         if (User.Identity?.IsAuthenticated == true)
         {
             // Include followers' cheeps only for the logged-in user's timeline
-            if (author == User.Identity.Name)
+            if (user == User.Identity.Name)
             {
-                foreach (var authorDto in Followers)
+                foreach (var userDto in Followers)
                 {
-                    var followerCheeps = await _cheepRepository.GetCheepsFromAuthor(authorDto.Name);
+                    var followerCheeps = await _cheepRepository.GetCheepsFromUser(userDto.Name);
                     var cheepDtos = followerCheeps.ToList();
                     Cheeps = Cheeps.Union(cheepDtos);
                     TotalFollowerCheepCount += cheepDtos.Count();
@@ -82,13 +82,13 @@ public class UserTimelineModel : BasePageModel
             }   
             foreach (var cheep in Cheeps)
             {
-                var authorName = cheep.AuthorName;
-                var followersFromAuthor = await _followerRepository
-                    .GetFollowersFromAuthor(authorName);
+                var userName = cheep.UserName;
+                var followersFromUser = await _followerRepository
+                    .GetFollowersFromUser(userName);
                     
-                    var isFollowing = followersFromAuthor.Any(follower => follower.Name == User.Identity.Name);
+                    var isFollowing = followersFromUser.Any(follower => follower.Name == User.Identity.Name);
 
-                FollowStatus[authorName] = isFollowing;
+                FollowStatus[userName] = isFollowing;
             }
         }
         
@@ -98,18 +98,18 @@ public class UserTimelineModel : BasePageModel
             .Take(MaxCheepsPerPage);
         
         // Pagination
-        TotalPageCount = await GetTotalPages(author) == 0 ? 1 : await GetTotalPages(author);
+        TotalPageCount = await GetTotalPages(user) == 0 ? 1 : await GetTotalPages(user);
         await CalculatePagination();
 
-        // Author's name
-        RouteName = HttpContext.GetRouteValue("author")?.ToString() ?? "";
+        // User's name
+        RouteName = HttpContext.GetRouteValue("user")?.ToString() ?? "";
 
         return Page();
     }
 
-    public async Task<int> GetTotalPages(string author)
+    public async Task<int> GetTotalPages(string user)
     {
-        int totalCheeps = (await _cheepRepository.GetCheepsFromAuthor(author)).Count() + TotalFollowerCheepCount;
+        int totalCheeps = (await _cheepRepository.GetCheepsFromUser(user)).Count() + TotalFollowerCheepCount;
         return (int)Math.Ceiling((double)totalCheeps / MaxCheepsPerPage);
     }
 
@@ -138,9 +138,9 @@ public class UserTimelineModel : BasePageModel
         return await Chirp(CheepMessage, _validator, _cheepRepository);
     }   
     
-    public async Task<IActionResult> OnPostFollow(string authorName, string followerName)
+    public async Task<IActionResult> OnPostFollow(string userName, string followerName)
     {
-        return await HandleFollow(authorName, followerName, _followerRepository);
+        return await HandleFollow(userName, followerName, _followerRepository);
     }
     
     public async Task<IActionResult> OnPostAuthenticateLogin()

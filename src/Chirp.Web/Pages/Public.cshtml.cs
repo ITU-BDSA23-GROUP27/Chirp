@@ -11,7 +11,7 @@ public class PublicModel : BasePageModel
     private IValidator<CheepDto> _validator;
     
     private readonly ICheepRepository _cheepRepository;
-    private readonly IAuthorRepository _authorRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IFollowerRepository _followerRepository;
     public IEnumerable<CheepDto> Cheeps { get; set; } = new List<CheepDto>();
     public int CurrentPage { get; set; } = 1;
@@ -27,10 +27,10 @@ public class PublicModel : BasePageModel
     [BindProperty, StringLength(160), Required]
     public string? CheepMessage { get; set; }
 
-    public PublicModel(ICheepRepository cheepRepository, IAuthorRepository authorRepository, IFollowerRepository followerRepository, IValidator<CheepDto> validator)
+    public PublicModel(ICheepRepository cheepRepository, IUserRepository userRepository, IFollowerRepository followerRepository, IValidator<CheepDto> validator)
     {
         _cheepRepository = cheepRepository;
-        _authorRepository = authorRepository;
+        _userRepository = userRepository;
         _followerRepository = followerRepository;
         _validator = validator;
     }
@@ -41,13 +41,13 @@ public class PublicModel : BasePageModel
         {
             try
             {
-                var author = new AuthorDto
+                var user = new UserDto
                 {
                     Name = User.Identity.Name, //Might need to be changed to use only User.Identity (Does not work until users are implemented)
                     Email = User.Identity.Name + "@chirp.com" //TODO: Needs to be removed
                 };
 
-                await _authorRepository.CreateAuthor(author);
+                await _userRepository.CreateUser(user);
             }
             catch (ArgumentException ex)
             {
@@ -57,16 +57,16 @@ public class PublicModel : BasePageModel
         
         Cheeps = await _cheepRepository.GetCheepsFromPage(CurrentPage);
         
-        // Set follow status for each cheep author
+        // Set follow status for each cheep user
         if (User.Identity?.IsAuthenticated == true)
         {
             foreach (var cheep in Cheeps)
             {
-                var authorName = cheep.AuthorName;
-                var followersFromAuthor = await _followerRepository.GetFollowersFromAuthor(authorName);
-                var isFollowing = followersFromAuthor.Any(follower => follower.Name == User.Identity.Name);
+                var userName = cheep.UserName;
+                var followersFromUser = await _followerRepository.GetFollowersFromUser(userName);
+                var isFollowing = followersFromUser.Any(follower => follower.Name == User.Identity.Name);
 
-                FollowStatus[authorName] = isFollowing;
+                FollowStatus[userName] = isFollowing;
             }
         }
 
@@ -118,9 +118,9 @@ public class PublicModel : BasePageModel
         return await Chirp(CheepMessage, _validator, _cheepRepository);
     }    
 
-    public async Task<IActionResult> OnPostFollow(string authorName, string followerName)
+    public async Task<IActionResult> OnPostFollow(string userName, string followerName)
     {
-        return await HandleFollow(authorName, followerName, _followerRepository);
+        return await HandleFollow(userName, followerName, _followerRepository);
 
     }
     

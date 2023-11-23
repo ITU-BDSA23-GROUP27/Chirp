@@ -26,7 +26,7 @@ public class CheepRepository : ICheepRepository
             Id = c.CheepId,
             Message = c.Text,
             TimeStamp = c.TimeStamp.ToString(CultureInfo.InvariantCulture),
-            AuthorName = c.Author.Name
+            UserName = c.User.Name
         }).ToListAsync();
         
         return cheeps;
@@ -38,24 +38,24 @@ public class CheepRepository : ICheepRepository
         return cheeps.Skip((page - 1) * PageLimit).Take(PageLimit);
     }
     
-    public async Task<IEnumerable<CheepDto>> GetCheepsFromAuthor(string authorName)
+    public async Task<IEnumerable<CheepDto>> GetCheepsFromUser(string userName)
     {
         var cheeps = await GetCheeps();
-        return cheeps.Where(c => c.AuthorName == authorName);
+        return cheeps.Where(c => c.UserName == userName);
     }
     
-    public async Task<IEnumerable<CheepDto>> GetCheepsFromAuthorPage(string authorName, int page)
+    public async Task<IEnumerable<CheepDto>> GetCheepsFromUserPage(string userName, int page)
     {
-        var cheepsFromAuthor = await GetCheepsFromAuthor(authorName);
-        return cheepsFromAuthor.Skip((page - 1) * PageLimit).Take(PageLimit);
+        var cheepsFromUser = await GetCheepsFromUser(userName);
+        return cheepsFromUser.Skip((page - 1) * PageLimit).Take(PageLimit);
     }
     public async Task CreateCheep(CheepDto cheep)
     {
-        var existingAuthor = await _context.Authors.SingleOrDefaultAsync(c => c.Name == cheep.AuthorName);
+        var existingUser = await _context.Users.SingleOrDefaultAsync(u => u.Name == cheep.UserName);
 
-        if (existingAuthor is null)
+        if (existingUser is null)
         {
-            throw new ArgumentException($"No existing author with that name found: {cheep.AuthorName}");
+            throw new ArgumentException($"No existing author with that name found: {cheep.UserName}");
         }
 
         var newCheep = new Cheep()
@@ -63,7 +63,7 @@ public class CheepRepository : ICheepRepository
             CheepId = new Guid(),
             Text = cheep.Message,
             TimeStamp = DateTime.Parse(cheep.TimeStamp),
-            Author = existingAuthor
+            User = existingUser
             
         };
         
