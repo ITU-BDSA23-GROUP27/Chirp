@@ -5,13 +5,13 @@ document.addEventListener('keydown', function (event) {
                 window.location.href = '/';
                 break;
             case '2':
-                window.location.href = '/Privacy';
+                window.location.href = '/AboutMe';
                 break;
             case '3':
                 window.location.href = '/' + username;
                 break;
             case '4':
-                window.location.href = '/Profile';
+                window.location.href = '/Privacy';
                 break;
             case '5':
                 window.location.href = '/SeedDB';

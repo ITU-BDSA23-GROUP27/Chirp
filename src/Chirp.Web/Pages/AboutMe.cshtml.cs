@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Web.Pages;
 
-public class ProfileModel : BasePageModel
+public class AboutMeModel : BasePageModel
 {
     public string? GithubURL { get; set; }
 

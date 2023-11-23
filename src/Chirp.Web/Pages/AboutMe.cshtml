@@ -1,5 +1,5 @@
 ﻿@page
-@model Chirp.Web.Pages.ProfileModel
+@model Chirp.Web.Pages.AboutMeModel
 @{
 }
 
@@ -10,7 +10,7 @@
     }
 }
 
-<h2>Profile</h2>
+<h2>About Me</h2>
 
 <div class="user-info">
     <img class="api-avatar_url claim-img" alt="">
@@ -37,13 +37,21 @@
 </div>
 
 
+<div class="">
+    <button class="seed-btn">Download Data</button>
+</div>
+
+<div class="end">
+    <button class="unseed-btn">Delete Account</button>
+</div>
+
+
+
+
+
 
 <script>
     var GithubURL = '@Model.GithubURL';
 </script>
 
 <script src="/js/claims.js"></script>
-
-<div class="end">
-    <button class="unseed-btn">Delete Account</button>
-</div>
