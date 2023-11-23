@@ -16,14 +16,14 @@ public class FollowerRepository : IFollowerRepository
     }
     
     //Followers are the ones that follows the author/user
-    public async Task<IEnumerable<AuthorDto>> GetFollowersFromAuthor(string authorName)
+    public async Task<IEnumerable<UserDto>> GetFollowersFromUser(string userName)
     {
         var followers = await _context.Followers
-            .Where(f => f.FolloweeAuthor.Name == authorName)
-            .Select(f => f.FollowerAuthor)
-            .Select<Author, AuthorDto>(f => new AuthorDto()
+            .Where(f => f.FolloweeUser.Name == userName)
+            .Select(f => f.FollowerUser)
+            .Select<User, UserDto>(f => new UserDto()
             {
-                Id = f.AuthorId,
+                Id = f.Id,
                 Name = f.Name,
                 Email = f.Email
             }).ToListAsync();
@@ -32,14 +32,14 @@ public class FollowerRepository : IFollowerRepository
     }
     
     //Followees are the ones the author/user follows
-    public async Task<IEnumerable<AuthorDto>> GetFolloweesFromAuthor(string authorName)
+    public async Task<IEnumerable<UserDto>> GetFolloweesFromUser(string userName)
     {
         var followees = await _context.Followers
-            .Where(f => f.FollowerAuthor.Name == authorName)
-            .Select(f => f.FolloweeAuthor)
-            .Select<Author, AuthorDto>(f => new AuthorDto()
+            .Where(f => f.FollowerUser.Name == userName)
+            .Select(f => f.FolloweeUser)
+            .Select<User, UserDto>(f => new UserDto()
             {
-                Id = f.AuthorId,
+                Id = f.Id,
                 Name = f.Name,
                 Email = f.Email
             }).ToListAsync();
@@ -47,19 +47,19 @@ public class FollowerRepository : IFollowerRepository
         return followees;
     }
     
-    public async Task AddOrRemoveFollower(string authorName, string followerName)
+    public async Task AddOrRemoveFollower(string userName, string followerName)
     {
-        var author = await _context.Authors.SingleOrDefaultAsync(a => a.Name == authorName);
-        var follower = _context.Authors.SingleOrDefault(a => a.Name == followerName);
+        var user = await _context.Users.SingleOrDefaultAsync(a => a.Name == userName);
+        var follower = _context.Users.SingleOrDefault(a => a.Name == followerName);
         
-        if (author == follower)
+        if (user == follower)
         {
-            throw new ArgumentException("Author and follower cannot be equal to one another: ", nameof(authorName));
+            throw new ArgumentException("Author and follower cannot be equal to one another: ", nameof(userName));
         }
         
-        if (author is null)
+        if (user is null)
         {
-            throw new ArgumentException("Author does not exist: ", nameof(authorName));
+            throw new ArgumentException("Author does not exist: ", nameof(userName));
         }
         
         if (follower is null)
@@ -69,10 +69,10 @@ public class FollowerRepository : IFollowerRepository
 
         var newFollower = new Follower()
         {
-            FollowerId = follower.AuthorId,
-            FolloweeId = author.AuthorId,
-            FollowerAuthor = follower,
-            FolloweeAuthor = author
+            FollowerId = follower.Id,
+            FolloweeId = user.Id,
+            FollowerUser = follower,
+            FolloweeUser = user
         };
         
         if (_context.Followers.Contains(newFollower))
