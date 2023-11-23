@@ -16,7 +16,7 @@ public class PublicModel : PageModel
     private IValidator<CheepDto> _validator;
     
     private readonly ICheepRepository _cheepRepository;
-    private readonly IAuthorRepository _authorRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IFollowerRepository _followerRepository;
     public IEnumerable<CheepDto> Cheeps { get; set; } = new List<CheepDto>();
     public int CurrentPage { get; set; } = 1;
@@ -32,10 +32,10 @@ public class PublicModel : PageModel
     [BindProperty, StringLength(160), Required]
     public string? CheepMessage { get; set; }
 
-    public PublicModel(ICheepRepository cheepRepository, IAuthorRepository authorRepository, IFollowerRepository followerRepository, IValidator<CheepDto> validator)
+    public PublicModel(ICheepRepository cheepRepository, IUserRepository userRepository, IFollowerRepository followerRepository, IValidator<CheepDto> validator)
     {
         _cheepRepository = cheepRepository;
-        _authorRepository = authorRepository;
+        _userRepository = userRepository;
         _followerRepository = followerRepository;
         _validator = validator;
     }
@@ -46,13 +46,13 @@ public class PublicModel : PageModel
         {
             try
             {
-                var author = new UserDto
+                var user = new UserDto
                 {
                     Name = User.Identity.Name, //Might need to be changed to use only User.Identity (Does not work until users are implemented)
                     Email = User.Identity.Name + "@chirp.com" //TODO: Needs to be removed
                 };
 
-                _authorRepository.CreateUser(author);
+                _userRepository.CreateUser(user);
             }
             catch (ArgumentException ex)
             {
@@ -66,17 +66,17 @@ public class PublicModel : PageModel
         
         Cheeps = _cheepRepository.GetCheepsFromPage(CurrentPage);
 
-        // Set follow status for each cheep author
+        // Set follow status for each cheep user
         if (User.Identity?.IsAuthenticated == true)
         {
             foreach (var cheep in Cheeps)
             {
-                var authorName = cheep.UserName;
+                var userName = cheep.UserName;
                 var isFollowing = _followerRepository
-                    .GetFollowersFromUser(authorName)
+                    .GetFollowersFromUser(userName)
                     .Any(follower => follower.Name == User.Identity.Name);
 
-                FollowStatus[authorName] = isFollowing;
+                FollowStatus[userName] = isFollowing;
             }
         }
 
@@ -119,18 +119,18 @@ public class PublicModel : PageModel
         return RedirectToPage("Public");
     }
 
-    public IActionResult OnPostFollow(string authorName, string followerName)
+    public IActionResult OnPostFollow(string userName, string followerName)
     {
-        if (authorName is null)
+        if (userName is null)
         {
-            throw new ArgumentNullException($"Authorname is null {nameof(authorName)}");
+            throw new ArgumentNullException($"Username is null {nameof(userName)}");
         }
         if (followerName is null)
         {
             throw new ArgumentNullException($"Followername is null {nameof(followerName)}");
         }
         
-        _followerRepository.AddOrRemoveFollower(authorName, followerName);
+        _followerRepository.AddOrRemoveFollower(userName, followerName);
 
         return RedirectToPage(""); //TODO Needs to be changes so it does not redirect but instead refreshes at the same point
     }

@@ -16,7 +16,7 @@ public class UserTimelineModel : PageModel
     private IValidator<CheepDto> _validator;
 
     private readonly ICheepRepository _cheepRepository;
-    private readonly IAuthorRepository _authorRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IFollowerRepository _followerRepository;
     public IEnumerable<CheepDto> Cheeps { get; set; } = new List<CheepDto>();
     public IEnumerable<UserDto> Followers { get; set; } = new List<UserDto>();
@@ -34,15 +34,15 @@ public class UserTimelineModel : PageModel
     [BindProperty, StringLength(160), Required]
     public string? CheepMessage { get; set; }
 
-    public UserTimelineModel(ICheepRepository cheepRepository, IAuthorRepository authorRepository, IFollowerRepository followerRepository, IValidator<CheepDto> validator)
+    public UserTimelineModel(ICheepRepository cheepRepository, IUserRepository userRepository, IFollowerRepository followerRepository, IValidator<CheepDto> validator)
     {
         _cheepRepository = cheepRepository;
-        _authorRepository = authorRepository;
+        _userRepository = userRepository;
         _followerRepository = followerRepository;
         _validator = validator;
     }
 
-    public ActionResult OnGet(string author)
+    public ActionResult OnGet(string user)
     {
         //The following if statement has been made with the help of CHAT-GPT
         if (Request.Query.TryGetValue("page", out var pageValues) && int.TryParse(pageValues, out int parsedPage) && parsedPage > 0)
@@ -51,28 +51,28 @@ public class UserTimelineModel : PageModel
         }
         
         //Creates timeline from original cheeps and followees cheeps
-        Followers = _followerRepository.GetFolloweesFromUser(author);
-        Cheeps = _cheepRepository.GetCheepsFromUser(author);
+        Followers = _followerRepository.GetFolloweesFromUser(user);
+        Cheeps = _cheepRepository.GetCheepsFromUser(user);
 
-        // Set follow status for each cheep author
+        // Set follow status for each cheep user
         if (User.Identity?.IsAuthenticated == true)
         {
             // Include followers' cheeps only for the logged-in user's timeline
-            if (author == User.Identity.Name)
+            if (user == User.Identity.Name)
             {
-                foreach (var authorDto in Followers)
+                foreach (var userDto in Followers)
                 {
-                    Cheeps = Cheeps.Union(_cheepRepository.GetCheepsFromUser(authorDto.Name));
+                    Cheeps = Cheeps.Union(_cheepRepository.GetCheepsFromUser(userDto.Name));
                 }
             }   
             foreach (var cheep in Cheeps)
             {
-                var authorName = cheep.UserName;
+                var userName = cheep.UserName;
                 var isFollowing = _followerRepository
-                    .GetFollowersFromUser(authorName)
+                    .GetFollowersFromUser(userName)
                     .Any(follower => follower.Name == User.Identity.Name);
 
-                FollowStatus[authorName] = isFollowing;
+                FollowStatus[userName] = isFollowing;
             }
         }
         
@@ -83,23 +83,23 @@ public class UserTimelineModel : PageModel
         
         // ----------------------------------------------------------
 
-        if (GetTotalPages(author) == 0)
+        if (GetTotalPages(user) == 0)
         {
             TotalPageCount = 1;
         } else {
-            TotalPageCount = GetTotalPages(author);
+            TotalPageCount = GetTotalPages(user);
         }
         CalculatePagination();
 
-        // Author's name
-        RouteName = HttpContext.GetRouteValue("author")?.ToString() ?? "";
+        // User's name
+        RouteName = HttpContext.GetRouteValue("user")?.ToString() ?? "";
 
         return Page();
     }
 
-    public int GetTotalPages(string author)
+    public int GetTotalPages(string user)
     {
-        int totalCheeps = _cheepRepository.GetCheepsFromUser(author).Count();
+        int totalCheeps = _cheepRepository.GetCheepsFromUser(user).Count();
         return (int)Math.Ceiling((double)totalCheeps / MaxCheepsPerPage);
     }
 
@@ -135,18 +135,18 @@ public class UserTimelineModel : PageModel
         return RedirectToPage("Public");
     }
     
-    public IActionResult OnPostFollow(string authorName, string followerName)
+    public IActionResult OnPostFollow(string userName, string followerName)
     {
-        if (authorName is null)
+        if (userName is null)
         {
-            throw new ArgumentNullException($"Authorname is null {nameof(authorName)}");
+            throw new ArgumentNullException($"Username is null {nameof(userName)}");
         }
         if (followerName is null)
         {
             throw new ArgumentNullException($"Followername is null {nameof(followerName)}");
         }
         
-        _followerRepository.AddOrRemoveFollower(authorName, followerName);
+        _followerRepository.AddOrRemoveFollower(userName, followerName);
 
         return RedirectToPage(""); //TODO Needs to be changes so it does not redirect but instead refreshes at the same point
     }
@@ -157,13 +157,13 @@ public class UserTimelineModel : PageModel
         {
             if (User.Identity?.Name != null)
             {
-                var author = new UserDto
+                var user = new UserDto
                 {
                     Name = User.Identity.Name, //Might need to be changed to use only User.Identity (Does not work until users are implemented)
                     Email = User.Identity.Name + "@chirp.com" //TODO: Needs to be removed
                 };
 
-                _authorRepository.CreateUser(author);
+                _userRepository.CreateUser(user);
             }
         }
         catch (ArgumentException ex)

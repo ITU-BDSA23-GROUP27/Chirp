@@ -1,4 +1,4 @@
-﻿@page "/{author}"
+﻿@page "/{user}"
 @model Chirp.Web.Pages.UserTimelineModel
 @{
     ViewData["Title"] = "Chirp!";
@@ -19,7 +19,7 @@
     @*
         TODO - show cheeps based on your login and follower
         if 
-            (User.Identity?.IsAuthenticated == true && cheep.AuthorName == User.Identity.Name)
+            (User.Identity?.IsAuthenticated == true && cheep.UserName == User.Identity.Name)
                 your own timeline = display your cheeps + all your followers cheeps
         else
             display cheeps of the user you are visiting only

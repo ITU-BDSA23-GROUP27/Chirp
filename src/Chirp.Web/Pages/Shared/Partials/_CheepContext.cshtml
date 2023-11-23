@@ -6,14 +6,14 @@
 
                 @* User Avatar *@
                 <div class="avatar-container">
-                    @if (cheep.AuthorName == "PhiVaLo" || cheep.AuthorName == "Tien197")
+                    @if (cheep.UserName == "PhiVaLo" || cheep.UserName == "Tien197")
                     {
-                        <img class="avatar avatar-glow" src="https://avatars.githubusercontent.com/@(cheep.AuthorName)"
+                        <img class="avatar avatar-glow" src="https://avatars.githubusercontent.com/@(cheep.UserName)"
                             alt="Icon1" />
                     }
                     else
                     {
-                        <img class="avatar" src="https://avatars.githubusercontent.com/@(cheep.AuthorName)" alt="Icon1" />
+                        <img class="avatar" src="https://avatars.githubusercontent.com/@(cheep.UserName)" alt="Icon1" />
                     }
                 </div>
 
@@ -21,7 +21,7 @@
                 <div class="left-content">
                     <p id="cheep-content">
                         <strong>
-                            <a id="author" href="/@cheep.AuthorName">@cheep.AuthorName</a>
+                            <a id="author" href="/@cheep.UserName">@cheep.UserName</a>
                         </strong>
                     </p>
                     <p id="cheep-content">
@@ -44,11 +44,11 @@
             <div class="reactions-container">
 
                 @* Follower *@
-                @if (User.Identity?.IsAuthenticated == true && cheep.AuthorName != User.Identity.Name)
+                @if (User.Identity?.IsAuthenticated == true && cheep.UserName != User.Identity.Name)
                 {
                     <div>
-                        <form method="post" asp-page-handler="Follow" asp-route-authorName="@cheep.AuthorName" asp-route-followerName="@User.Identity?.Name">
-                            @if (Model.FollowStatus.TryGetValue(cheep.AuthorName, out bool isFollowing) && isFollowing)
+                        <form method="post" asp-page-handler="Follow" asp-route-UserName="@cheep.UserName" asp-route-followerName="@User.Identity?.Name">
+                            @if (Model.FollowStatus.TryGetValue(cheep.UserName, out bool isFollowing) && isFollowing)
                             {
                                 <button class="follow-btn unfollow" type="submit">Unfollow</button>
                             }

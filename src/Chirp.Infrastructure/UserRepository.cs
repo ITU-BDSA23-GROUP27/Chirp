@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure;
 
-public class AuthorRepository : IAuthorRepository
+public class UserRepository : IUserRepository
 {
     private readonly ChirpContext _context;
 
-    public AuthorRepository(ChirpContext context)
+    public UserRepository(ChirpContext context)
     {
         _context = context;
     }
