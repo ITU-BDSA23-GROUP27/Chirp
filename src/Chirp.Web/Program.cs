@@ -56,7 +56,6 @@ builder.Services.AddAuthentication(options =>
     });
 
 builder.Services.AddRazorPages();
-//builder.Services.AddDbContext<ChirpContext>(options => options.UseSqlite($"Data Source={path}"));
 builder.Services.AddScoped<ICheepRepository, Chirp.Infrastructure.CheepRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IFollowerRepository, FollowerRepository>();
