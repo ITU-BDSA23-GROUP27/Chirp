@@ -28,7 +28,7 @@ namespace Chirp.Infrastructure.Test
         }
 
         [Fact]
-        public async Task CreateAuthor_Success()
+        public async Task CreateUser_Success()
         {
             // Arrange
             var userDto = new UserDto { Name = "Bodil Bodilsen", Email = "Bodil@danmark.dk" };
@@ -37,9 +37,9 @@ namespace Chirp.Infrastructure.Test
             await _userRepository.CreateUser(userDto);
 
             // Assert
-            var author = _context.Authors.Single(a => a.Name == "Bodil Bodilsen");
-            Assert.Equal("Bodil Bodilsen", author.Name);
-            Assert.Equal("Bodil@danmark.dk", author.Email);
+            var user = _context.Users.Single(a => a.Name == "Bodil Bodilsen");
+            Assert.Equal("Bodil Bodilsen", user.Name);
+            Assert.Equal("Bodil@danmark.dk", user.Email);
         }
 
         [Fact]
@@ -100,7 +100,7 @@ namespace Chirp.Infrastructure.Test
         }
 
         [Fact]
-        public async Task GetAuthorByName_ReturnsCorrectAuthor()
+        public async Task GetUserByName_ReturnsCorrectUser()
         {
             // Arrange
             var user = new UserDto { Name = "Spongebob Squarepants", Email = "mrgoofy@pants.com" };
@@ -114,7 +114,7 @@ namespace Chirp.Infrastructure.Test
         }
 
         [Fact]
-        public async Task GetAuthorByEmail_ReturnsCorrectAuthor()
+        public async Task GetUserByEmail_ReturnsCorrectUser()
         {
             // Arrange
             var user = new UserDto { Name = "Karsten Pedersen", Email = "kp67@email.com" };
