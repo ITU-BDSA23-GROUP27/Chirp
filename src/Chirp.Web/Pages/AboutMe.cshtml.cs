@@ -12,6 +12,7 @@ public class AboutMeModel : BasePageModel
     private readonly IFollowerRepository _followerRepository;
     public IEnumerable<CheepDto> Cheeps { get; set; } = new List<CheepDto>();
     public IEnumerable<UserDto> Followers { get; set; } = new List<UserDto>();
+    public IEnumerable<UserDto> Followees { get; set; } = new List<UserDto>();
 
     public string? ID { get; set; }
     public string? Username { get; set; }
@@ -34,7 +35,7 @@ public class AboutMeModel : BasePageModel
         // User Claims
         foreach (var claim in User.Claims)
         {
-                Console.WriteLine($"Claim Type: {claim.Type}, Claim Value: {claim.Value}");
+            Console.WriteLine($"Claim Type: {claim.Type}, Claim Value: {claim.Value}");
         }
 
         ID = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
@@ -49,6 +50,7 @@ public class AboutMeModel : BasePageModel
         {
             Cheeps = await _cheepRepository.GetCheepsFromUser(Username);
             Followers = (await _followerRepository.GetFolloweesFromUser(Username)).OrderBy(u => u.Name).ToList();
+            Followees = (await _followerRepository.GetFollowersFromUser(Username)).OrderBy(u => u.Name).ToList();
         }
 
         return await Task.FromResult<IActionResult>(Page());

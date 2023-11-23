@@ -44,11 +44,21 @@
 
 
 
+@*! Followers  *@
 
-<div>
-    <h3>Followers</h3>
-    <p>List of followers</p>
-</div>
+<!-- Your Followers -->
+<h3>Following:</h3>
+@foreach (var follower in Model.Followers)
+{
+    <p><a href="/@follower.Name">@follower.Name</a></p>
+}
+
+<!-- Your Followees -->
+<h3>Followers:</h3>
+@foreach (var followee in Model.Followees)
+{
+    <p><a href="/@followee.Name">@followee.Name</a></p>
+}
 
 <hr/>
 

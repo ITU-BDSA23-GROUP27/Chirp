@@ -34,12 +34,12 @@
 <h3>Following:</h3>
 @foreach (var follower in Model.Followers)
 {
-    <p>@follower.Name</p>
+    <p><a href="/@follower.Name">@follower.Name</a></p>
 }
 
 <!-- Your Followees -->
 <h3>Followers:</h3>
 @foreach (var followee in Model.Followees)
 {
-    <p>Following: @followee.Name</p>
+    <p><a href="/@followee.Name">@followee.Name</a></p>
 }
