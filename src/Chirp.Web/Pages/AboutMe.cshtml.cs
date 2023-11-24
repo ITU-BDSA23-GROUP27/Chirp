@@ -48,14 +48,18 @@ public class AboutMeModel : BasePageModel
         // Fetch cheeps and followers
         if (Username != null)
         {
+            //! ChatGPT's parser -  Parse the page parameter
+            var pageValues = Request.Query["page"].ToString();
+            if (int.TryParse(pageValues, out int parsedPage) && parsedPage > 0)
+            {
+                CurrentPage = parsedPage;
+            }
+
             Cheeps = await _cheepRepository.GetCheepsFromUser(Username);
             Followers = (await _followerRepository.GetFolloweesFromUser(Username)).OrderBy(u => u.Name).ToList();
             Followees = (await _followerRepository.GetFollowersFromUser(Username)).OrderBy(u => u.Name).ToList();
-        }
 
-        // Pagination
-        if (Username != null)
-        {
+            // Pagination
             TotalPageCount = await GetTotalPages(Username) == 0 ? 1 : await GetTotalPages(Username);
         }
         await CalculatePagination();
