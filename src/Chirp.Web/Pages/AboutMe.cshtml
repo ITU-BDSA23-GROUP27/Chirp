@@ -58,6 +58,7 @@
 
 <hr/>
 
+
 <!-- Download My Data -->
 <h3 class="toggle" onclick="toggleSection('downloadData')">
     Download Your Data <span id="downloadDataIcon">&#9650;</span>
@@ -65,9 +66,12 @@
 <div class="" id="downloadData">
     <p>Your privacy is important to us, and this feature is designed to empower you with control over your information. </p>
     <div class="end">
-        <button class="seed-btn">Download Data</button>
+        <form method="post">
+            <button type="submit" class="seed-btn" asp-page-handler="DownloadData">Download Data</button>
+        </form>
     </div>
 </div>
+
 
 <hr/>
 

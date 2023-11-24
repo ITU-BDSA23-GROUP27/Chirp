@@ -1,3 +1,4 @@
+using System.Text;
 using Chirp.Core;
 using Chirp.Core.DTOs;
 using Microsoft.AspNetCore.Authentication;
@@ -39,9 +40,9 @@ public class AboutMeModel : BasePageModel
 
     public async Task<IActionResult> OnGet()
     {
-        if (User.Identity?.IsAuthenticated == false) 
+        if (User.Identity?.IsAuthenticated == false)
             return await HandleNotAuthenticated();
-               
+
         // User Claims
         foreach (var claim in User.Claims)
         {
@@ -72,6 +73,7 @@ public class AboutMeModel : BasePageModel
 
         return await Task.FromResult<IActionResult>(Page());
     }
+
     public async Task<int> GetTotalPages(string user)
     {
         int totalCheeps = (await _cheepRepository.GetCheepsFromUser(user)).Count();
@@ -96,6 +98,64 @@ public class AboutMeModel : BasePageModel
         }
 
         return Task.CompletedTask;
+    }
+
+
+    public async Task<IActionResult> OnPostDownloadData()
+    {
+        if (User.Identity?.IsAuthenticated != true)
+        {
+            return Unauthorized();
+        }
+
+        ID = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+        Username = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name")?.Value;
+        Email = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
+        Name = User.FindFirst("urn:github:name")?.Value;
+        GithubURL = User.FindFirst("urn:github:url")?.Value;
+        Avatar = $"https://avatars.githubusercontent.com/{Username}";
+
+        // Fetch cheeps and followers
+        if (Username != null)
+        {
+            Cheeps = await _cheepRepository.GetCheepsFromUser(Username);
+            Followers = (await _followerRepository.GetFolloweesFromUser(Username)).OrderBy(u => u.Name).ToList();
+            Followees = (await _followerRepository.GetFollowersFromUser(Username)).OrderBy(u => u.Name).ToList();
+        }
+
+        // Create a string containing user data
+        var userData = $"Your user data in Chirp! GR27 \nRetrieved at {DateTime.Now}\n\n";
+        userData += new string('_', 75) + $"\n\nClaims: \n\t- ID: {ID} \n\t- Username: {Username} \n\t- Email: {Email} \n\t- Name: {Name} \n\t- GitHub URL: {GithubURL} \n\t- Avatar: {Avatar}\n\n";
+
+        // TODO - reverse names followers and followees?
+        // Add followers to the string
+        userData += new string('_', 75) + "\n\nFollowing:\n";
+        foreach (var follower in Followers)
+        {
+            userData += $"\t - {follower.Name}\n";
+        }
+        userData += "\n";
+
+        // Add followees to the string
+        userData += new string('_', 75) + "\n\nFollowees:\n";
+        foreach (var followee in Followees)
+        {
+            userData += $"\t - {followee.Name}\n";
+        }
+        userData += "\n";
+
+        // Add cheeps to the string
+        userData += new string('_', 75) + "\n\nMy Cheeps:\n";
+        foreach (var cheep in Cheeps)
+        {
+            userData += $"\t- Username: {cheep.UserName}\n";
+            userData += $"\t- Timestamp: {cheep.TimeStamp}\n";
+            userData += $"\t- Message: {cheep.Message}\n\n";
+        }
+        userData += "\n";
+
+        // empty
+        return await Task.FromResult<IActionResult>(Page());
     }
 
     public async Task<IActionResult> OnPostLogOut()
