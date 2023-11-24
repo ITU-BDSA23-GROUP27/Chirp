@@ -79,17 +79,6 @@ public class PublicModel : BasePageModel
 
         Cheeps = await _cheepRepository.GetCheepsFromPage(CurrentPage);
 
-        // if (await GetTotalPages() == 0)
-        // {
-        //     TotalPageCount = 1;
-        // }
-        // else
-        // {
-        //     TotalPageCount = await GetTotalPages();
-        // }
-        // CalculatePagination();
-
-
         TotalPageCount = await GetTotalPages() == 0 ? 1 : await GetTotalPages();
         await CalculatePagination();        
 
