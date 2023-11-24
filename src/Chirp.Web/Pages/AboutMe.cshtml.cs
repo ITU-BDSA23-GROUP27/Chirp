@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text;
 using Chirp.Core;
 using Chirp.Core.DTOs;
@@ -63,6 +64,11 @@ public class AboutMeModel : BasePageModel
             TotalPageCount = await GetTotalPages(Username) == 0 ? 1 : await GetTotalPages(Username);
         }
         await CalculatePagination();
+
+        Cheeps = Cheeps
+            .OrderByDescending(c => DateTime.ParseExact(c.TimeStamp, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture))
+            .Skip((CurrentPage - 1) * MaxCheepsPerPage)
+            .Take(MaxCheepsPerPage);
 
         return await Task.FromResult<IActionResult>(Page());
     }
