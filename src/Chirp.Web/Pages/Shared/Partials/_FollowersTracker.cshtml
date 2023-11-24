@@ -6,10 +6,10 @@
         <h3 class="toggle" onclick="toggleSection('followers')">
             Following <span id="followersIcon">&#9650;</span>
         </h3>
-        <div class="followersDiv " id="followers">
+        <div class="followersDiv" id="followers">
             @foreach (var follower in Model.Followers)
             {
-                <p><a href="/@follower.Name">@follower.Name</a></p>
+                <p><a class="follow-link" href="/@follower.Name">@follower.Name</a></p>
             }
         </div>
     </div>
@@ -22,7 +22,7 @@
         <div class="" id="followees">
             @foreach (var followee in Model.Followees)
             {
-                <p><a href="/@followee.Name">@followee.Name</a></p>
+                <p><a class="follow-link" href="/@followee.Name">@followee.Name</a></p>
             }
         </div>
     </div>
