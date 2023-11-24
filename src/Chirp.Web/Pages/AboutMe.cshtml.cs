@@ -1,3 +1,7 @@
+using System.Globalization;
+using System.Text;
+using Chirp.Core;
+using Chirp.Core.DTOs;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -6,6 +10,22 @@ namespace Chirp.Web.Pages;
 
 public class AboutMeModel : BasePageModel
 {
+    // Cheeps and Followers
+    private readonly ICheepRepository _cheepRepository;
+    private readonly IFollowerRepository _followerRepository;
+    public IEnumerable<CheepDto> Cheeps { get; set; } = new List<CheepDto>();
+    public IEnumerable<UserDto> Followers { get; set; } = new List<UserDto>();
+    public IEnumerable<UserDto> Followees { get; set; } = new List<UserDto>();
+
+    // Pagination
+    public int CurrentPage { get; set; } = 1;
+    public int MaxCheepsPerPage { get; set; } = 32;
+    public int TotalPageCount { get; set; }
+    public int StartPage { get; set; }
+    public int EndPage { get; set; }
+    public int DisplayRange { get; set; } = 5;
+
+    // User Claims
     public string? ID { get; set; }
     public string? Username { get; set; }
     public string? Name { get; set; }
@@ -13,13 +33,140 @@ public class AboutMeModel : BasePageModel
     public string? GithubURL { get; set; }
     public string? Avatar { get; set; }
 
+    public AboutMeModel(ICheepRepository cheepRepository, IFollowerRepository followerRepository)
+    {
+        _cheepRepository = cheepRepository;
+        _followerRepository = followerRepository;
+    }
+
     public async Task<IActionResult> OnGet()
     {
-        if (User.Identity?.IsAuthenticated == false) return await HandleNotAuthenticated();
-               
+        if (!await HandleUserAuthenticationAndClaims())
+        {
+            return Unauthorized();
+        }
+
+        // Fetch cheeps and followers
+        if (Username != null)
+        {
+            //! ChatGPT's parser -  Parse the page parameter
+            var pageValues = Request.Query["page"].ToString();
+            if (int.TryParse(pageValues, out int parsedPage) && parsedPage > 0)
+            {
+                CurrentPage = parsedPage;
+            }
+
+            Cheeps = await _cheepRepository.GetCheepsFromUser(Username);
+            Followers = (await _followerRepository.GetFolloweesFromUser(Username)).OrderBy(u => u.Name).ToList();
+            Followees = (await _followerRepository.GetFollowersFromUser(Username)).OrderBy(u => u.Name).ToList();
+
+            // Pagination
+            TotalPageCount = await GetTotalPages(Username) == 0 ? 1 : await GetTotalPages(Username);
+        }
+        await CalculatePagination();
+
+        Cheeps = Cheeps
+            .OrderByDescending(c => DateTime.ParseExact(c.TimeStamp, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture))
+            .Skip((CurrentPage - 1) * MaxCheepsPerPage)
+            .Take(MaxCheepsPerPage);
+
+        return await Task.FromResult<IActionResult>(Page());
+    }
+
+    public async Task<int> GetTotalPages(string user)
+    {
+        int totalCheeps = (await _cheepRepository.GetCheepsFromUser(user)).Count();
+        return (int)Math.Ceiling((double)totalCheeps / MaxCheepsPerPage);
+    }
+
+    public Task CalculatePagination()
+    {
+        StartPage = Math.Max(1, CurrentPage - DisplayRange / 2);
+        EndPage = Math.Min(TotalPageCount, StartPage + DisplayRange - 1);
+
+        if (EndPage - StartPage + 1 < DisplayRange)
+        {
+            if (StartPage > 1)
+            {
+                StartPage = Math.Max(1, EndPage - DisplayRange + 1);
+            }
+            else if (EndPage < TotalPageCount)
+            {
+                EndPage = Math.Min(TotalPageCount, StartPage + DisplayRange - 1);
+            }
+        }
+
+        return Task.CompletedTask;
+    }
+
+    public async Task<IActionResult> OnPostDownloadData()
+    {
+        if (!await HandleUserAuthenticationAndClaims())
+        {
+            return Unauthorized();
+        }
+
+        // Fetch cheeps and followers
+        if (Username != null)
+        {
+            Cheeps = await _cheepRepository.GetCheepsFromUser(Username);
+            Followers = (await _followerRepository.GetFolloweesFromUser(Username)).OrderBy(u => u.Name).ToList();
+            Followees = (await _followerRepository.GetFollowersFromUser(Username)).OrderBy(u => u.Name).ToList();
+        }
+
+        // Create a string containing user data
+        var userData = $"Your user data in Chirp27! \nRetrieved at {DateTime.Now}\n\n";
+        userData += new string('_', 75) + $"\n\nClaims: \n\t- ID: {ID} \n\t- Username: {Username} \n\t- Email: {Email} \n\t- Name: {Name} \n\t- GitHub URL: {GithubURL} \n\t- Avatar: {Avatar}\n\n";
+
+        // TODO - reverse names followers and followees?
+        // Add followers to the string
+        userData += new string('_', 75) + "\n\nFollowing:\n";
+        foreach (var follower in Followers)
+        {
+            userData += $"\t - {follower.Name}\n";
+        }
+        userData += "\n";
+
+        // Add followees to the string
+        userData += new string('_', 75) + "\n\nFollowees:\n";
+        foreach (var followee in Followees)
+        {
+            userData += $"\t - {followee.Name}\n";
+        }
+        userData += "\n";
+
+        // Add cheeps to the string
+        userData += new string('_', 75) + "\n\nCheeps:\n";
+        foreach (var cheep in Cheeps)
+        {
+            userData += $"\t- Username: {cheep.UserName}\n";
+            userData += $"\t- Timestamp: {cheep.TimeStamp}\n";
+            userData += $"\t- Message: {cheep.Message}\n\n";
+        }
+
+        //! ChatGPT
+        // Convert user data to bytes
+        var fileContent = Encoding.UTF8.GetBytes(userData);
+
+        // Return a FileContentResult with the content and content type
+        return new FileContentResult(fileContent, "text/plain")
+        {
+            FileDownloadName = "Chirp27 - My User Data.txt"
+        };
+    }
+
+    private async Task<bool> HandleUserAuthenticationAndClaims()
+    {
+        if (User.Identity?.IsAuthenticated == false)
+        {
+            await HandleNotAuthenticated();
+            return false;
+        }
+
+        // User Claims
         foreach (var claim in User.Claims)
         {
-                Console.WriteLine($"Claim Type: {claim.Type}, Claim Value: {claim.Value}");
+            Console.WriteLine($"Claim Type: {claim.Type}, Claim Value: {claim.Value}");
         }
 
         ID = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
@@ -28,10 +175,10 @@ public class AboutMeModel : BasePageModel
         Name = User.FindFirst("urn:github:name")?.Value;
         GithubURL = User.FindFirst("urn:github:url")?.Value;
         Avatar = $"https://avatars.githubusercontent.com/{Username}";
-        
-        return await Task.FromResult<IActionResult>(Page());
+
+        return true;
     }
-    
+
     public async Task<IActionResult> OnPostLogOut()
     {
         return await HandleLogOut();

@@ -9,7 +9,7 @@ namespace Chirp.Web.Pages;
 public class PublicModel : BasePageModel
 {
     private IValidator<CheepDto> _validator;
-    
+
     private readonly ICheepRepository _cheepRepository;
     private readonly IUserRepository _userRepository;
     private readonly IFollowerRepository _followerRepository;
@@ -23,11 +23,12 @@ public class PublicModel : BasePageModel
     public int CheepMaxLength { get; set; } = 160;
     public Dictionary<string, bool> FollowStatus { get; set; } = new Dictionary<string, bool>();
 
-    
+
     [BindProperty, StringLength(160), Required]
     public string? CheepMessage { get; set; }
 
-    public PublicModel(ICheepRepository cheepRepository, IUserRepository userRepository, IFollowerRepository followerRepository, IValidator<CheepDto> validator)
+    public PublicModel(ICheepRepository cheepRepository, IUserRepository userRepository,
+                       IFollowerRepository followerRepository, IValidator<CheepDto> validator)
     {
         _cheepRepository = cheepRepository;
         _userRepository = userRepository;
@@ -43,8 +44,8 @@ public class PublicModel : BasePageModel
             {
                 var user = new UserDto
                 {
-                    Name = User.Identity.Name, //Might need to be changed to use only User.Identity (Does not work until users are implemented)
-                    Email = User.Identity.Name + "@chirp.com" //TODO: Needs to be removed
+                    Name = User.Identity?.Name ?? "Unknown", // Use null conditional operator with null coalescing operator
+                    Email = (User.Identity?.Name ?? "Unknown") + "@chirp.com" // Use null conditional operator with null coalescing operator
                 };
 
                 await _userRepository.CreateUser(user);
@@ -54,9 +55,9 @@ public class PublicModel : BasePageModel
                 Console.WriteLine(ex.Message);
             }
         }
-        
+
         Cheeps = await _cheepRepository.GetCheepsFromPage(CurrentPage);
-        
+
         // Set follow status for each cheep user
         if (User.Identity?.IsAuthenticated == true)
         {
@@ -78,24 +79,19 @@ public class PublicModel : BasePageModel
 
         Cheeps = await _cheepRepository.GetCheepsFromPage(CurrentPage);
 
-        if (await GetTotalPages() == 0)
-        {
-            TotalPageCount = 1;    
-        } else {
-            TotalPageCount = await GetTotalPages();
-        }
-        CalculatePagination();
+        TotalPageCount = await GetTotalPages() == 0 ? 1 : await GetTotalPages();
+        await CalculatePagination();        
 
         return Page();
     }
-    
+
     public async Task<int> GetTotalPages()
     {
         int totalCheeps = (await _cheepRepository.GetCheeps()).Count();
         return (int)Math.Ceiling((double)totalCheeps / MaxCheepsPerPage);
     }
 
-    private void CalculatePagination()
+    public Task CalculatePagination()
     {
         StartPage = Math.Max(1, CurrentPage - DisplayRange / 2);
         EndPage = Math.Min(TotalPageCount, StartPage + DisplayRange - 1);
@@ -111,19 +107,21 @@ public class PublicModel : BasePageModel
                 EndPage = Math.Min(TotalPageCount, StartPage + DisplayRange - 1);
             }
         }
+
+        return Task.CompletedTask;
     }
-    
+
     public async Task<IActionResult> OnPostChirp()
     {
         return await Chirp(CheepMessage, _validator, _cheepRepository);
-    }    
+    }
 
     public async Task<IActionResult> OnPostFollow(string userName, string followerName)
     {
         return await HandleFollow(userName, followerName, _followerRepository);
 
     }
-    
+
     public async Task<IActionResult> OnPostAuthenticateLogin()
     {
         return await HandleAuthenticateLogin();

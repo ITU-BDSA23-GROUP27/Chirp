@@ -42,33 +42,59 @@
     </p>
 </div>
 
+<hr/>
 
+<!-- Followers -->
+<partial name="Partials/_FollowersTracker" model="Model"/>
 
+<hr/>
 
-<div>
-    <h3>Followers</h3>
-    <p>List of followers</p>
+<!-- My Cheeps -->
+<h3 class="toggle" onclick="toggleSection('myCheeps')">
+    My Cheeps: <span id="myCheepsIcon">&#9650;</span>
+</h3>
+<div class="" id="myCheeps">
+    @if (Model.Cheeps.Any())
+    {
+        <partial name="Partials/_CheepContext" model="Model"/>
+        <partial name="Partials/_Pagination" model="Model"/>
+    }
+    else
+    {
+        <em>You have no cheeps so far.</em>
+    }
 </div>
 
 <hr/>
 
-@*! Download My Data *@
-<div class="">
-    <h3>Get user data</h3>
-    <p>Get a copy of your user data.</p>
+<!-- Download My Data -->
+<h3 class="toggle" onclick="toggleSection('downloadData')">
+    Download Your Data <span id="downloadDataIcon">&#9650;</span>
+</h3>
+<div class="" id="downloadData">
+    <p>Your privacy is important to us, and this feature is designed to empower you with control over your information. </p>
     <div class="end">
-        <button class="seed-btn">Download Data</button>
+        <form method="post">
+            <button type="submit" class="seed-btn" asp-page-handler="DownloadData">Download Data</button>
+        </form>
     </div>
 </div>
 
+
 <hr/>
 
-@*! Forget Me *@
-<div class="">
-    <h3>Delete account</h3>
+<!-- Forget Me -->
+<h3 class="toggle" onclick="toggleSection('forgetMe')">
+    Delete account <span id="forgetMeIcon">&#9650;</span>
+</h3>
+<div class="" id="forgetMe">
+    @* TODO - change description based on the DELETION implementation *@
+    <p>If you wish to part ways with Chirp!, click the button below to (permanently) delete your account. </p>
     <p style="color: red">- Describe what happens when the account is deleted (deleted data, updated to anonymous, ...) </p>
-    <p>Do not want to be a part of Chirp! anymore? </p>
+
     <div class="end">
         <button class="unseed-btn">Forget Me</button>
     </div>
 </div>
+
+ <script src="/js/aboutMe.js"></script>

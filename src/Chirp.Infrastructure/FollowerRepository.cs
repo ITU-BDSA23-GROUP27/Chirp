@@ -25,7 +25,7 @@ public class FollowerRepository : IFollowerRepository
             {
                 Id = f.Id,
                 Name = f.Name,
-                Email = f.Email
+                Email = f.Email?? string.Empty
             }).ToListAsync();
 
         return followers;
@@ -41,7 +41,7 @@ public class FollowerRepository : IFollowerRepository
             {
                 Id = f.Id,
                 Name = f.Name,
-                Email = f.Email
+                Email = f.Email?? string.Empty
             }).ToListAsync();
 
         return followees;

@@ -21,9 +21,9 @@ public static void SeedDatabase2(ChirpContext chirpContext)
         // Cheeps
         var c100 = new Cheep() { CheepId = new Guid(), User = a1, Text = "UI-Test with Playwright", TimeStamp = DateTime.Parse("1990-12-01 08:00:00") };
 
-        var c200 = new Cheep() { CheepId = new Guid(), User = a2, Text = "Follows → Happy & Smiley", TimeStamp = DateTime.Parse("1991-12-01 06:00:00") };
-        var c201 = new Cheep() { CheepId = new Guid(), User = a2, Text = "Follows → Happy & Smiley", TimeStamp = DateTime.Parse("1990-12-01 05:00:00") };
-        var c202 = new Cheep() { CheepId = new Guid(), User = a2, Text = "Follows → Happy & Smiley", TimeStamp = DateTime.Parse("1990-12-01 05:00:00") };
+        var c200 = new Cheep() { CheepId = new Guid(), User = a2, Text = "Follows → Happy & Smiley & PhiVaLo", TimeStamp = DateTime.Parse("1991-12-01 06:00:00") };
+        var c201 = new Cheep() { CheepId = new Guid(), User = a2, Text = "Follows → Happy & Smiley & PhiVaLo", TimeStamp = DateTime.Parse("1990-12-01 05:00:00") };
+        var c202 = new Cheep() { CheepId = new Guid(), User = a2, Text = "Follows → Happy & Smiley & PhiVaLo", TimeStamp = DateTime.Parse("1990-12-01 05:00:00") };
 
         var c300 = new Cheep() { CheepId = new Guid(), User = a3, Text = "Follows → Smiley", TimeStamp = DateTime.Parse("1992-12-01 04:00:00") };
         var c301 = new Cheep() { CheepId = new Guid(), User = a3, Text = "Follows → Smiley", TimeStamp = DateTime.Parse("1991-12-01 03:00:00") };
@@ -46,8 +46,9 @@ public static void SeedDatabase2(ChirpContext chirpContext)
         var follower2 = new Follower { FollowerId = Guid.NewGuid(), FolloweeId = Guid.NewGuid(), FollowerUser = a2, FolloweeUser = a3 };
         var follower3 = new Follower { FollowerId = Guid.NewGuid(), FolloweeId = Guid.NewGuid(), FollowerUser = a2, FolloweeUser = a4 };
         var follower4 = new Follower { FollowerId = Guid.NewGuid(), FolloweeId = Guid.NewGuid(), FollowerUser = a3, FolloweeUser = a4 };
+        var follower5 = new Follower { FollowerId = Guid.NewGuid(), FolloweeId = Guid.NewGuid(), FollowerUser = a2, FolloweeUser = a1 };
 
-        var followers = new List<Follower> { follower2, follower3, follower4};
+        var followers = new List<Follower> { follower2, follower3, follower4, follower5 };
 
         chirpContext.Followers.AddRange(followers);
 
