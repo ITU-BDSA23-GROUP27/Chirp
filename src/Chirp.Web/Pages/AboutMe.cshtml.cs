@@ -154,8 +154,15 @@ public class AboutMeModel : BasePageModel
         }
         userData += "\n";
 
-        // empty
-        return await Task.FromResult<IActionResult>(Page());
+        //! ChatGPT
+        // Convert user data to bytes
+        var fileContent = Encoding.UTF8.GetBytes(userData);
+
+        // Return a FileContentResult with the content and content type
+        return new FileContentResult(fileContent, "text/plain")
+        {
+            FileDownloadName = "UserData.txt"
+        };
     }
 
     public async Task<IActionResult> OnPostLogOut()
