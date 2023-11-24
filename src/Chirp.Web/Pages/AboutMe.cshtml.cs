@@ -40,21 +40,10 @@ public class AboutMeModel : BasePageModel
 
     public async Task<IActionResult> OnGet()
     {
-        if (User.Identity?.IsAuthenticated == false)
-            return await HandleNotAuthenticated();
-
-        // User Claims
-        foreach (var claim in User.Claims)
+        if (!await HandleUserAuthenticationAndClaims())
         {
-            Console.WriteLine($"Claim Type: {claim.Type}, Claim Value: {claim.Value}");
+            return Unauthorized();
         }
-
-        ID = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
-        Username = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name")?.Value;
-        Email = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
-        Name = User.FindFirst("urn:github:name")?.Value;
-        GithubURL = User.FindFirst("urn:github:url")?.Value;
-        Avatar = $"https://avatars.githubusercontent.com/{Username}";
 
         // Fetch cheeps and followers
         if (Username != null)
@@ -100,20 +89,12 @@ public class AboutMeModel : BasePageModel
         return Task.CompletedTask;
     }
 
-
     public async Task<IActionResult> OnPostDownloadData()
     {
-        if (User.Identity?.IsAuthenticated != true)
+        if (!await HandleUserAuthenticationAndClaims())
         {
             return Unauthorized();
         }
-
-        ID = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
-        Username = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name")?.Value;
-        Email = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
-        Name = User.FindFirst("urn:github:name")?.Value;
-        GithubURL = User.FindFirst("urn:github:url")?.Value;
-        Avatar = $"https://avatars.githubusercontent.com/{Username}";
 
         // Fetch cheeps and followers
         if (Username != null)
@@ -124,7 +105,7 @@ public class AboutMeModel : BasePageModel
         }
 
         // Create a string containing user data
-        var userData = $"Your user data in Chirp! GR27 \nRetrieved at {DateTime.Now}\n\n";
+        var userData = $"Your user data in Chirp27! \nRetrieved at {DateTime.Now}\n\n";
         userData += new string('_', 75) + $"\n\nClaims: \n\t- ID: {ID} \n\t- Username: {Username} \n\t- Email: {Email} \n\t- Name: {Name} \n\t- GitHub URL: {GithubURL} \n\t- Avatar: {Avatar}\n\n";
 
         // TODO - reverse names followers and followees?
@@ -145,14 +126,13 @@ public class AboutMeModel : BasePageModel
         userData += "\n";
 
         // Add cheeps to the string
-        userData += new string('_', 75) + "\n\nMy Cheeps:\n";
+        userData += new string('_', 75) + "\n\nCheeps:\n";
         foreach (var cheep in Cheeps)
         {
             userData += $"\t- Username: {cheep.UserName}\n";
             userData += $"\t- Timestamp: {cheep.TimeStamp}\n";
             userData += $"\t- Message: {cheep.Message}\n\n";
         }
-        userData += "\n";
 
         //! ChatGPT
         // Convert user data to bytes
@@ -161,8 +141,32 @@ public class AboutMeModel : BasePageModel
         // Return a FileContentResult with the content and content type
         return new FileContentResult(fileContent, "text/plain")
         {
-            FileDownloadName = "UserData.txt"
+            FileDownloadName = "Chirp27 - My User Data.txt"
         };
+    }
+
+    private async Task<bool> HandleUserAuthenticationAndClaims()
+    {
+        if (User.Identity?.IsAuthenticated == false)
+        {
+            await HandleNotAuthenticated();
+            return false;
+        }
+
+        // User Claims
+        foreach (var claim in User.Claims)
+        {
+            Console.WriteLine($"Claim Type: {claim.Type}, Claim Value: {claim.Value}");
+        }
+
+        ID = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")?.Value;
+        Username = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name")?.Value;
+        Email = User.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress")?.Value;
+        Name = User.FindFirst("urn:github:name")?.Value;
+        GithubURL = User.FindFirst("urn:github:url")?.Value;
+        Avatar = $"https://avatars.githubusercontent.com/{Username}";
+
+        return true;
     }
 
     public async Task<IActionResult> OnPostLogOut()
