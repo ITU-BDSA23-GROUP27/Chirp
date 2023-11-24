@@ -10,7 +10,7 @@ body {
   background: linear-gradient(#b3d9ff, #000000) no-repeat fixed;
   font-family: 'Trebuchet MS', sans-serif;
   font-size: 14px;
-  background-size: cover;
+  background-size: 100%;
 }
 
 a {
