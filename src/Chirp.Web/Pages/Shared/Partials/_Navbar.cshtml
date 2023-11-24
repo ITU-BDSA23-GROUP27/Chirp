@@ -10,9 +10,8 @@
             <a class='@(Context.Request.Path == "/"        ? "active" : "")' href="/">Home </a>
             <a class='@(Context.Request.Path == "/AboutMe" ? "active" : "")' href="AboutMe">About me</a>
             <a class='@(Context.Request.Path != "/" && 
-                        Context.Request.Path != "/Privacy" && 
                         Context.Request.Path != "/AboutMe" &&
-                        Context.Request.Path != "/Claims" &&
+                        Context.Request.Path != "/Privacy" && 
                         Context.Request.Path != "/SeedDB" ? "active" : "")' 
                         href="@(User.Identity?.Name)">User timeline</a>
             <a class='@(Context.Request.Path == "/Privacy" ? "active" : "")' href="/Privacy">Privacy</a>

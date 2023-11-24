@@ -39,10 +39,10 @@ public class SeedDbModel : BasePageModel
         return RedirectToPage("/Public");
     }
     
-    public async Task<IActionResult> OnGet()
-    {
-        return await HandleNotAuthenticated();
-    }
+    // public async Task<IActionResult> OnGet()
+    // {
+    //     return await HandleNotAuthenticated();
+    // }
 
     public async Task<IActionResult> OnPostLogOut()
     {

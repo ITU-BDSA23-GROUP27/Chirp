@@ -179,8 +179,8 @@ public class AboutMeModel : BasePageModel
         return true;
     }
 
-    public async Task<IActionResult> OnPostLogOut()
-    {
-        return await HandleLogOut();
-    }
+    // public async Task<IActionResult> OnPostLogOut()
+    // {
+    //     return await HandleLogOut();
+    // }
 }
