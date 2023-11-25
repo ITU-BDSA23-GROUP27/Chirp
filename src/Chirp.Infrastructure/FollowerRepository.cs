@@ -66,6 +66,14 @@ public class FollowerRepository : IFollowerRepository
         {
             throw new ArgumentException("Follower does not exist: ", nameof(followerName));
         }
+        
+        var existingFollower = _context.Followers.SingleOrDefault(f =>
+            f.FolloweeAuthor.Name == authorName && f.FollowerAuthor.Name == followerName);
+        
+        if (existingFollower != null)
+        {
+            _context.Followers.Remove(existingFollower);
+        }
 
         var newFollower = new Follower()
         {
