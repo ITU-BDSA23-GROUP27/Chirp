@@ -13,6 +13,7 @@ public class AboutMeModel : BasePageModel
     // Cheeps and Followers
     private readonly ICheepRepository _cheepRepository;
     private readonly IFollowerRepository _followerRepository;
+    private readonly IUserRepository _userRepository;
     public IEnumerable<CheepDto> Cheeps { get; set; } = new List<CheepDto>();
     public IEnumerable<UserDto> Followers { get; set; } = new List<UserDto>();
     public IEnumerable<UserDto> Followees { get; set; } = new List<UserDto>();
@@ -33,10 +34,11 @@ public class AboutMeModel : BasePageModel
     public string? GithubURL { get; set; }
     public string? Avatar { get; set; }
 
-    public AboutMeModel(ICheepRepository cheepRepository, IFollowerRepository followerRepository)
+    public AboutMeModel(ICheepRepository cheepRepository, IFollowerRepository followerRepository, IUserRepository userRepository)
     {
         _cheepRepository = cheepRepository;
         _followerRepository = followerRepository;
+        _userRepository = userRepository;
     }
 
     public async Task<IActionResult> OnGet()
@@ -153,6 +155,27 @@ public class AboutMeModel : BasePageModel
         {
             FileDownloadName = "Chirp27 - My User Data.txt"
         };
+    }
+    
+    public async Task<IActionResult> OnPostForgetMe()
+    {
+        if (!await HandleUserAuthenticationAndClaims())
+        {
+            return Unauthorized();
+        }
+        
+        if (Username is not null)
+        {
+            Console.WriteLine("Deleting user: " + Username);
+
+            var user = await _userRepository.GetUserByName(Username);
+            
+            await _userRepository.DeleteUser(user);
+        }
+        
+        await HttpContext.SignOutAsync();
+        
+        return RedirectToPage("Public");
     }
 
     private async Task<bool> HandleUserAuthenticationAndClaims()

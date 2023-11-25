@@ -57,4 +57,18 @@ public class UserRepository : IUserRepository
         _context.Users.Add(newUser);
         await _context.SaveChangesAsync();
     }
+
+    public async Task DeleteUser(UserDto user)
+    {
+        var existingUser = await _context.Users.SingleOrDefaultAsync(u => u.Name == user.Name);
+        
+        if (existingUser is null)
+        {
+            throw new ArgumentException("Author does not exist: ", nameof(user));
+        }
+        
+        _context.Users.Remove(existingUser);
+        
+        await _context.SaveChangesAsync();
+    }
 }
