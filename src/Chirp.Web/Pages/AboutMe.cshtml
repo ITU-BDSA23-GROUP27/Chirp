@@ -90,10 +90,12 @@
 <div class="" id="forgetMe">
     @* TODO - change description based on the DELETION implementation *@
     <p>If you wish to part ways with Chirp!, click the button below to (permanently) delete your account. </p>
-    <p style="color: red">- Describe what happens when the account is deleted (deleted data, updated to anonymous, ...) </p>
+    <p style="color: red">- User gets deleted from the database, meaning that any information about the user is erased. </p>
 
     <div class="end">
-        <button class="unseed-btn">Forget Me</button>
+        <form method="post">
+            <button type="submit" class="unseed-btn" asp-page-handler="ForgetMe" >Forget Me</button>
+        </form>
     </div>
 </div>
 

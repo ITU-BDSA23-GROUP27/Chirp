@@ -67,7 +67,8 @@ public class UserRepository : IUserRepository
             throw new ArgumentException("Author does not exist: ", nameof(user));
         }
         
-        existingUser.IsDeleted = true;
+        _context.Users.Remove(existingUser);
+        
         await _context.SaveChangesAsync();
     }
 }
