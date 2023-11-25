@@ -42,13 +42,11 @@ namespace Chirp.Infrastructure.Test
             await _followerRepository.AddOrRemoveFollower(author.Name, follower.Name);
 
             // Act
-            //var followers = _followerRepository.GetFollowersFromAuthor(author.Name);
             
             var followersTask = _followerRepository.GetFollowersFromAuthor(author.Name);
             var followers = await followersTask;
 
             // Assert
-            //Assert.Contains(followers, f => f.Name == follower.Name);
             Assert.Contains<AuthorDto>(followers, f => f.Name == follower.Name);
         }
         
