@@ -20,6 +20,7 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
     modelBuilder.Entity<Cheep>().Property(c => c.Text).HasMaxLength(160);
     modelBuilder.Entity<User>().Property(u => u.Name).HasMaxLength(50);
     modelBuilder.Entity<User>().Property(u => u.Email).HasMaxLength(50);
+    modelBuilder.Entity<User>().Property(u => u.IsDeleted).HasDefaultValue(false);
     modelBuilder.Entity<Follower>().HasKey(f => new {f.FollowerId, f.FolloweeId});
     
     modelBuilder.Entity<IdentityUserLogin<Guid>>().HasKey(u => u.UserId);
