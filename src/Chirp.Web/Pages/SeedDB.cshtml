@@ -6,7 +6,7 @@
 @* TODO - temporary implementation - expand with user manager role *@
 @if (!(new[] { "PhiVaLo", "Tien197", "PTS404", "HelgeCPH", "ondfisk" }).Contains(User.Identity?.Name))
 {
-    <h2>Access Denied</h2>
+    <h2 id="red">Access Denied</h2>
     <p>Sorry, this page is only accessible to the developer.</p>
     <p>You will be redirected to the home page in <span id="countdown" class="red">5</span> seconds.</p>
 

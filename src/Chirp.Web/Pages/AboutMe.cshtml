@@ -68,9 +68,10 @@
 <hr/>
 
 <!-- Download My Data -->
-<h3 class="toggle" onclick="toggleSection('downloadData')">
+@* <h3 class="toggle" onclick="toggleSection('downloadData')">
     Download Your Data <span id="downloadDataIcon">&#9650;</span>
-</h3>
+</h3> *@
+<h3>Download Your Data</span></h3>
 <div class="" id="downloadData">
     <p>Your privacy is important to us, and this feature is designed to empower you with control over your information. </p>
     <div class="end">
@@ -80,17 +81,17 @@
     </div>
 </div>
 
-
 <hr/>
 
 <!-- Forget Me -->
-<h3 class="toggle" onclick="toggleSection('forgetMe')">
+@* <h3 class="toggle" onclick="toggleSection('forgetMe')">
     Delete account <span id="forgetMeIcon">&#9650;</span>
-</h3>
+</h3> *@
+<h3>Delete account</h3>
 <div class="" id="forgetMe">
-    @* TODO - change description based on the DELETION implementation *@
-    <p>If you wish to part ways with Chirp!, click the button below to (permanently) delete your account. </p>
-    <p style="color: red">- User gets deleted from the database, meaning that any information about the user is erased. </p>
+    <p>If you wish to part ways with Chirp!, click the button below to permanently delete your account. 
+        Any information about you will be erased, and you will not be able to recover any information once deleted.
+    </p>
 
     <div class="end">
         <form method="post">

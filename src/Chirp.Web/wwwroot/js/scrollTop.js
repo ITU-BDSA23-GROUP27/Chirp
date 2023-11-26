@@ -7,8 +7,8 @@ window.onscroll = function () {
 
 function scrollFunction() {
     if (
-        document.body.scrollTop > 500 ||
-        document.documentElement.scrollTop > 500
+        document.body.scrollTop > 300 ||
+        document.documentElement.scrollTop > 300
     ) {
         scrollBtn.classList.add("show");
     } else {
@@ -17,6 +17,8 @@ function scrollFunction() {
 }
 
 function scrollToTop() {
-    document.documentElement.scrollTop = 0;
-
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
 }
