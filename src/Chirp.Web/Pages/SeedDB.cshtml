@@ -3,40 +3,47 @@
 @{
 }
 
-<h2>Seed Database</h2>
+@* TODO - temporary implementation - expand with user manager role *@
+@if (!(new[] { "PhiVaLo", "Tien197", "PTS404", "HelgeCPH", "ondfisk" }).Contains(User.Identity?.Name))
+{
+    <h2>Access Denied</h2>
+    <p>Sorry, this page is only accessible to the developer.</p>
+    <p>You will be redirected to the home page in <span id="countdown" class="red">5</span> seconds.</p>
 
-<div class="seed-info">
-    <h3>
-        <i class="fa-solid fa-triangle-exclamation caution"></i>
-        Caution
-        <i class="fa-solid fa-triangle-exclamation caution"></i>
-    </h3>
+    <script src="/js/redirectHome.js"></script>
+}
+else
+{
+    <h2>Seed Database</h2>
 
-    <p> This will clear the database and seed it with test data. </p>
-    <div class="seed-container">
-        <form method="post" asp-page-handler="SeedDatabase" onsubmit="return confirmAction('reset')">
-            <button class="seed-btn">Seed DB1</button>
-        </form>
+    <div class="seed-info">
+        <h3>
+            <i class="fa-solid fa-triangle-exclamation caution"></i>
+            Caution
+            <i class="fa-solid fa-triangle-exclamation caution"></i>
+        </h3>
 
-        <form method="post" asp-page-handler="SeedDatabase2" onsubmit="return confirmAction('reset')">
-            <button class="seed-btn">Seed DB2</button>
-        </form>
+        <p> This will clear the database and seed it with test data. </p>
+        <div class="seed-container">
+            <form method="post" asp-page-handler="SeedDatabase" onsubmit="return confirmAction('reset')">
+                <button class="seed-btn">Seed DB1</button>
+            </form>
 
-        <form method="post" asp-page-handler="ClearDatabase" onsubmit="return confirmAction('clear')">
-            <button class="unseed-btn">Clear Database</button>
-        </form>
+            <form method="post" asp-page-handler="SeedDatabase2" onsubmit="return confirmAction('reset')">
+                <button class="seed-btn">Seed DB2</button>
+            </form>
+
+            <form method="post" asp-page-handler="ClearDatabase" onsubmit="return confirmAction('clear')">
+                <button class="unseed-btn">Clear Database</button>
+            </form>
+        </div>
+
     </div>
-
-</div>
-   <ul>
+    <ul>
         <li><b>Seed DB1</b>: Seed test data from DbInitializer</li>
         <li><b>Seed DB2</b>: Seed test data from DbInitializer2 (includes author following other authors)</li>
     </ul>
 
-@*! temporary todo list *@
-<div class="seed-info" style="text-align: center; color: red">
-    <p>This page will be restricted to certain users later</p>
-</div>
-
-@*! Alert boxes is fine in production - For UI-Test (Playwright), a slightly different code is needed to trigger this!  *@
-@* <script src="/js/seedDB.js"></script> *@
+    @*! Alert boxes is fine in production - For UI-Test (Playwright), a slightly different code is needed to trigger this! *@
+    @* <script src="/js/seedDB.js"></script> *@
+}
