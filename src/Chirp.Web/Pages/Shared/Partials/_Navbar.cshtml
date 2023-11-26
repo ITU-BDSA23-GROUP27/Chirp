@@ -15,7 +15,10 @@
                         Context.Request.Path != "/SeedDB" ? "active" : "")' 
                         href="@(User.Identity?.Name)">User timeline</a>
             <a class='@(Context.Request.Path == "/Privacy" ? "active" : "")' href="/Privacy">Privacy</a>
-            <a class='@(Context.Request.Path == "/SeedDB"  ? "active" : "")' href="/SeedDB">Seed DB </a>
+            @if ((new[] { "PhiVaLo", "Tien197", "PTS404", "HelgeCPH", "ondfisk" }).Contains(User.Identity?.Name))
+            {
+                <a class='@(Context.Request.Path == "/SeedDB"  ? "active" : "")' href="/SeedDB">Seed DB </a>
+            }
         </div>
         <div>
             <form asp-page-handler="LogOut" method="post">
