@@ -1,4 +1,6 @@
+using System.Globalization;
 using Chirp.Core;
+using Chirp.Core.DTOs;
 using Chirp.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +13,31 @@ public class ReactionRepository : IReactionRepository
     public ReactionRepository(ChirpContext context)
     {
         _context = context;
+    }
+
+    public async Task<int> GetLikeCount(Guid cheepId)
+    {
+        var likes = await _context.Reactions
+            .Select(r => r.CheepId == cheepId && r.ReactionType == ReactionType.Like)
+            .ToListAsync();
+
+        return likes.Count;
+    }
+
+    public async Task<IEnumerable<CommentDto>> GetCommentsFromCheep(Guid cheepId)
+    {
+        var comments = await _context.Reactions
+            .OrderByDescending(r => r.TimeStamp)
+            .Select<Reaction, CommentDto>(r => new CommentDto()
+                {
+                    UserId = r.CheepId,
+                    CheepId = r.CheepId,
+                    TimeStamp = r.TimeStamp.ToString(CultureInfo.InvariantCulture),
+                    Comment = r.ReactionContent
+                }
+            ).Where(r => r.CheepId == cheepId).ToListAsync();
+
+        return comments;
     }
     
     public async Task LikeCheep(Guid cheepId, Guid userId)
@@ -29,6 +56,7 @@ public class ReactionRepository : IReactionRepository
             CheepId = cheepId,
             User = user,
             Cheep = cheep,
+            TimeStamp = DateTime.UtcNow.AddHours(1),
             ReactionType = ReactionType.Like,
         };
 
@@ -50,10 +78,10 @@ public class ReactionRepository : IReactionRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task CommentOnCheep(Guid cheepId, Guid userId, string content)
+    public async Task CommentOnCheep(CommentDto comment)
     {
-        var cheep = await _context.Cheeps.SingleOrDefaultAsync(c => c.CheepId == cheepId);
-        var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == userId);
+        var cheep = await _context.Cheeps.SingleOrDefaultAsync(c => c.CheepId == comment.CheepId);
+        var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == comment.UserId);
 
         if (cheep is null || user is null)
         {
@@ -62,12 +90,13 @@ public class ReactionRepository : IReactionRepository
         
         var newComment = new Reaction()
         {
-            UserId = userId,
-            CheepId = cheepId,
+            UserId = comment.UserId,
+            CheepId = comment.CheepId,
             User = user,
             Cheep = cheep,
+            TimeStamp = DateTime.Parse(comment.TimeStamp),
             ReactionType = ReactionType.Comment,
-            ReactionContent = content
+            ReactionContent = comment.Comment
         };
 
         _context.Reactions.Add(newComment);
