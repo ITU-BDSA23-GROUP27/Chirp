@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure.Test
 {
-    public class RepositoryTests 
+    public class UserRepositoryTest 
     {
         private readonly ChirpContext _context;
         private readonly CheepRepository _cheepRepository;
         private readonly UserRepository _userRepository;
 
-        public RepositoryTests()
+        public UserRepositoryTest()
         {
             var connection = new SqliteConnection("DataSource=:memory:");
             connection.Open();
@@ -40,64 +40,26 @@ namespace Chirp.Infrastructure.Test
             Assert.Equal("Bodil Bodilsen", user.Name);
             Assert.Equal("Bodil@danmark.dk", user.Email);
         }
-
+        
         [Fact]
-        public async Task CreateCheep_Success()
+        public async Task DeleteUser_Success()
         {
             // Arrange
-            var userDto = new UserDto { Name = "Hans Hansen", Email = "HH@outlook.com" };
-            await _userRepository.CreateUser(userDto);
-            var cheepDto = new CheepDto
+            var user = new UserDto
             {
-                Message = "Bye, world!",
-                TimeStamp = DateTime.UtcNow.ToString(),
-                UserName = "Hans Hansen"
+                Name = "DeletedUser", 
+                Email = ""
             };
-
-            // Act
-            await _cheepRepository.CreateCheep(cheepDto);
-
-            // Assert
-            var cheep = _context.Cheeps.Include(cheep => cheep.User).Single();
-            Assert.Equal("Bye, world!", cheep.Text);
-            Assert.Equal("Hans Hansen", cheep.User.Name);
-        }
-
-        [Fact]
-        public async Task GetCheeps_ReturnsAllCheeps()
-        {
-            // Arrange
-            var user = new UserDto { Name = "Omar Semou", Email = "OmarSemou@hotmail.com" };
+            
             await _userRepository.CreateUser(user);
-            var cheep = new CheepDto { UserName = "Omar Semou", Message = "Testing 1 2 3", TimeStamp = DateTime.UtcNow.ToString() };
-            await _cheepRepository.CreateCheep(cheep);
 
             // Act
-            var result = await _cheepRepository.GetCheeps();
+            await _userRepository.DeleteUser(user);
 
             // Assert
-            Assert.Single(result);
+            Assert.DoesNotContain(_context.Users, u => u.Name == user.Name);
         }
-
-        [Fact]
-        public async Task GetCheepsFromPage_ReturnsCorrectPage()
-        {
-            // Arrange
-            var user = new UserDto { Name = "Darryl Davidson", Email = "merica4lyfe@usa.com" };
-            await _userRepository.CreateUser(user);
-            for (int i = 0; i < 50; i++)
-            {
-                var cheep = new CheepDto { UserName = "Darryl Davidson", Message = $"I ain't afriad {i}", TimeStamp = DateTime.UtcNow.ToString() };
-                await _cheepRepository.CreateCheep(cheep);
-            }
-
-            // Act
-            var result = await _cheepRepository.GetCheepsFromPage(2);
-
-            // Assert
-            Assert.Equal(18, result.Count()); 
-        }
-
+        
         [Fact]
         public async Task GetUserByName_ReturnsCorrectUser()
         {

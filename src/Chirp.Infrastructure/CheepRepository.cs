@@ -49,6 +49,7 @@ public class CheepRepository : ICheepRepository
         var cheepsFromUser = await GetCheepsFromUser(userName);
         return cheepsFromUser.Skip((page - 1) * PageLimit).Take(PageLimit);
     }
+    
     public async Task CreateCheep(CheepDto cheep)
     {
         var existingUser = await _context.Users.SingleOrDefaultAsync(u => u.Name == cheep.UserName);
