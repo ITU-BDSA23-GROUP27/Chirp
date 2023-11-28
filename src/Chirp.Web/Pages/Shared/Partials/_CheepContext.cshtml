@@ -54,24 +54,33 @@
                 {
                     <div></div>
                 }
-
-                <div class="reactions-right-container">
-                    <div class="reaction-item unimplemented">
-                        <button class="reaction-btn unimplemented" title="Reply">
-                            <i class="fa-regular fa-comment"></i>
-                        </button>
-                        <span class="reaction-count">0</span>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <div class="reactions-right-container">
+                        
+                        @* Comments *@
+                        <div class="reaction-item unimplemented">
+                            <button class="reaction-btn unimplemented" title="Reply">
+                                <i class="fa-regular fa-comment"></i>
+                            </button>
+                            <span class="reaction-count">0</span>
+                        </div>
+                        
+                        @* Likes *@
+                        <div class="reaction-item">
+                            @* TODO - needs to interfact with database *@
+                            <form method="post" asp-page-handler="LikeCheep" asp-route-cheepID="@cheep.Id" asp-route-userName="@User.Identity?.Name">
+                                <button class="reaction-btn likes-btn" title="Like">
+                                    <i class="fa-regular fa-heart grey"></i>
+                                </button>
+                            </form>
+                            
+                            @* TODO - count = number of likes by users *@
+                            <span class="reaction-count">0</span>
+                        </div>
+                        
                     </div>
-
-                    <div class="reaction-item">
-                        @* TODO - needs to interfact with database *@
-                        <button class="reaction-btn likes-btn" title="Like">
-                            <i class="fa-regular fa-heart grey"></i>
-                        </button>
-                        @* TODO - count = number of likes by users *@
-                        <span class="reaction-count">0</span>
-                    </div>
-                </div>
+                }
             </div>
         </li>
     }
