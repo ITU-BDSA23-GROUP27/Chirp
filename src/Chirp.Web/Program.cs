@@ -3,12 +3,9 @@ using Chirp.Core.DTOs;
 using Chirp.Infrastructure;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Entities;
-using Chirp.Web.Data;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.CookiePolicy;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -55,7 +52,13 @@ builder.Services.AddAuthentication(options =>
         o.CallbackPath = "/signin-github";
     });
 
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages()
+        .AddRazorPagesOptions(options =>
+        {
+            options.Conventions.AuthorizePage("/AboutMe");
+            options.Conventions.AuthorizePage("/SeedDb");
+        });
+        
 builder.Services.AddScoped<ICheepRepository, Chirp.Infrastructure.CheepRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IFollowerRepository, FollowerRepository>();
@@ -72,7 +75,6 @@ using (var scope = app.Services.CreateScope())
     context.Database.Migrate();
     DbInitializer.SeedDatabase(context);
 }
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

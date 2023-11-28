@@ -181,15 +181,15 @@ header > .display-page {
     display: flex;
 }
 
-.grey,
-.red {
+.grey {
     color: #464646;
     transition: color 0.2s;
 }
 
-.red {
+.red, #red {
     color: #e0245e;
     text-shadow: 0 0 3px #e0245eb3;
+    transition: color 0.2s;
 }
 
 .reaction-btn {
@@ -286,3 +286,10 @@ header > .display-page {
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+
+/* @media (width <= 725px) {
+    body {
+        background: white;
+    }
+} */

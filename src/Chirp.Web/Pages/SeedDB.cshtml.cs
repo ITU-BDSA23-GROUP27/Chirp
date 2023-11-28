@@ -1,9 +1,13 @@
 using Chirp.Infrastructure;
 using Chirp.Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Web.Pages;
+
+// TODO - expand with user manager role - [Authorize(Roles = "Admin")]
+[Authorize]
 public class SeedDbModel : BasePageModel
 {
     private readonly ChirpContext _context;
@@ -39,10 +43,10 @@ public class SeedDbModel : BasePageModel
         return RedirectToPage("/Public");
     }
     
-    public async Task<IActionResult> OnGet()
-    {
-        return await HandleNotAuthenticated();
-    }
+    // public async Task<IActionResult> OnGet()
+    // {
+    //     return await HandleNotAuthenticated();
+    // }
 
     public async Task<IActionResult> OnPostLogOut()
     {

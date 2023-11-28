@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text;
+using System.Web.Http;
 using Chirp.Core;
 using Chirp.Core.DTOs;
 using Microsoft.AspNetCore.Authentication;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Web.Pages;
 
+[Authorize]
 public class AboutMeModel : BasePageModel
 {
     // Cheeps and Followers
@@ -202,8 +204,8 @@ public class AboutMeModel : BasePageModel
         return true;
     }
 
-    public async Task<IActionResult> OnPostLogOut()
-    {
-        return await HandleLogOut();
-    }
+    // public async Task<IActionResult> OnPostLogOut()
+    // {
+    //     return await HandleLogOut();
+    // }
 }

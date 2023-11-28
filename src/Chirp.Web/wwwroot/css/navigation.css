@@ -50,14 +50,14 @@ body {
     cursor: pointer;
 
     position: relative;
-    font-weight: 500;    
-    
+    font-weight: 500;
+
     /* transition: color 0.5s; */
 }
 
 nav a::after,
 .login::after {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     bottom: -6px;
@@ -67,7 +67,7 @@ nav a::after,
     border-radius: 5px;
     transform-origin: right;
     transform: scaleX(0);
-    transition: transform .5s;
+    transition: transform 0.5s;
 }
 
 nav a:hover::after,
@@ -80,7 +80,7 @@ nav a:hover::after,
     background: transparent;
     border: none;
     font-size: 18px;
-    font-family: 'Trebuchet MS', sans-serif;
+    font-family: "Trebuchet MS", sans-serif;
 }
 
 .navbar a.active {
@@ -101,8 +101,20 @@ nav a:hover::after,
     background: linear-gradient(-45deg, #ed1c94, #ffec17);
     background: linear-gradient(-45deg, #23ed1c, #fff480);
     -webkit-background-clip: text;
-    background-clip: text; 
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 
     font-family: "Special Elite", cursive;
+}
+
+@media (width <= 900px) {
+    .navbar a,
+    .navbar button,
+    .navbar span {
+        font-size: 14px !important;
+    }
+
+    .navbar a {
+        margin: 2px 13px;
+    }
 }

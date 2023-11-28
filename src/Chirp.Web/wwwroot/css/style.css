@@ -4,13 +4,10 @@ html, body {
 }
 
 body {
-  /* background: #eccaca; */
-  background: linear-gradient(#ffd0b3, #ffefb6ee) no-repeat fixed;
-  background: linear-gradient(#b3d9ff, #b6ffeeee) no-repeat fixed;
   background: linear-gradient(#b3d9ff, #000000) no-repeat fixed;
   font-family: 'Trebuchet MS', sans-serif;
   font-size: 14px;
-  background-size: cover;
+  background-size: 100vw 100vh;
 }
 
 a {
@@ -49,7 +46,6 @@ input[type="submit"] {
 
 div.page {
   background: white;
-  /* border: 1px solid #cc6e6e; */
   width: 700px;
   margin: 30px auto;
 }
@@ -91,7 +87,6 @@ div.page h2 {
 }
 
 div.page div.body {
-  /* padding: 10px; */
   padding: 10px 30px;
 }
 
