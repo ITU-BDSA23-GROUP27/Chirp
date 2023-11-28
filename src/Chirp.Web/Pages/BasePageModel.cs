@@ -1,5 +1,7 @@
+using System.Globalization;
 using Chirp.Core;
 using Chirp.Core.DTOs;
+using Chirp.Infrastructure.Entities;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authentication;
@@ -29,11 +31,11 @@ public class BasePageModel : PageModel
         var cheep = new CheepDto
         {
             Message = cheepMessage?.Replace("\r\n", " ") ?? "",
-            TimeStamp = currentUtcTime.ToString(),
+            TimeStamp = currentUtcTime.ToString(CultureInfo.InvariantCulture),
             UserName = User.Identity?.Name ?? "Anonymous"
         };
 
-        ValidationResult result = validator.Validate(cheep);
+        ValidationResult result = await validator.ValidateAsync(cheep);
 
         if (result.IsValid) await cheepRepository.CreateCheep(cheep);
         
@@ -68,6 +70,30 @@ public class BasePageModel : PageModel
         
         await followerRepository.AddOrRemoveFollower(authorName, followerName);
 
+        return await Task.FromResult<IActionResult>(RedirectToPage(""));
+    }
+
+    protected async Task<IActionResult> HandleLike(Guid cheepId, Guid userId, IReactionRepository reactionRepository)
+    {
+        await reactionRepository.LikeCheep(cheepId, userId);
+        
+        return await Task.FromResult<IActionResult>(RedirectToPage(""));
+    }
+    
+    protected async Task<IActionResult> HandleComment(string? comment, Guid userId, Guid cheepId, IValidator<CommentDto> validator, IReactionRepository reactionRepository)
+    {
+
+        var commentDto = new CommentDto()
+        {
+            UserId = userId,
+            CheepId = cheepId,
+            TimeStamp = DateTime.UtcNow.AddHours(1).ToString(CultureInfo.InvariantCulture),
+            Comment = comment?.Replace("\r\n", " ") ?? ""
+        };
+        
+        ValidationResult result = await validator.ValidateAsync(commentDto);
+
+        if (result.IsValid) await reactionRepository.CommentOnCheep(commentDto);
         return await Task.FromResult<IActionResult>(RedirectToPage(""));
     }
 }
