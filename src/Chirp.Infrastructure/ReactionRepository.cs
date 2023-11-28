@@ -14,11 +14,12 @@ public class ReactionRepository : IReactionRepository
     {
         _context = context;
     }
-
+    
     public async Task<int> GetLikeCount(Guid cheepId)
     {
         var likes = await _context.Reactions
-            .Select(r => r.CheepId == cheepId && r.ReactionType == ReactionType.Like)
+            .Where(r => r.ReactionType == ReactionType.Like)
+            .Select(r => r.CheepId == cheepId)
             .ToListAsync();
 
         return likes.Count;
@@ -28,6 +29,7 @@ public class ReactionRepository : IReactionRepository
     {
         var comments = await _context.Reactions
             .OrderByDescending(r => r.TimeStamp)
+            .Where(r => r.ReactionType == ReactionType.Comment)
             .Select<Reaction, CommentDto>(r => new CommentDto()
                 {
                     UserId = r.CheepId,
@@ -58,6 +60,7 @@ public class ReactionRepository : IReactionRepository
             Cheep = cheep,
             TimeStamp = DateTime.UtcNow.AddHours(1),
             ReactionType = ReactionType.Like,
+            ReactionContent = "Like"
         };
 
         var existingLike = await _context.Reactions
@@ -65,7 +68,19 @@ public class ReactionRepository : IReactionRepository
                                        && r.CheepId == newLike.CheepId 
                                        && r.ReactionType == newLike.ReactionType
                                        && r.ReactionContent == newLike.ReactionContent);
+        
+        //The trackedEntity property was made with the help of CHAT-GPT
+        var trackedLike = _context.Set<Reaction>().Local
+            .FirstOrDefault(r => r.UserId == newLike.UserId 
+                                 && r.CheepId == newLike.CheepId 
+                                 && r.ReactionType == newLike.ReactionType 
+                                 && r.ReactionContent == newLike.ReactionContent);
 
+        if (trackedLike is not null)
+        {
+            _context.Entry(trackedLike).State = EntityState.Detached;
+        }
+        
         if (existingLike is null)
         {
             _context.Reactions.Add(newLike);
@@ -98,8 +113,22 @@ public class ReactionRepository : IReactionRepository
             ReactionType = ReactionType.Comment,
             ReactionContent = comment.Comment
         };
+        
+        var existingComment = await _context.Reactions
+            .SingleOrDefaultAsync(r => r.UserId == newComment.UserId 
+                                       && r.CheepId == newComment.CheepId 
+                                       && r.ReactionType == newComment.ReactionType
+                                       && r.ReactionContent == newComment.ReactionContent);
 
-        _context.Reactions.Add(newComment);
+        if (existingComment is null)
+        {
+            _context.Reactions.Add(newComment);
+        }
+        else
+        {
+            throw new ArgumentException("Cannot add the same comment twice");
+        }
+        
         await _context.SaveChangesAsync();
     }
 }
