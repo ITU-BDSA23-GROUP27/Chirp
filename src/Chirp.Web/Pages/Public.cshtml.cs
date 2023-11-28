@@ -13,6 +13,7 @@ public class PublicModel : BasePageModel
     private readonly ICheepRepository _cheepRepository;
     private readonly IUserRepository _userRepository;
     private readonly IFollowerRepository _followerRepository;
+    private readonly IReactionRepository _reactionRepository;
     public IEnumerable<CheepDto> Cheeps { get; set; } = new List<CheepDto>();
     public int CurrentPage { get; set; } = 1;
     public int MaxCheepsPerPage { get; } = 32;
@@ -27,11 +28,12 @@ public class PublicModel : BasePageModel
     [BindProperty, StringLength(160), Required]
     public string? CheepMessage { get; set; }
 
-    public PublicModel(ICheepRepository cheepRepository, IUserRepository userRepository, IFollowerRepository followerRepository, IValidator<CheepDto> validator)
+    public PublicModel(ICheepRepository cheepRepository, IUserRepository userRepository, IFollowerRepository followerRepository, IReactionRepository reactionRepository, IValidator<CheepDto> validator)
     {
         _cheepRepository = cheepRepository;
         _userRepository = userRepository;
         _followerRepository = followerRepository;
+        _reactionRepository = reactionRepository;
         _validator = validator;
     }
 
@@ -121,6 +123,12 @@ public class PublicModel : BasePageModel
     public async Task<IActionResult> OnPostFollow(string userName, string followerName)
     {
         return await HandleFollow(userName, followerName, _followerRepository);
+
+    }
+    
+    public async Task<IActionResult> OnPostLikeCheep(Guid cheepId, string userName)
+    {
+        return await HandleLike(cheepId, userName, _reactionRepository);
 
     }
     
