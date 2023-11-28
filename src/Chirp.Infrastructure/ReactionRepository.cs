@@ -40,10 +40,10 @@ public class ReactionRepository : IReactionRepository
         return comments;
     }
     
-    public async Task LikeCheep(Guid cheepId, Guid userId)
+    public async Task LikeCheep(Guid cheepId, string userName)
     {
         var cheep = await _context.Cheeps.SingleOrDefaultAsync(c => c.CheepId == cheepId);
-        var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == userId);
+        var user = await _context.Users.SingleOrDefaultAsync(u => u.Name == userName);
 
         if (cheep is null || user is null)
         {
@@ -52,7 +52,7 @@ public class ReactionRepository : IReactionRepository
         
         var newLike = new Reaction()
         {
-            UserId = userId,
+            UserId = user.Id,
             CheepId = cheepId,
             User = user,
             Cheep = cheep,
