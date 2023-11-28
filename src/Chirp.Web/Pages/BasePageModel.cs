@@ -73,9 +73,14 @@ public class BasePageModel : PageModel
         return await Task.FromResult<IActionResult>(RedirectToPage(""));
     }
 
-    protected async Task<IActionResult> HandleLike(Guid cheepId, Guid userId, IReactionRepository reactionRepository)
+    protected async Task<IActionResult> HandleLike(Guid cheepId, string userName, IReactionRepository reactionRepository)
     {
-        await reactionRepository.LikeCheep(cheepId, userId);
+        if (userName is null)
+        {
+            throw new ArgumentNullException($"Username is null");
+        }
+        
+        await reactionRepository.LikeCheep(cheepId, userName);
         
         return await Task.FromResult<IActionResult>(RedirectToPage(""));
     }
