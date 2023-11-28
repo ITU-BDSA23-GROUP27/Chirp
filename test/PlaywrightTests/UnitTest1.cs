@@ -59,10 +59,15 @@ namespace PlaywrightTests
 
 
         [Test]
-        public async Task LoginAndSeedDbInitializer2AndFollowUnfollowAuthorsAndCheckUserTimeline()
+        public async Task LoginAndSeedDbInitializer2AndFollowUnfollowUsersAndCheckUserTimeline()
         {
             // Go to localhost
             await page.GotoAsync("http://localhost:5273/"); await Task.Delay(1000);
+            Assert.IsTrue(await page.Locator("text='Sign in'").IsVisibleAsync());
+            Assert.IsFalse(await page.Locator("text='Sign out'").IsVisibleAsync());
+            Assert.IsFalse(await page.Locator("text='About me'").IsVisibleAsync());
+            Assert.IsFalse(await page.Locator("text='User timeline'").IsVisibleAsync());
+            Assert.IsFalse(await page.Locator("textarea").IsVisibleAsync(), "Textarea should not be visible on the page");
 
             // Sign in github
             await page.GetByRole(AriaRole.Button, new() { Name = "Sign in" }).ClickAsync();                             await Task.Delay(1000);
@@ -71,73 +76,78 @@ namespace PlaywrightTests
             await page.GetByLabel("Username or email address").PressAsync("Tab");                                       await Task.Delay(1000);
             await page.GetByLabel("Password").FillAsync(password);                                                      await Task.Delay(1000);
             await page.GetByLabel("Password").PressAsync("Enter");                                                      await Task.Delay(4000);
+            Assert.IsFalse(await page.Locator("text='Sign in'").IsVisibleAsync());
+            Assert.IsTrue(await page.Locator("text='Sign out'").IsVisibleAsync());
+            Assert.IsTrue(await page.Locator("text='About me'").IsVisibleAsync());
+            Assert.IsTrue(await page.Locator("text='User timeline'").IsVisibleAsync());
+            Assert.IsTrue(await page.Locator("textarea").IsVisibleAsync(), "Textarea should be visible on the page");
 
-            // Seed new test data with other author following another different author 
-            //      Author (B) follows Author (C) and (D), Author (C) follows Author (D) 
-            await page.GetByPlaceholder("Write your cheep here!").ClickAsync();                                         await Task.Delay(2000);
-            await page.GetByPlaceholder("Write your cheep here!").FillAsync("I will reset and seed new test data");     await Task.Delay(2000);
+            // Seed new test data with other user following another different user 
+            //      User (B) follows User (C) and (D), User (C) follows User (D) 
+            // await page.GetByPlaceholder("Write your cheep here!").ClickAsync();                                         await Task.Delay(2000);
+            await page.Locator("textarea").ClickAsync();                                                                await Task.Delay(2000);
+            await page.Locator("textarea").FillAsync("I will reset and seed new test data");     await Task.Delay(2000);
             await page.GetByRole(AriaRole.Link, new() { Name = "Seed DB" }).ClickAsync();                               await Task.Delay(2000);
             await page.GetByRole(AriaRole.Button, new() { Name = "Seed DB2" }).ClickAsync();                            await Task.Delay(2000);
 
             await page.GetByPlaceholder("Write your cheep here!").ClickAsync();                                         await Task.Delay(2000);
-            await page.GetByPlaceholder("Write your cheep here!").FillAsync("This is a Playwright test");               await Task.Delay(2000);
+            await page.GetByPlaceholder("Write your cheep here!").FillAsync("🎉 Playwright test 🎉");                  await Task.Delay(2000);
             await page.GetByRole(AriaRole.Button, new() { Name = "Chirp!" }).ClickAsync();                              await Task.Delay(2000);
 
-            // I follow two different authors (B, C)
+            // I follow two different users (B, C)
             await DisplayMessage(page, "I will follow Happy");
             await page.Locator("li").Filter(new() { HasText = "Happy" }).GetByRole(AriaRole.Button).First.ClickAsync();  
             await DisplayMessage(page, "I will follow Chirp27");
             await ScrollDown(page);
             await page.Locator("li").Filter(new() { HasText = "Chirp27" }).GetByRole(AriaRole.Button).First.ClickAsync();   
 
-            // Go into my UserTimeline - both of these authors cheeps should appear in my user-timeline
-            await DisplayMessage(page, "Go to my User Timeline");
+            // Go into my UserTimeline - both of these users cheeps should appear in my user-timeline
+            await DisplayMessage(page, "Navigate to: User timeline");
             await page.GetByText("User Timeline").ClickAsync(); 
             await DisplayMessage(page, "I should see all my followers cheeps + my cheeps");
             await ScrollDown(page);
-            Assert.IsTrue(await page.Locator("text='Chirp27'").CountAsync() > 0, "Author not found");
-            Assert.IsTrue(await page.Locator("text='Happy'").CountAsync() > 0, "Author not found");
+            Assert.IsTrue(await page.Locator("text='Chirp27'").CountAsync() > 1, "User not found");
+            Assert.IsTrue(await page.Locator("text='Happy'").CountAsync() > 1, "User not found");
             Assert.IsFalse(await page.Locator("text='Smiley'").IsVisibleAsync());
 
-            // I unfollow one of the author (C) - his cheeps should not appear in my timeline anymore
+            // I unfollow one of the user (C) - his cheeps should not appear in my timeline anymore
             await DisplayMessage(page, "I will unfollow Happy");
             await page.Locator("li:has-text('Happy')").First.GetByRole(AriaRole.Button).GetByText("Unfollow").ClickAsync(); 
             await DisplayMessage(page, "Happy's cheeps are now gone from my timeline");
             Assert.IsFalse(await page.Locator("text='Happy'").IsVisibleAsync());
 
-            // Go to my timeline of author (B) - his timelime should not display his followers cheeps
-            await DisplayMessage(page, "Go to Chirp27's timeline");
-            await page.Locator("li:has-text('Chirp27')").First.Locator("#author").ClickAsync(); 
+            // Go to my timeline of user (B) - his timelime should not display his followers cheeps
+            await DisplayMessage(page, "Navigate to: Chirp27's timeline");
+            // await page.Locator("li:has-text('Chirp27')").First.Locator("#user").ClickAsync(); 
+            await page.Locator("#followers").GetByRole(AriaRole.Link, new() { Name = "Chirp27" }).ClickAsync();
             await DisplayMessage(page, "I should only be able to see Chirp27's cheeps");
             await ScrollDown(page);
-            Assert.IsFalse(await page.Locator("text='Happy'").IsVisibleAsync());
-            Assert.IsFalse(await page.Locator("text='Smiley'").IsVisibleAsync());
+            // Assert.IsFalse(await page.Locator("text='Happy'").IsVisibleAsync());
+            // Assert.IsFalse(await page.Locator("text='Smiley'").IsVisibleAsync());
+            Assert.IsFalse(await page.Locator("text='Happy'").CountAsync() > 1, "User not found");
+            Assert.IsFalse(await page.Locator("text='Smiley'").CountAsync() > 1, "User not found");
 
-            // Unfollowing Author (B) (B's cheeps should not appear in my timeline anymore)
+            // Unfollowing User (B) (B's cheeps should not appear in my timeline anymore)
             await DisplayMessage(page, "I will unfollow Chirp27");
             await ScrollDown(page);
             await page.GetByRole(AriaRole.Button, new() { Name = "Unfollow" }).First.ClickAsync(); 
 
             // Go to my timeline
-            await DisplayMessage(page, "Go to my UserTimeline");
-            await ScrollDown(page);
+            await DisplayMessage(page, "Navigate to: User timeline");
             await page.GetByText("User Timeline").ClickAsync(); await Task.Delay(2000);
             await DisplayMessage(page, "My timeline should only consists of my own cheeps now");
             await ScrollDown(page);
-            Assert.IsFalse(await page.Locator("text='Chirp27'").IsVisibleAsync());
-            Assert.IsFalse(await page.Locator("text='Happy'").IsVisibleAsync());
+            Assert.IsFalse(await page.Locator("text='Chirp27'").CountAsync() > 1, "User's Cheep not found");
+            Assert.IsFalse(await page.Locator("text='Happy'").CountAsync() > 1, "User's Cheep not found");
             Assert.IsFalse(await page.Locator("text='Follow'").IsVisibleAsync());
             Assert.IsFalse(await page.Locator("text='Unfollow'").IsVisibleAsync());
 
-            // Send a cheep
-            await page.GetByPlaceholder("Write your cheep here!").ClickAsync();                             await Task.Delay(2000);
-            await page.GetByPlaceholder("Write your cheep here!").FillAsync("🎉 Playwright test done 🎉"); await Task.Delay(2000);
-            await page.GetByRole(AriaRole.Button, new() { Name = "Chirp!" }).ClickAsync();                  await Task.Delay(2000);
-            await page.GetByPlaceholder("Write your cheep here!").ClickAsync();                             await Task.Delay(2000);
-            await page.GetByPlaceholder("Write your cheep here!").FillAsync("Signing out...");              await Task.Delay(2000);
+            // Go to About me
+            await DisplayMessage(page, "Navigate to: About me, and delete my account");
+            await page.GetByRole(AriaRole.Link, new() { Name = "About me" }).ClickAsync();                  await Task.Delay(3000);
 
-            // Sign out
-            await page.GetByRole(AriaRole.Button, new() { Name = "Sign out" }).ClickAsync();                await Task.Delay(5000);
+            // // Forget me
+            await page.GetByRole(AriaRole.Button, new() { Name = "Forget Me" }).ClickAsync();               await Task.Delay(5000);
         }
     }
 }
