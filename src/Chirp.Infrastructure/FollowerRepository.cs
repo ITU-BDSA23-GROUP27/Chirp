@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Globalization;
 using Chirp.Core;
 using Chirp.Core.DTOs;
 using Chirp.Infrastructure.Entities;
@@ -54,17 +52,25 @@ public class FollowerRepository : IFollowerRepository
         
         if (user == follower)
         {
-            throw new ArgumentException("Author and follower cannot be equal to one another: ", nameof(userName));
+            throw new ArgumentException("User and follower cannot be equal to one another: ", nameof(userName));
         }
         
         if (user is null)
         {
-            throw new ArgumentException("Author does not exist: ", nameof(userName));
+            throw new ArgumentException("User does not exist: ", nameof(userName));
         }
         
         if (follower is null)
         {
             throw new ArgumentException("Follower does not exist: ", nameof(followerName));
+        }
+        
+        var existingFollower = await _context.Followers.SingleOrDefaultAsync(f =>
+            f.FolloweeUser.Name == userName && f.FollowerUser.Name == followerName);
+        
+        if (existingFollower != null)
+        {
+            _context.Followers.Remove(existingFollower);
         }
 
         var newFollower = new Follower()
