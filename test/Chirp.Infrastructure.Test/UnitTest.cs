@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure.Test
 {
-    public class RepositoryTests : IDisposable
+    public class RepositoryTests 
     {
         private readonly ChirpContext _context;
         private readonly CheepRepository _cheepRepository;
@@ -20,8 +20,7 @@ namespace Chirp.Infrastructure.Test
                 .Options;
 
             _context = new ChirpContext(options);
-            //_context.Database.EnsureDeleted();
-            _context.Database.EnsureCreated();
+            _context.Database.Migrate(); //TODO Get checked by TA
 
             _cheepRepository = new CheepRepository(_context);
             _userRepository = new UserRepository(_context);
@@ -125,12 +124,6 @@ namespace Chirp.Infrastructure.Test
 
             // Assert
             Assert.Equal("Karsten Pedersen", result.Name);
-        }
-
-        public void Dispose()
-        {
-            //_context.Database.EnsureDeleted();
-            _context.Dispose();
         }
     }
 }
