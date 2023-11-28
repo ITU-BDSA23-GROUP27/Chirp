@@ -76,7 +76,7 @@
                             </form>
                             
                             @* TODO - count = number of likes by users *@
-                            <span class="reaction-count">0</span>
+                            <span class="reaction-count">@Model.GetLikeCount(cheep.Id)</span>
                         </div>
                         
                     </div>
