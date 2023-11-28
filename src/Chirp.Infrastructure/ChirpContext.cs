@@ -19,10 +19,14 @@ public sealed class ChirpContext : IdentityDbContext<User, IdentityRole<Guid>, G
 protected override void OnModelCreating(ModelBuilder modelBuilder)
 {
     modelBuilder.Entity<Cheep>().Property(c => c.Text).HasMaxLength(160);
+    
     modelBuilder.Entity<User>().Property(u => u.Name).HasMaxLength(50);
     modelBuilder.Entity<User>().Property(u => u.Email).HasMaxLength(50);
+    
     modelBuilder.Entity<Follower>().HasKey(f => new {f.FollowerId, f.FolloweeId});
-    modelBuilder.Entity<Reaction>().HasKey(r => new {r.UserId, r.CheepId});
+    
+    modelBuilder.Entity<Reaction>().HasKey(r => new {r.UserId, r.CheepId, r.ReactionType, r.ReactionContent});
+    modelBuilder.Entity<Reaction>().Property(r => r.ReactionContent).HasMaxLength(160);
     
     modelBuilder.Entity<IdentityUserLogin<Guid>>().HasKey(u => u.UserId);
     modelBuilder.Entity<IdentityUserRole<Guid>>().HasKey(u => u.UserId);

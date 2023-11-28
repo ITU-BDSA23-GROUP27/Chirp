@@ -6,11 +6,11 @@ public class Reaction
     public Guid CheepId { get; set; }
     public required User User { get; set; }
     public required Cheep Cheep { get; set; }
-    
-    public required EnumReaction EnumReaction { get; set; }
+    public required ReactionType ReactionType { get; set; }
+    public string? ReactionContent { get; set; }
 }
 
-public enum EnumReaction
+public enum ReactionType
 {
     Like,
     Comment,
