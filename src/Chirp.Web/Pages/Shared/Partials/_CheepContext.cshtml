@@ -68,14 +68,14 @@
                         
                         @* Likes *@
                         <div class="reaction-item">
-                            @* TODO - needs to interfact with database *@
                             <form method="post" asp-page-handler="LikeCheep" asp-route-cheepID="@cheep.Id" asp-route-userName="@User.Identity?.Name">
                                 <button class="reaction-btn likes-btn" title="Like">
+                                    @*TODO - Add if statement to toggle red/solid on off depending on whether or not the user has liked the cheep*@
                                     <i class="fa-regular fa-heart grey"></i>
                                 </button>
                             </form>
                             
-                            @* TODO - count = number of likes by users *@
+                            @* TODO - Count is the same for all cheeps *@
                             <span class="reaction-count">@await Model.GetLikeCount(cheep.Id)</span>
                         </div>
                         
