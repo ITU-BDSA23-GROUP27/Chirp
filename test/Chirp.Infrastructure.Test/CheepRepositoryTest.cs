@@ -6,7 +6,7 @@ namespace Chirp.Infrastructure.Test;
 
 public class CheepRepositoryTest
 {
-    private readonly ChirpContext _context;
+    private readonly ChirpDbContext dbContext;
     private readonly CheepRepository _cheepRepository;
     private readonly UserRepository _userRepository;
 
@@ -15,15 +15,15 @@ public class CheepRepositoryTest
         var connection = new SqliteConnection("DataSource=:memory:");
         connection.Open();
 
-        var options = new DbContextOptionsBuilder<ChirpContext>()
+        var options = new DbContextOptionsBuilder<ChirpDbContext>()
             .UseSqlite(connection)
             .Options;
 
-        _context = new ChirpContext(options);
-        _context.Database.Migrate(); //TODO Get checked by TA
+        dbContext = new ChirpDbContext(options);
+        dbContext.Database.Migrate(); //TODO Get checked by TA
 
-        _cheepRepository = new CheepRepository(_context);
-        _userRepository = new UserRepository(_context);
+        _cheepRepository = new CheepRepository(dbContext);
+        _userRepository = new UserRepository(dbContext);
     }
     
     [Fact]
@@ -44,7 +44,7 @@ public class CheepRepositoryTest
         await _cheepRepository.CreateCheep(cheepDto);
 
         // Assert
-        var cheep = _context.Cheeps.Include(cheep => cheep.User).Single();
+        var cheep = dbContext.Cheeps.Include(cheep => cheep.User).Single();
         Assert.Equal("Bye, world!", cheep.Text);
         Assert.Equal("Hans Hansen", cheep.User.Name);
     }

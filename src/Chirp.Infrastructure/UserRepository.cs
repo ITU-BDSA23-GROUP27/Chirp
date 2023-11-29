@@ -7,16 +7,16 @@ namespace Chirp.Infrastructure;
 
 public class UserRepository : IUserRepository
 {
-    private readonly ChirpContext _context;
+    private readonly ChirpDbContext dbContext;
 
-    public UserRepository(ChirpContext context)
+    public UserRepository(ChirpDbContext dbContext)
     {
-        _context = context;
+        this.dbContext = dbContext;
     }
 
     public async Task<UserDto> GetUserByName(string userName)
     {
-        var user = await _context.Users.FirstAsync(u => u.Name == userName);
+        var user = await dbContext.Users.FirstAsync(u => u.Name == userName);
 
         return new UserDto()
         {
@@ -28,7 +28,7 @@ public class UserRepository : IUserRepository
 
     public async Task<UserDto> GetUserByEmail(string authorEmail)
     {
-        var user = await _context.Users.FirstAsync(u => u.Email == authorEmail);
+        var user = await dbContext.Users.FirstAsync(u => u.Email == authorEmail);
 
         return new UserDto()
         {
@@ -40,7 +40,7 @@ public class UserRepository : IUserRepository
 
     public async Task CreateUser(UserDto user)
     {
-        var existingUser = await _context.Users.SingleOrDefaultAsync(u => u.Name == user.Name);
+        var existingUser = await dbContext.Users.SingleOrDefaultAsync(u => u.Name == user.Name);
 
         if (existingUser is not null)
         {
@@ -54,21 +54,21 @@ public class UserRepository : IUserRepository
             Email = user.Email,
         };
         
-        _context.Users.Add(newUser);
-        await _context.SaveChangesAsync();
+        dbContext.Users.Add(newUser);
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task DeleteUser(UserDto user)
     {
-        var existingUser = await _context.Users.SingleOrDefaultAsync(u => u.Name == user.Name);
+        var existingUser = await dbContext.Users.SingleOrDefaultAsync(u => u.Name == user.Name);
         
         if (existingUser is null)
         {
             throw new ArgumentException("Author does not exist: ", nameof(user));
         }
         
-        _context.Users.Remove(existingUser);
+        dbContext.Users.Remove(existingUser);
         
-        await _context.SaveChangesAsync();
+        await dbContext.SaveChangesAsync();
     }
 }
