@@ -136,7 +136,7 @@ public class UserTimelineModel : BasePageModel
         return Task.CompletedTask;
     }
     
-    public async Task<IActionResult> OnPostChirp()
+    public async Task<IActionResult> OnPostCheep()
     {
         return await Cheep(CheepMessage, _validator, _cheepRepository);
     }   
