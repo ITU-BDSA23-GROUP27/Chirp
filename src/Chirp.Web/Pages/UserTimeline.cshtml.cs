@@ -138,7 +138,7 @@ public class UserTimelineModel : BasePageModel
     
     public async Task<IActionResult> OnPostChirp()
     {
-        return await Chirp(CheepMessage, _validator, _cheepRepository);
+        return await Cheep(CheepMessage, _validator, _cheepRepository);
     }   
     
     public async Task<IActionResult> OnPostFollow(string userName, string followerName)
