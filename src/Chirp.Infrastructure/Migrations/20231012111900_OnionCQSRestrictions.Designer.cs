@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CheepRepository.Migrations
 {
-    [DbContext(typeof(ChirpContext))]
+    [DbContext(typeof(ChirpDbContext))]
     [Migration("20231012111900_OnionCQSRestrictions")]
     partial class OnionCQSRestrictions
     {
