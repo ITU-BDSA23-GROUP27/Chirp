@@ -7,7 +7,6 @@ on:
   push:
     branches:
       - master
-      - bugs/all-around
   workflow_dispatch:
 
 jobs:
