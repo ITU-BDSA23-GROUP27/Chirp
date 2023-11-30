@@ -70,12 +70,17 @@
                         <div class="reaction-item">
                             <form method="post" asp-page-handler="LikeCheep" asp-route-cheepID="@cheep.Id" asp-route-userName="@User.Identity?.Name">
                                 <button class="reaction-btn likes-btn" title="Like">
-                                    @*TODO - Add if statement to toggle red/solid on off depending on whether or not the user has liked the cheep*@
-                                    <i class="fa-regular fa-heart grey"></i>
+                                    @if (await Model.HasUserLikedCheep(cheep.Id, User.Identity?.Name))
+                                    {
+                                        <i class="fa-regular fa-heart grey fa-solid red"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fa-regular fa-heart grey"></i>
+                                    }
                                 </button>
                             </form>
                             
-                            @* TODO - Count is the same for all cheeps *@
                             <span class="reaction-count">@await Model.GetLikeCount(cheep.Id)</span>
                         </div>
                         
