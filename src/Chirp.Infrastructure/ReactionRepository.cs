@@ -18,26 +18,41 @@ public class ReactionRepository : IReactionRepository
     public async Task<int> GetLikeCount(Guid cheepId)
     {
         var likes = await _context.Reactions
-            .Where(r => r.ReactionType == ReactionType.Like)
-            .Select(r => r.CheepId == cheepId)
+            .Where(r => r.ReactionType == ReactionType.Like && r.CheepId == cheepId)
             .ToListAsync();
 
         return likes.Count;
     }
 
-    public async Task<IEnumerable<CommentDto>> GetCommentsFromCheep(Guid cheepId)
+    public async Task<IEnumerable<ReactionDto>> GetLikesFromCheep(Guid cheepId)
+    {
+        var likes = await _context.Reactions
+            .OrderByDescending(r => r.TimeStamp)
+            .Where(r => r.ReactionType == ReactionType.Like && r.CheepId == cheepId)
+            .Select<Reaction, ReactionDto>(r => new ReactionDto()
+                {
+                    UserId = r.UserId,
+                    CheepId = r.CheepId,
+                    TimeStamp = r.TimeStamp.ToString(CultureInfo.InvariantCulture)
+                }
+            ).ToListAsync();
+
+        return likes;
+    }
+
+    public async Task<IEnumerable<ReactionDto>> GetCommentsFromCheep(Guid cheepId)
     {
         var comments = await _context.Reactions
             .OrderByDescending(r => r.TimeStamp)
-            .Where(r => r.ReactionType == ReactionType.Comment)
-            .Select<Reaction, CommentDto>(r => new CommentDto()
+            .Where(r => r.ReactionType == ReactionType.Comment && r.CheepId == cheepId)
+            .Select<Reaction, ReactionDto>(r => new ReactionDto()
                 {
                     UserId = r.CheepId,
                     CheepId = r.CheepId,
                     TimeStamp = r.TimeStamp.ToString(CultureInfo.InvariantCulture),
                     Comment = r.ReactionContent
                 }
-            ).Where(r => r.CheepId == cheepId).ToListAsync();
+            ).ToListAsync();
 
         return comments;
     }
@@ -93,7 +108,7 @@ public class ReactionRepository : IReactionRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task CommentOnCheep(CommentDto comment)
+    public async Task CommentOnCheep(ReactionDto comment)
     {
         var cheep = await _context.Cheeps.SingleOrDefaultAsync(c => c.CheepId == comment.CheepId);
         var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == comment.UserId);
