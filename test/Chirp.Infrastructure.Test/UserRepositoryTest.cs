@@ -6,7 +6,7 @@ namespace Chirp.Infrastructure.Test
 {
     public class UserRepositoryTest 
     {
-        private readonly ChirpDbContext dbContext;
+        private readonly ChirpContext _context;
         private readonly CheepRepository _cheepRepository;
         private readonly UserRepository _userRepository;
 
@@ -15,15 +15,15 @@ namespace Chirp.Infrastructure.Test
             var connection = new SqliteConnection("DataSource=:memory:");
             connection.Open();
 
-            var options = new DbContextOptionsBuilder<ChirpDbContext>()
+            var options = new DbContextOptionsBuilder<ChirpContext>()
                 .UseSqlite(connection)
                 .Options;
 
-            dbContext = new ChirpDbContext(options);
-            dbContext.Database.Migrate(); //TODO Get checked by TA
+            _context = new ChirpContext(options);
+            _context.Database.Migrate(); //TODO Get checked by TA
 
-            _cheepRepository = new CheepRepository(dbContext);
-            _userRepository = new UserRepository(dbContext);
+            _cheepRepository = new CheepRepository(_context);
+            _userRepository = new UserRepository(_context);
         }
 
         [Fact]
@@ -36,7 +36,7 @@ namespace Chirp.Infrastructure.Test
             await _userRepository.CreateUser(userDto);
 
             // Assert
-            var user = dbContext.Users.Single(a => a.Name == "Bodil Bodilsen");
+            var user = _context.Users.Single(a => a.Name == "Bodil Bodilsen");
             Assert.Equal("Bodil Bodilsen", user.Name);
             Assert.Equal("Bodil@danmark.dk", user.Email);
         }
@@ -57,7 +57,7 @@ namespace Chirp.Infrastructure.Test
             await _userRepository.DeleteUser(user);
 
             // Assert
-            Assert.DoesNotContain(dbContext.Users, u => u.Name == user.Name);
+            Assert.DoesNotContain(_context.Users, u => u.Name == user.Name);
         }
         
         [Fact]

@@ -8,7 +8,7 @@ namespace Chirp.Infrastructure.Test
     public class FollowerRepositoryTests 
     {
         private readonly ITestOutputHelper _testOutputHelper;
-        private readonly ChirpDbContext dbContext;
+        private readonly ChirpContext _context;
         private readonly FollowerRepository _followerRepository;
         private readonly UserRepository _userRepository;
 
@@ -18,15 +18,15 @@ namespace Chirp.Infrastructure.Test
             var connection = new SqliteConnection("DataSource=:memory:");
             connection.Open();
 
-            var options = new DbContextOptionsBuilder<ChirpDbContext>()
+            var options = new DbContextOptionsBuilder<ChirpContext>()
                 .UseSqlite(connection)
                 .Options;
 
-            dbContext = new ChirpDbContext(options);
-            dbContext.Database.Migrate(); // TODO Get checked by TA
+            _context = new ChirpContext(options);
+            _context.Database.Migrate(); // TODO Get checked by TA
 
-            _followerRepository = new FollowerRepository(dbContext);
-            _userRepository = new UserRepository(dbContext);
+            _followerRepository = new FollowerRepository(_context);
+            _userRepository = new UserRepository(_context);
         }
 
         [Fact]
@@ -83,7 +83,7 @@ namespace Chirp.Infrastructure.Test
             await _followerRepository.AddOrRemoveFollower(user.Name, follower.Name);
 
             // Assert
-            var followRelationship = await dbContext.Followers.Include(f => f.FollowerUser)
+            var followRelationship = await _context.Followers.Include(f => f.FollowerUser)
                 .Include(f => f.FolloweeUser).SingleAsync();
             Assert.Equal(follower.Name, followRelationship.FollowerUser.Name);
             Assert.Equal(user.Name, followRelationship.FolloweeUser.Name);
@@ -105,7 +105,7 @@ namespace Chirp.Infrastructure.Test
             await _followerRepository.AddOrRemoveFollower(user.Name, follower.Name); // Then remove
 
             // Assert
-            Assert.DoesNotContain(dbContext.Followers, f => f.FollowerUser.Name == follower.Name && f.FolloweeUser.Name == user.Name);
+            Assert.DoesNotContain(_context.Followers, f => f.FollowerUser.Name == follower.Name && f.FolloweeUser.Name == user.Name);
         }
 
         [Fact]

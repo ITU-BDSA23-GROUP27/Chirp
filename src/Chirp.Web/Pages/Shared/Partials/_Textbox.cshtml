@@ -6,7 +6,7 @@
     <h2>Write Cheep</h2>
 
     <div class="form-container">
-        <form method="post" asp-page-handler="Cheep">
+        <form method="post" asp-page-handler="Chirp">
             <div class="form-group">
                 <textarea name="CheepMessage" id="text" rows="5" maxlength="@Model.CheepMaxLength" 
                 required placeholder="Write your cheep here!"></textarea> @*asp-for does not correctly update CheepMessage value*@

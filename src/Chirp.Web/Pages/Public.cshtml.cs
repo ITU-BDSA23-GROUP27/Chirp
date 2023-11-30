@@ -111,9 +111,9 @@ public class PublicModel : BasePageModel
         return Task.CompletedTask;
     }
 
-    public async Task<IActionResult> OnPostCheep()
+    public async Task<IActionResult> OnPostChirp()
     {
-        return await Cheep(CheepMessage, _validator, _cheepRepository);
+        return await Chirp(CheepMessage, _validator, _cheepRepository);
     }
 
     public async Task<IActionResult> OnPostFollow(string userName, string followerName)

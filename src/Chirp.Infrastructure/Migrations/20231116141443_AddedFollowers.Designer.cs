@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CheepRepository.Migrations
 {
-    [DbContext(typeof(ChirpDbContext))]
+    [DbContext(typeof(ChirpContext))]
     [Migration("20231116141443_AddedFollowers")]
     partial class AddedFollowers
     {
