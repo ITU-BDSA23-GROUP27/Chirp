@@ -42,13 +42,13 @@ builder.Services.AddAuthentication(options =>
     {
         // set the path for the authentication challenge
         o.LoginPath = "/signin";
-        // set the path for the sign out
+        // set the path for the sign out 
         o.LogoutPath = "/signout";
     })
     .AddGitHub(o =>
     {
-        o.ClientId = builder.Configuration["authentication:github:clientId"] ?? throw new InvalidOperationException("GitHub Client ID not found.");
-        o.ClientSecret = builder.Configuration["authentication:github:clientSecret"] ?? throw new InvalidOperationException("GitHub Client Secret not found.");
+        o.ClientId = builder.Configuration["authentication_github_clientId"] ?? throw new InvalidOperationException("GitHub Client ID not found.");
+        o.ClientSecret = builder.Configuration["authentication_github_clientSecret"] ?? throw new InvalidOperationException("GitHub Client Secret not found.");
         o.CallbackPath = "/signin-github";
     });
 
