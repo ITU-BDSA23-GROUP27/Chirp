@@ -90,10 +90,10 @@ public class BasePageModel : PageModel
         return await reactionRepository.GetLikeCount(cheepId);
     }
     
-    protected async Task<IActionResult> HandleComment(string? comment, Guid userId, Guid cheepId, IValidator<CommentDto> validator, IReactionRepository reactionRepository)
+    protected async Task<IActionResult> HandleComment(string? comment, Guid userId, Guid cheepId, IValidator<ReactionDto> validator, IReactionRepository reactionRepository)
     {
 
-        var commentDto = new CommentDto()
+        var reactionDto = new ReactionDto()
         {
             UserId = userId,
             CheepId = cheepId,
@@ -101,9 +101,9 @@ public class BasePageModel : PageModel
             Comment = comment?.Replace("\r\n", " ") ?? ""
         };
         
-        ValidationResult result = await validator.ValidateAsync(commentDto);
+        ValidationResult result = await validator.ValidateAsync(reactionDto);
 
-        if (result.IsValid) await reactionRepository.CommentOnCheep(commentDto);
+        if (result.IsValid) await reactionRepository.CommentOnCheep(reactionDto);
         return await Task.FromResult<IActionResult>(RedirectToPage(""));
     }
 }
