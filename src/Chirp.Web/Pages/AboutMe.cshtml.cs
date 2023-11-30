@@ -52,6 +52,24 @@ public class AboutMeModel : BasePageModel
             return Unauthorized();
         }
 
+        if (User.Identity?.IsAuthenticated == true)
+        {
+            try
+            {
+                var newUser = new UserDto
+                {
+                    Name = User.Identity?.Name ?? "Unknown", // Use null conditional operator with null coalescing operator
+                    Email = (User.Identity?.Name ?? "Unknown") + "@chirp.com" // Use null conditional operator with null coalescing operator
+                };
+
+                await _userRepository.CreateUser(newUser);
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
         // Fetch cheeps and followers
         if (Username != null)
         {
