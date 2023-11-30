@@ -42,13 +42,13 @@ public class PublicModel : BasePageModel
         {
             try
             {
-                var user = new UserDto
+                var newUser = new UserDto
                 {
                     Name = User.Identity?.Name ?? "Unknown", // Use null conditional operator with null coalescing operator
                     Email = (User.Identity?.Name ?? "Unknown") + "@chirp.com" // Use null conditional operator with null coalescing operator
                 };
 
-                await _userRepository.CreateUser(user);
+                await _userRepository.CreateUser(newUser);
             }
             catch (ArgumentException ex)
             {

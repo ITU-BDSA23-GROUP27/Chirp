@@ -43,6 +43,24 @@ public class UserTimelineModel : BasePageModel
 
     public async Task<ActionResult> OnGet(string user)
     {
+        if (User.Identity?.IsAuthenticated == true)
+        {
+            try
+            {
+                var newUser = new UserDto
+                {
+                    Name = User.Identity?.Name ?? "Unknown", // Use null conditional operator with null coalescing operator
+                    Email = (User.Identity?.Name ?? "Unknown") + "@chirp.com" // Use null conditional operator with null coalescing operator
+                };
+
+                await _userRepository.CreateUser(newUser);
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+        
         if (User.Identity?.IsAuthenticated == false)
         {
             try
