@@ -61,7 +61,7 @@ namespace PlaywrightTests
         [Test]
         public async Task LoginAndSeedDbInitializer2AndFollowUnfollowUsersAndCheckUserTimeline()
         {
-            // Go to localhost
+            // Go to localhost 
             await page.GotoAsync("http://localhost:5273/"); await Task.Delay(1000);
             Assert.IsTrue(await page.Locator("text='Sign in'").IsVisibleAsync());
             Assert.IsFalse(await page.Locator("text='Sign out'").IsVisibleAsync());
