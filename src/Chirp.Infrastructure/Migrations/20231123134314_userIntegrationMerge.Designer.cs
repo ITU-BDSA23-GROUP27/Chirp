@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CheepRepository.Migrations
 {
-    [DbContext(typeof(ChirpContext))]
+    [DbContext(typeof(ChirpDbContext))]
     [Migration("20231123134314_userIntegrationMerge")]
     partial class userIntegrationMerge
     {

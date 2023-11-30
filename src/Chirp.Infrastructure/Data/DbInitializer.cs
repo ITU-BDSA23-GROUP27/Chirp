@@ -4,9 +4,9 @@ namespace Chirp.Infrastructure.Data;
 
 public static class DbInitializer
 {
-    public static void SeedDatabase(ChirpContext chirpContext)
+    public static void SeedDatabase(ChirpDbContext chirpDbContext)
     {
-        if (!(chirpContext.Users.Any() && chirpContext.Cheeps.Any()))
+        if (!(chirpDbContext.Users.Any() && chirpDbContext.Cheeps.Any()))
         {
             var a1 = new User() { Name = "Roger Histand", Email = "Roger+Histand@hotmail.com", Cheeps = new List<Cheep>() };
             var a2 = new User() { Name = "Luanna Muro", Email = "Luanna-Muro@ku.dk", Cheeps = new List<Cheep>() };
@@ -696,9 +696,9 @@ public static class DbInitializer
             a11.Cheeps = new List<Cheep>() { c656 };
             a12.Cheeps = new List<Cheep>() { c657 };
 
-            chirpContext.Users.AddRange(authors);
-            chirpContext.Cheeps.AddRange(cheeps);
-            chirpContext.SaveChanges();
+            chirpDbContext.Users.AddRange(authors);
+            chirpDbContext.Cheeps.AddRange(cheeps);
+            chirpDbContext.SaveChanges();
         }
     }
 }

@@ -7,16 +7,16 @@ namespace Chirp.Infrastructure;
 
 public class FollowerRepository : IFollowerRepository
 {
-    private readonly ChirpContext _context;
-    public FollowerRepository(ChirpContext context)
+    private readonly ChirpDbContext dbContext;
+    public FollowerRepository(ChirpDbContext dbContext)
     {
-        _context = context;
+        this.dbContext = dbContext;
     }
     
     //Followers are the ones that follows the author/user
     public async Task<IEnumerable<UserDto>> GetFollowersFromUser(string userName)
     {
-        var followers = await _context.Followers
+        var followers = await dbContext.Followers
             .Where(f => f.FolloweeUser.Name == userName)
             .Select(f => f.FollowerUser)
             .Select<User, UserDto>(f => new UserDto()
@@ -32,7 +32,7 @@ public class FollowerRepository : IFollowerRepository
     //Followees are the ones the author/user follows
     public async Task<IEnumerable<UserDto>> GetFolloweesFromUser(string userName)
     {
-        var followees = await _context.Followers
+        var followees = await dbContext.Followers
             .Where(f => f.FollowerUser.Name == userName)
             .Select(f => f.FolloweeUser)
             .Select<User, UserDto>(f => new UserDto()
@@ -47,8 +47,8 @@ public class FollowerRepository : IFollowerRepository
     
     public async Task AddOrRemoveFollower(string userName, string followerName)
     {
-        var user = await _context.Users.SingleOrDefaultAsync(a => a.Name == userName);
-        var follower = _context.Users.SingleOrDefault(a => a.Name == followerName);
+        var user = await dbContext.Users.SingleOrDefaultAsync(a => a.Name == userName);
+        var follower = dbContext.Users.SingleOrDefault(a => a.Name == followerName);
         
         if (user == follower)
         {
@@ -65,12 +65,12 @@ public class FollowerRepository : IFollowerRepository
             throw new ArgumentException("Follower does not exist: ", nameof(followerName));
         }
         
-        var existingFollower = await _context.Followers.SingleOrDefaultAsync(f =>
+        var existingFollower = await dbContext.Followers.SingleOrDefaultAsync(f =>
             f.FolloweeUser.Name == userName && f.FollowerUser.Name == followerName);
         
         if (existingFollower != null)
         {
-            _context.Followers.Remove(existingFollower);
+            dbContext.Followers.Remove(existingFollower);
         }
 
         var newFollower = new Follower()
@@ -81,14 +81,14 @@ public class FollowerRepository : IFollowerRepository
             FolloweeUser = user
         };
         
-        if (_context.Followers.Contains(newFollower))
+        if (dbContext.Followers.Contains(newFollower))
         {
-            _context.Followers.Remove(newFollower);
+            dbContext.Followers.Remove(newFollower);
         }
         else
         {
-            _context.Followers.Add(newFollower);
+            dbContext.Followers.Add(newFollower);
         }
-        await _context.SaveChangesAsync();
+        await dbContext.SaveChangesAsync();
     }
 }
