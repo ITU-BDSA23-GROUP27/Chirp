@@ -78,10 +78,10 @@
                                     {
                                         <i class="fa-regular fa-heart grey"></i>
                                     }
+                                    @* <i class="fa-regular fa-heart grey @((await Model.HasUserLikedCheep(cheep.Id, User.Identity?.Name)) ? "admin-glow" : "")"></i> *@
                                 </button>
+                                <span class="reaction-count">@await Model.GetLikeCount(cheep.Id)</span>
                             </form>
-                            
-                            <span class="reaction-count">@await Model.GetLikeCount(cheep.Id)</span>
                         </div>
                         
                     </div>
