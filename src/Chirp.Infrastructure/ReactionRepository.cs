@@ -40,6 +40,23 @@ public class ReactionRepository : IReactionRepository
         return likes;
     }
 
+    public async Task<bool> HasUserLiked(Guid cheepId, string userName)
+    {
+        var user = await _context.Users.SingleOrDefaultAsync(u => u.Name == userName);
+        
+        if (user is null)
+        {
+            throw new ArgumentException("Error: User not found");
+        }
+
+        var likes = await _context.Reactions
+            .Where(r => r.ReactionType == ReactionType.Like && r.CheepId == cheepId).ToListAsync();
+
+        var hasUserLiked = likes.SingleOrDefault(l => l.UserId == user.Id) != null;
+
+        return hasUserLiked;
+    }
+
     public async Task<IEnumerable<ReactionDto>> GetCommentsFromCheep(Guid cheepId)
     {
         var comments = await _context.Reactions

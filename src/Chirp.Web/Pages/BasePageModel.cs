@@ -89,6 +89,11 @@ public class BasePageModel : PageModel
     {
         return await reactionRepository.GetLikeCount(cheepId);
     }
+
+    protected async Task<bool> HandleHasUserLikedCheep(Guid cheepId, string userName, IReactionRepository reactionRepository)
+    {
+        return await reactionRepository.HasUserLiked(cheepId, userName);
+    }
     
     protected async Task<IActionResult> HandleComment(string? comment, Guid userId, Guid cheepId, IValidator<ReactionDto> validator, IReactionRepository reactionRepository)
     {

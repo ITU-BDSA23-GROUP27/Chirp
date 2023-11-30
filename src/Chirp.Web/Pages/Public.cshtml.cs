@@ -134,6 +134,11 @@ public class PublicModel : BasePageModel
     {
         return await HandleGetLikeCount(cheepId, _reactionRepository);
     }
+
+    public async Task<bool> HasUserLikedCheep(Guid cheepId, string userName)
+    {
+        return await HandleHasUserLikedCheep(cheepId, userName, _reactionRepository);
+    }
     
     public async Task<IActionResult> OnPostAuthenticateLogin()
     {
