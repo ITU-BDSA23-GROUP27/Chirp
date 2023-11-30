@@ -3,6 +3,7 @@ using System;
 using Chirp.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CheepRepository.Migrations
 {
     [DbContext(typeof(ChirpContext))]
-    partial class ChirpDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231128134806_AddedReactions")]
+    partial class AddedReactions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.13");
@@ -38,7 +41,7 @@ namespace CheepRepository.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Cheeps", (string)null);
+                    b.ToTable("Cheeps");
                 });
 
             modelBuilder.Entity("Chirp.Infrastructure.Entities.Follower", b =>
@@ -61,7 +64,7 @@ namespace CheepRepository.Migrations
 
                     b.HasIndex("FollowerUserId");
 
-                    b.ToTable("Followers", (string)null);
+                    b.ToTable("Followers");
                 });
 
             modelBuilder.Entity("Chirp.Infrastructure.Entities.Reaction", b =>
@@ -145,7 +148,7 @@ namespace CheepRepository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -165,7 +168,7 @@ namespace CheepRepository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -185,7 +188,7 @@ namespace CheepRepository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RoleClaims", (string)null);
+                    b.ToTable("RoleClaims");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
@@ -205,7 +208,7 @@ namespace CheepRepository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserClaims", (string)null);
+                    b.ToTable("UserClaims");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
@@ -227,7 +230,7 @@ namespace CheepRepository.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("UserLogins", (string)null);
+                    b.ToTable("UserLogins");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
@@ -241,7 +244,7 @@ namespace CheepRepository.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("UserRoles", (string)null);
+                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -263,7 +266,7 @@ namespace CheepRepository.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("UserTokens", (string)null);
+                    b.ToTable("UserTokens");
                 });
 
             modelBuilder.Entity("Chirp.Infrastructure.Entities.Cheep", b =>

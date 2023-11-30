@@ -62,8 +62,10 @@ builder.Services.AddRazorPages()
 builder.Services.AddScoped<ICheepRepository, Chirp.Infrastructure.CheepRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IFollowerRepository, FollowerRepository>();
+builder.Services.AddScoped<IReactionRepository, ReactionRepository>();
 
 builder.Services.AddScoped<IValidator<CheepDto>, CheepValidator>();
+builder.Services.AddScoped<IValidator<CommentDto>, CommentValidator>();
 
 var app = builder.Build();
 

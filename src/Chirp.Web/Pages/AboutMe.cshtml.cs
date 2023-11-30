@@ -16,6 +16,7 @@ public class AboutMeModel : BasePageModel
     private readonly ICheepRepository _cheepRepository;
     private readonly IFollowerRepository _followerRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IReactionRepository _reactionRepository;
     public IEnumerable<CheepDto> Cheeps { get; set; } = new List<CheepDto>();
     public IEnumerable<UserDto> Followers { get; set; } = new List<UserDto>();
     public IEnumerable<UserDto> Followees { get; set; } = new List<UserDto>();
@@ -36,11 +37,12 @@ public class AboutMeModel : BasePageModel
     public string? GithubURL { get; set; }
     public string? Avatar { get; set; }
 
-    public AboutMeModel(ICheepRepository cheepRepository, IFollowerRepository followerRepository, IUserRepository userRepository)
+    public AboutMeModel(ICheepRepository cheepRepository, IFollowerRepository followerRepository, IUserRepository userRepository, IReactionRepository reactionRepository)
     {
         _cheepRepository = cheepRepository;
         _followerRepository = followerRepository;
         _userRepository = userRepository;
+        _reactionRepository = reactionRepository;
     }
 
     public async Task<IActionResult> OnGet()
@@ -202,6 +204,20 @@ public class AboutMeModel : BasePageModel
         Avatar = $"https://avatars.githubusercontent.com/{Username}";
 
         return true;
+    }
+    
+    public async Task<IActionResult> OnPostLikeCheep(Guid cheepId, string userName)
+    {
+        return await HandleLike(cheepId, userName, _reactionRepository);
+    }
+    public async Task<int> GetLikeCount(Guid cheepId)
+    {
+        return await HandleGetLikeCount(cheepId, _reactionRepository);
+    }
+
+    public async Task<bool> HasUserLikedCheep(Guid cheepId, string userName)
+    {
+        return await HandleHasUserLikedCheep(cheepId, userName, _reactionRepository);
     }
 
     public async Task<IActionResult> OnPostLogOut()

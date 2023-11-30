@@ -48,7 +48,7 @@ public class FollowerRepository : IFollowerRepository
     public async Task AddOrRemoveFollower(string userName, string followerName)
     {
         var user = await _context.Users.SingleOrDefaultAsync(a => a.Name == userName);
-        var follower = _context.Users.SingleOrDefault(a => a.Name == followerName);
+        var follower = await _context.Users.SingleOrDefaultAsync(a => a.Name == followerName);
         
         if (user == follower)
         {

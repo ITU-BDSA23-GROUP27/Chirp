@@ -1,5 +1,7 @@
+using System.Globalization;
 using Chirp.Core;
 using Chirp.Core.DTOs;
+using Chirp.Infrastructure.Entities;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authentication;
@@ -33,7 +35,7 @@ public class BasePageModel : PageModel
             UserName = User.Identity?.Name ?? "Anonymous"
         };
 
-        ValidationResult result = validator.Validate(cheep);
+        ValidationResult result = await validator.ValidateAsync(cheep);
 
         if (result.IsValid) await cheepRepository.CreateCheep(cheep);
         
@@ -68,6 +70,45 @@ public class BasePageModel : PageModel
         
         await followerRepository.AddOrRemoveFollower(authorName, followerName);
 
+        return await Task.FromResult<IActionResult>(RedirectToPage(""));
+    }
+
+    protected async Task<IActionResult> HandleLike(Guid cheepId, string userName, IReactionRepository reactionRepository)
+    {
+        if (userName is null)
+        {
+            throw new ArgumentNullException($"Username is null");
+        }
+        
+        await reactionRepository.LikeCheep(cheepId, userName);
+        
+        return await Task.FromResult<IActionResult>(RedirectToPage(""));
+    }
+
+    protected async Task<int> HandleGetLikeCount(Guid cheepId, IReactionRepository reactionRepository)
+    {
+        return await reactionRepository.GetLikeCount(cheepId);
+    }
+
+    protected async Task<bool> HandleHasUserLikedCheep(Guid cheepId, string userName, IReactionRepository reactionRepository)
+    {
+        return await reactionRepository.HasUserLiked(cheepId, userName);
+    }
+    
+    protected async Task<IActionResult> HandleComment(string? comment, Guid userId, Guid cheepId, IValidator<ReactionDto> validator, IReactionRepository reactionRepository)
+    {
+
+        var reactionDto = new ReactionDto()
+        {
+            UserId = userId,
+            CheepId = cheepId,
+            TimeStamp = DateTime.UtcNow.AddHours(1).ToString(CultureInfo.InvariantCulture),
+            Comment = comment?.Replace("\r\n", " ") ?? ""
+        };
+        
+        ValidationResult result = await validator.ValidateAsync(reactionDto);
+
+        if (result.IsValid) await reactionRepository.CommentOnCheep(reactionDto);
         return await Task.FromResult<IActionResult>(RedirectToPage(""));
     }
 }
