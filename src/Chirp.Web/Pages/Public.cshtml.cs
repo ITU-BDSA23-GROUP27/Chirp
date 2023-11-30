@@ -13,6 +13,7 @@ public class PublicModel : BasePageModel
     private readonly ICheepRepository _cheepRepository;
     private readonly IUserRepository _userRepository;
     private readonly IFollowerRepository _followerRepository;
+    private readonly IReactionRepository _reactionRepository;
     public IEnumerable<CheepDto> Cheeps { get; set; } = new List<CheepDto>();
     public int CurrentPage { get; set; } = 1;
     public int MaxCheepsPerPage { get; } = 32;
@@ -28,11 +29,12 @@ public class PublicModel : BasePageModel
     public string? CheepMessage { get; set; }
 
     public PublicModel(ICheepRepository cheepRepository, IUserRepository userRepository,
-                       IFollowerRepository followerRepository, IValidator<CheepDto> validator)
+                       IFollowerRepository followerRepository, IReactionRepository reactionRepository, IValidator<CheepDto> validator)
     {
         _cheepRepository = cheepRepository;
         _userRepository = userRepository;
         _followerRepository = followerRepository;
+        _reactionRepository = reactionRepository;
         _validator = validator;
     }
 
@@ -121,7 +123,20 @@ public class PublicModel : BasePageModel
         return await HandleFollow(userName, followerName, _followerRepository);
 
     }
+public async Task<IActionResult> OnPostLikeCheep(Guid cheepId, string userName)
+    {
+        return await HandleLike(cheepId, userName, _reactionRepository);
+    }
+    public async Task<int> GetLikeCount(Guid cheepId)
+    {
+        return await HandleGetLikeCount(cheepId, _reactionRepository);
+    }
 
+    public async Task<bool> HasUserLikedCheep(Guid cheepId, string userName)
+    {
+        return await HandleHasUserLikedCheep(cheepId, userName, _reactionRepository);
+    }
+    
     public async Task<IActionResult> OnPostAuthenticateLogin()
     {
         return await HandleAuthenticateLogin();

@@ -15,6 +15,7 @@ public class UserTimelineModel : BasePageModel
     private readonly ICheepRepository _cheepRepository;
     private readonly IUserRepository _userRepository;
     private readonly IFollowerRepository _followerRepository;
+    private readonly IReactionRepository _reactionRepository;
     public IEnumerable<CheepDto> Cheeps { get; set; } = new List<CheepDto>();
     public IEnumerable<UserDto> Followers { get; set; } = new List<UserDto>();
     public IEnumerable<UserDto> Followees { get; set; } = new List<UserDto>();
@@ -33,11 +34,12 @@ public class UserTimelineModel : BasePageModel
     public string? CheepMessage { get; set; }
 
     public UserTimelineModel(ICheepRepository cheepRepository, IUserRepository userRepository, 
-                             IFollowerRepository followerRepository, IValidator<CheepDto> validator)
+                             IFollowerRepository followerRepository, IReactionRepository reactionRepository, IValidator<CheepDto> validator)
     {
         _cheepRepository = cheepRepository;
         _userRepository = userRepository;
         _followerRepository = followerRepository;
+        _reactionRepository = reactionRepository;
         _validator = validator;
     }
 
@@ -162,6 +164,20 @@ public class UserTimelineModel : BasePageModel
     public async Task<IActionResult> OnPostFollow(string userName, string followerName)
     {
         return await HandleFollow(userName, followerName, _followerRepository);
+    }
+    
+    public async Task<IActionResult> OnPostLikeCheep(Guid cheepId, string userName)
+    {
+        return await HandleLike(cheepId, userName, _reactionRepository);
+    }
+    public async Task<int> GetLikeCount(Guid cheepId)
+    {
+        return await HandleGetLikeCount(cheepId, _reactionRepository);
+    }
+
+    public async Task<bool> HasUserLikedCheep(Guid cheepId, string userName)
+    {
+        return await HandleHasUserLikedCheep(cheepId, userName, _reactionRepository);
     }
     
     public async Task<IActionResult> OnPostAuthenticateLogin()
