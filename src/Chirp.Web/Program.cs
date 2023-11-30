@@ -42,7 +42,7 @@ builder.Services.AddAuthentication(options =>
     {
         // set the path for the authentication challenge
         o.LoginPath = "/signin";
-        // set the path for the sign out
+        // set the path for the sign out 
         o.LogoutPath = "/signout";
     })
     .AddGitHub(o =>
