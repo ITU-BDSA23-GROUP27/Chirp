@@ -4,11 +4,11 @@ namespace Chirp.Infrastructure.Data;
 
 public static class DbInitializer2
 {
-public static void SeedDatabase2(ChirpDbContext chirpDbContext)
+public static void SeedDatabase2(ChirpContext chirpContext)
 {
     //? This data is made for UI-Testing with Playwright
     //? New data with authors other than one self following another author
-    if (!(chirpDbContext.Users.Any() && chirpDbContext.Cheeps.Any()))
+    if (!(chirpContext.Users.Any() && chirpContext.Cheeps.Any()))
     {
         // Authors
         var a1 = new User() { Name = "PhiVaLo",  Email = "user1@chirp.com", Cheeps = new List<Cheep>() };
@@ -39,8 +39,8 @@ public static void SeedDatabase2(ChirpDbContext chirpDbContext)
             c300, c301, c302,
             c400, c401, c402 };
 
-        chirpDbContext.Users.AddRange(authors);
-        chirpDbContext.Cheeps.AddRange(cheeps);
+        chirpContext.Users.AddRange(authors);
+        chirpContext.Cheeps.AddRange(cheeps);
 
         // Followers
         var follower2 = new Follower { FollowerId = Guid.NewGuid(), FolloweeId = Guid.NewGuid(), FollowerUser = a2, FolloweeUser = a3 };
@@ -50,9 +50,9 @@ public static void SeedDatabase2(ChirpDbContext chirpDbContext)
 
         var followers = new List<Follower> { follower2, follower3, follower4, follower5 };
 
-        chirpDbContext.Followers.AddRange(followers);
+        chirpContext.Followers.AddRange(followers);
 
-        chirpDbContext.SaveChanges();
+        chirpContext.SaveChanges();
     }
 }
 

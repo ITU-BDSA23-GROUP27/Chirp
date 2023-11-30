@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CheepRepository.Migrations
 {
-    [DbContext(typeof(ChirpDbContext))]
+    [DbContext(typeof(ChirpContext))]
     partial class ChirpDBContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

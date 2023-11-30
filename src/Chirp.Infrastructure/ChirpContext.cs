@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Chirp.Infrastructure;
 
-public sealed class ChirpDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
+public sealed class ChirpContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 {
     public DbSet<Cheep> Cheeps => Set<Cheep>();
     public DbSet<Follower> Followers => Set<Follower>();
-    public ChirpDbContext(DbContextOptions<ChirpDbContext> options): base(options)
+    public ChirpContext(DbContextOptions<ChirpContext> options): base(options)
     {
     }
     

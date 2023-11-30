@@ -8,18 +8,18 @@ namespace Chirp.Infrastructure;
 
 public class CheepRepository : ICheepRepository
 {
-    private readonly ChirpDbContext dbContext;
+    private readonly ChirpContext _context;
 
     private const int PageLimit = 32;
 
-    public CheepRepository(ChirpDbContext dbContext)
+    public CheepRepository(ChirpContext context)
     {
-        this.dbContext = dbContext;
+        _context = context;
     }
     
     public async Task<IEnumerable<CheepDto>> GetCheeps()
     {
-        var cheeps = await dbContext.Cheeps
+        var cheeps = await _context.Cheeps
             .OrderByDescending(c => c.TimeStamp)
             .Select<Cheep, CheepDto>(c => new CheepDto()
         {
@@ -52,7 +52,7 @@ public class CheepRepository : ICheepRepository
     
     public async Task CreateCheep(CheepDto cheep)
     {
-        var existingUser = await dbContext.Users.SingleOrDefaultAsync(u => u.Name == cheep.UserName);
+        var existingUser = await _context.Users.SingleOrDefaultAsync(u => u.Name == cheep.UserName);
 
         if (existingUser is null)
         {
@@ -68,7 +68,7 @@ public class CheepRepository : ICheepRepository
             
         };
         
-        dbContext.Cheeps.Add(newCheep);
-        await dbContext.SaveChangesAsync();
+        _context.Cheeps.Add(newCheep);
+        await _context.SaveChangesAsync();
     }
 }

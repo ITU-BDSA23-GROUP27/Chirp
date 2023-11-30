@@ -15,11 +15,11 @@ string path = Path.Join(Path.GetTempPath(), "Chirp.db");
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
-builder.Services.AddDbContext<ChirpDbContext>(options =>
+builder.Services.AddDbContext<ChirpContext>(options =>
     options.UseSqlite(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ChirpDbContext>();
+    .AddEntityFrameworkStores<ChirpContext>();
 
 builder.Services.AddDistributedMemoryCache();
 
@@ -71,7 +71,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<ChirpDbContext>();
+    var context = services.GetRequiredService<ChirpContext>();
     context.Database.Migrate();
     DbInitializer.SeedDatabase(context);
 }

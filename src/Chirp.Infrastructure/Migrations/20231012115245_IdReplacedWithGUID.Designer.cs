@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CheepRepository.Migrations
 {
-    [DbContext(typeof(ChirpDbContext))]
+    [DbContext(typeof(ChirpContext))]
     [Migration("20231012115245_IdReplacedWithGUID")]
     partial class IdReplacedWithGUID
     {

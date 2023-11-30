@@ -20,7 +20,7 @@ public class BasePageModel : PageModel
         return await Task.FromResult<IActionResult>(Page());
     }
     
-    protected async Task<IActionResult> Cheep(string? cheepMessage, IValidator<CheepDto> validator, ICheepRepository cheepRepository)
+    protected async Task<IActionResult> Chirp(string? cheepMessage, IValidator<CheepDto> validator, ICheepRepository cheepRepository)
     {
         // TODO Refactor to a class called Utility
         // Added one hour to UTC time to match the time of Copenhagen

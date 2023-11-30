@@ -10,36 +10,36 @@ namespace Chirp.Web.Pages;
 [Authorize]
 public class SeedDbModel : BasePageModel
 {
-    private readonly ChirpDbContext dbContext;
+    private readonly ChirpContext _context;
     
-    public SeedDbModel(ChirpDbContext dbContext)
+    public SeedDbModel(ChirpContext context)
     {
-        this.dbContext = dbContext;
+        _context = context;
     }
 
     // button for seeding DbInitializer
     public async Task<IActionResult> OnPostSeedDatabase()
     {
-        await dbContext.Database.EnsureDeletedAsync();
-        await dbContext.Database.MigrateAsync();
-        DbInitializer.SeedDatabase(dbContext);
+        await _context.Database.EnsureDeletedAsync();
+        await _context.Database.MigrateAsync();
+        DbInitializer.SeedDatabase(_context);
         return RedirectToPage("/Public");
     }
 
     // button for seeding DbInitializer2 (authors with followers)
     public async Task<IActionResult> OnPostSeedDatabase2()
     {
-        await dbContext.Database.EnsureDeletedAsync();
-        await dbContext.Database.MigrateAsync();
-        DbInitializer2.SeedDatabase2(dbContext);
+        await _context.Database.EnsureDeletedAsync();
+        await _context.Database.MigrateAsync();
+        DbInitializer2.SeedDatabase2(_context);
         return RedirectToPage("/Public");
     }
     
     // button for deleting all data from database (table remains)
     public IActionResult OnPostClearDatabase()
     {
-        dbContext.Database.EnsureDeleted();
-        dbContext.Database.Migrate();
+        _context.Database.EnsureDeleted();
+        _context.Database.Migrate();
         return RedirectToPage("/Public");
     }
     
