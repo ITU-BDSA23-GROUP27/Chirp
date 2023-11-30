@@ -31,7 +31,7 @@ public class BasePageModel : PageModel
         var cheep = new CheepDto
         {
             Message = cheepMessage?.Replace("\r\n", " ") ?? "",
-            TimeStamp = currentUtcTime.ToString(CultureInfo.InvariantCulture),
+            TimeStamp = currentUtcTime.ToString(),
             UserName = User.Identity?.Name ?? "Anonymous"
         };
 
