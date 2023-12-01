@@ -179,6 +179,29 @@
                         
                     </div>
                 }
+                else 
+                {
+                    <div class="reactions-right-container">
+                        
+                        @* Replies *@
+                        <div class="reaction-item unimplemented">
+                            <button class="reaction-btn unimplemented" title="Reply">
+                                <i class="fa-regular fa-comment"></i>
+                            </button>
+                            <span class="reaction-count">0</span>
+                        </div>
+                        
+                        @* Likes *@
+                        <div class="reaction-item">
+                                <button class="reaction-btn likes-btn unimplemented" title="Like">
+                                    <i class="fa-heart fa-regular grey"></i>
+                                </button>
+                                <span class="reaction-count">@await Model.GetLikeCount(cheep.Id)</span>
+                        </div>
+                        
+                    </div>
+
+                }
             </div>
         </li>
     }
