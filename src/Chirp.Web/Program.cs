@@ -14,6 +14,7 @@ string path = Path.Join(Path.GetTempPath(), "Chirp.db");
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var dockerString = builder.Configuration.GetConnectionString("Docker");
 
 //builder.Services.AddDbContext<ChirpContext>(options => options.UseSqlite(connectionString));
 
