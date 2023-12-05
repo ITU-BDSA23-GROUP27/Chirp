@@ -28,7 +28,6 @@
                 </div>
 
                 <div class="overlay-2"></div>
-
             </div>
 
             @* Reactions *@
@@ -58,7 +57,7 @@
                 {
                     <div class="reactions-right-container">
                         
-                        @* Comments *@
+                        @* Replies *@
                         <div class="reaction-item unimplemented">
                             <button class="reaction-btn unimplemented" title="Reply">
                                 <i class="fa-regular fa-comment"></i>
@@ -72,23 +71,43 @@
                                 <button class="reaction-btn likes-btn" title="Like">
                                     @if (await Model.HasUserLikedCheep(cheep.Id, User.Identity?.Name))
                                     {
-                                        <i class="fa-regular fa-heart grey fa-solid red"></i>
+                                        <i class="fa-heart fa-solid red"></i>
                                     }
                                     else
                                     {
-                                        <i class="fa-regular fa-heart grey"></i>
+                                        <i class="fa-heart fa-regular grey"></i>
                                     }
                                 </button>
+                                <span class="reaction-count">@await Model.GetLikeCount(cheep.Id)</span>
                             </form>
-                            
-                            <span class="reaction-count">@await Model.GetLikeCount(cheep.Id)</span>
                         </div>
                         
                     </div>
+                }
+                else 
+                {
+                    <div class="reactions-right-container">
+                        
+                        @* Replies *@
+                        <div class="reaction-item unimplemented">
+                            <button class="reaction-btn unimplemented" title="Reply">
+                                <i class="fa-regular fa-comment"></i>
+                            </button>
+                            <span class="reaction-count">0</span>
+                        </div>
+                        
+                        @* Likes *@
+                        <div class="reaction-item">
+                                <button class="reaction-btn likes-btn unimplemented" title="Like">
+                                    <i class="fa-heart fa-regular grey"></i>
+                                </button>
+                                <span class="reaction-count">@await Model.GetLikeCount(cheep.Id)</span>
+                        </div>
+                        
+                    </div>
+
                 }
             </div>
         </li>
     }
 </ul>
-
-<script src="/js/cheepContext.js"></script>

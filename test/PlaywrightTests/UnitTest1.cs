@@ -44,7 +44,7 @@ namespace PlaywrightTests
         private async Task ScrollDown(IPage page)
         {
             await Task.Delay(2000);
-            await page.EvaluateAsync("window.scrollBy(0, 500)");
+            await page.EvaluateAsync("window.scrollBy({ top: 3500, behavior: 'smooth' })");
             await Task.Delay(2000);
         }
 
@@ -57,12 +57,11 @@ namespace PlaywrightTests
             await Task.Delay(2000);
         }
 
-
         [Test]
         public async Task LoginAndSeedDbInitializer2AndFollowUnfollowUsersAndCheckUserTimeline()
         {
-            // Go to localhost 
-            await page.GotoAsync("http://localhost:5273/"); await Task.Delay(1000);
+            // Go to localhost
+            await page.GotoAsync("http://localhost:5273/"); await Task.Delay(100000);
             Assert.IsTrue(await page.Locator("text='Sign in'").IsVisibleAsync());
             Assert.IsFalse(await page.Locator("text='Sign out'").IsVisibleAsync());
             Assert.IsFalse(await page.Locator("text='About me'").IsVisibleAsync());
@@ -83,8 +82,6 @@ namespace PlaywrightTests
             Assert.IsTrue(await page.Locator("textarea").IsVisibleAsync(), "Textarea should be visible on the page");
 
             // Seed new test data with other user following another different user 
-            //      User (B) follows User (C) and (D), User (C) follows User (D) 
-            // await page.GetByPlaceholder("Write your cheep here!").ClickAsync();                                         await Task.Delay(2000);
             await page.Locator("textarea").ClickAsync();                                                                await Task.Delay(2000);
             await page.Locator("textarea").FillAsync("I will reset and seed new test data");     await Task.Delay(2000);
             await page.GetByRole(AriaRole.Link, new() { Name = "Seed DB" }).ClickAsync();                               await Task.Delay(2000);
@@ -102,7 +99,7 @@ namespace PlaywrightTests
             await page.Locator("li").Filter(new() { HasText = "Chirp27" }).GetByRole(AriaRole.Button).First.ClickAsync();   
 
             // Go into my UserTimeline - both of these users cheeps should appear in my user-timeline
-            await DisplayMessage(page, "Navigate to: User timeline");
+            await DisplayMessage(page, "Navigate to User timeline");
             await page.GetByText("User Timeline").ClickAsync(); 
             await DisplayMessage(page, "I should see all my followers cheeps + my cheeps");
             await ScrollDown(page);
@@ -117,13 +114,10 @@ namespace PlaywrightTests
             Assert.IsFalse(await page.Locator("text='Happy'").IsVisibleAsync());
 
             // Go to my timeline of user (B) - his timelime should not display his followers cheeps
-            await DisplayMessage(page, "Navigate to: Chirp27's timeline");
-            // await page.Locator("li:has-text('Chirp27')").First.Locator("#user").ClickAsync(); 
+            await DisplayMessage(page, "Navigate to Chirp27's timeline");
             await page.Locator("#followers").GetByRole(AriaRole.Link, new() { Name = "Chirp27" }).ClickAsync();
             await DisplayMessage(page, "I should only be able to see Chirp27's cheeps");
             await ScrollDown(page);
-            // Assert.IsFalse(await page.Locator("text='Happy'").IsVisibleAsync());
-            // Assert.IsFalse(await page.Locator("text='Smiley'").IsVisibleAsync());
             Assert.IsFalse(await page.Locator("text='Happy'").CountAsync() > 1, "User not found");
             Assert.IsFalse(await page.Locator("text='Smiley'").CountAsync() > 1, "User not found");
 
@@ -133,7 +127,7 @@ namespace PlaywrightTests
             await page.GetByRole(AriaRole.Button, new() { Name = "Unfollow" }).First.ClickAsync(); 
 
             // Go to my timeline
-            await DisplayMessage(page, "Navigate to: User timeline");
+            await DisplayMessage(page, "Navigate to User timeline");
             await page.GetByText("User Timeline").ClickAsync(); await Task.Delay(2000);
             await DisplayMessage(page, "My timeline should only consists of my own cheeps now");
             await ScrollDown(page);
@@ -143,7 +137,7 @@ namespace PlaywrightTests
             Assert.IsFalse(await page.Locator("text='Unfollow'").IsVisibleAsync());
 
             // Go to About me
-            await DisplayMessage(page, "Navigate to: About me, and delete my account");
+            await DisplayMessage(page, "Navigate to About me, then delete my account");
             await page.GetByRole(AriaRole.Link, new() { Name = "About me" }).ClickAsync();                  await Task.Delay(3000);
 
             // // Forget me
