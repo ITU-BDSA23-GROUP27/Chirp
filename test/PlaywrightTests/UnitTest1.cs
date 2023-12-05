@@ -61,7 +61,7 @@ namespace PlaywrightTests
         public async Task LoginAndSeedDbInitializer2AndFollowUnfollowUsersAndCheckUserTimeline()
         {
             // Go to localhost
-            await page.GotoAsync("http://localhost:5273/"); await Task.Delay(100000);
+            await page.GotoAsync("http://localhost:5273/"); await Task.Delay(1000);
             Assert.IsTrue(await page.Locator("text='Sign in'").IsVisibleAsync());
             Assert.IsFalse(await page.Locator("text='Sign out'").IsVisibleAsync());
             Assert.IsFalse(await page.Locator("text='About me'").IsVisibleAsync());
@@ -83,13 +83,13 @@ namespace PlaywrightTests
 
             // Seed new test data with other user following another different user 
             await page.Locator("textarea").ClickAsync();                                                                await Task.Delay(2000);
-            await page.Locator("textarea").FillAsync("I will reset and seed new test data");     await Task.Delay(2000);
+            await page.Locator("textarea").FillAsync("I will reset and seed new test data");                            await Task.Delay(2000);
             await page.GetByRole(AriaRole.Link, new() { Name = "Seed DB" }).ClickAsync();                               await Task.Delay(2000);
             await page.GetByRole(AriaRole.Button, new() { Name = "Seed DB2" }).ClickAsync();                            await Task.Delay(2000);
 
             await page.GetByPlaceholder("Write your cheep here!").ClickAsync();                                         await Task.Delay(2000);
             await page.GetByPlaceholder("Write your cheep here!").FillAsync("🎉 Playwright test 🎉");                  await Task.Delay(2000);
-            await page.GetByRole(AriaRole.Button, new() { Name = "Chirp!" }).ClickAsync();                              await Task.Delay(2000);
+            await page.GetByRole(AriaRole.Button, new() { Name = "Cheep!" }).ClickAsync();                              await Task.Delay(2000);
 
             // I follow two different users (B, C)
             await DisplayMessage(page, "I will follow Happy");
