@@ -13,13 +13,12 @@ var builder = WebApplication.CreateBuilder(args);
 string path = Path.Join(Path.GetTempPath(), "Chirp.db");
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-var dockerString = builder.Configuration.GetConnectionString("Docker");
+var connectionString = builder.Configuration.GetConnectionString("AzureDatabase") ?? throw new InvalidOperationException("Connection string was not found.");
 
 //builder.Services.AddDbContext<ChirpContext>(options => options.UseSqlite(connectionString));
 
 builder.Services.AddDbContext<ChirpContext>(options => 
-    options.UseSqlServer(dockerString, setting => 
+    options.UseSqlServer(connectionString, setting => 
         setting.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
