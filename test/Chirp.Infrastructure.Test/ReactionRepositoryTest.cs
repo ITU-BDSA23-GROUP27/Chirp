@@ -59,7 +59,24 @@ public class ReactionRepositoryTest
     [Fact]
     public async Task LikeCheep_SuccessOnUnlike()
     {
+        // Arrange
+        var user = new UserDto { Name = "Leo", Email = "leo@gmail.com"};
+        await _userRepository.CreateUser(user);
+    
+        var cheep = new CheepDto { Message = "Hello World", UserName = user.Name, TimeStamp = DateTime.Now.ToString() };
+        await _cheepRepository.CreateCheep(cheep);
         
+        // Act
+        await _reactionRepository.LikeCheep(cheep.Id, user.Name); // Like
+        await _reactionRepository.LikeCheep(cheep.Id, user.Name); // Then unlike
+        
+        // Assert
+        var like = await _context.Reactions.SingleOrDefaultAsync(r => 
+            r.UserId == user.Id && 
+            r.CheepId == cheep.Id &&
+            r.ReactionType == ReactionType.Like);
+        
+        Assert.Null(like);
     }
 
     [Fact]
