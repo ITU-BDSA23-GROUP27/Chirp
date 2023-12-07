@@ -54,9 +54,17 @@ namespace Chirp.Infrastructure.Migrations
                     b.Property<Guid>("FolloweeId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("FolloweeUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("FollowerUserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("FollowerId", "FolloweeId");
 
-                    b.HasIndex("FolloweeId");
+                    b.HasIndex("FolloweeUserId");
+
+                    b.HasIndex("FollowerUserId");
 
                     b.ToTable("Followers");
                 });
@@ -282,14 +290,14 @@ namespace Chirp.Infrastructure.Migrations
                 {
                     b.HasOne("Chirp.Infrastructure.Entities.User", "FolloweeUser")
                         .WithMany()
-                        .HasForeignKey("FolloweeId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("FolloweeUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Chirp.Infrastructure.Entities.User", "FollowerUser")
                         .WithMany()
-                        .HasForeignKey("FollowerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("FollowerUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("FolloweeUser");

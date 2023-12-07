@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chirp.Infrastructure.Migrations
 {
     [DbContext(typeof(ChirpContext))]
-    [Migration("20231207132650_Initial")]
-    partial class Initial
+    [Migration("20231207152549_Initial2")]
+    partial class Initial2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,9 +57,17 @@ namespace Chirp.Infrastructure.Migrations
                     b.Property<Guid>("FolloweeId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("FolloweeUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("FollowerUserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("FollowerId", "FolloweeId");
 
-                    b.HasIndex("FolloweeId");
+                    b.HasIndex("FolloweeUserId");
+
+                    b.HasIndex("FollowerUserId");
 
                     b.ToTable("Followers");
                 });
@@ -285,14 +293,14 @@ namespace Chirp.Infrastructure.Migrations
                 {
                     b.HasOne("Chirp.Infrastructure.Entities.User", "FolloweeUser")
                         .WithMany()
-                        .HasForeignKey("FolloweeId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("FolloweeUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Chirp.Infrastructure.Entities.User", "FollowerUser")
                         .WithMany()
-                        .HasForeignKey("FollowerId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasForeignKey("FollowerUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("FolloweeUser");
