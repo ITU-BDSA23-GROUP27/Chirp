@@ -91,16 +91,15 @@ public class ReactionRepositoryTest
         // Arrange - Create users and cheep
         var user1 = new UserDto { Name = "Uno", Email = "uno@gmail.com"};
         await _userRepository.CreateUser(user1);
-        
         var user2 = new UserDto { Name = "Dos", Email = "dos@gmail.com"};
         await _userRepository.CreateUser(user2);
     
         var cheep = new CheepDto { Message = "Hello World", UserName = user1.Name, TimeStamp = DateTime.Now.ToString() };
         await _cheepRepository.CreateCheep(cheep);
         
-        // Act - Add likes
         var foundCheep = await _context.Cheeps.SingleAsync(c => c.Text == cheep.Message && c.User.Name == cheep.UserName);
         
+        // Act - Add likes
         await _reactionRepository.LikeCheep(foundCheep.CheepId, user1.Name); // Like
         await _reactionRepository.LikeCheep(foundCheep.CheepId, user2.Name); // Then unlike
         
@@ -138,9 +137,31 @@ public class ReactionRepositoryTest
     }
     
     [Fact]
-    public async Task HasUserLiked_ReturnsTrueIfUserHasLiked()
+    public async Task HasUserLiked_ReturnsTrueOrFalse()
     {
+        // Arrange
+        var user1 = new UserDto { Name = "Cheep", Email = "cheep@gmail.com"};
+        await _userRepository.CreateUser(user1);
         
+        var user2 = new UserDto { Name = "Chirp", Email = "chirp@gmail.com"};
+        await _userRepository.CreateUser(user2);
+    
+        var cheep = new CheepDto { Message = "Hello World", UserName = user1.Name, TimeStamp = DateTime.Now.ToString() };
+        await _cheepRepository.CreateCheep(cheep);
+        
+        var foundCheep = await _context.Cheeps.SingleAsync(c => c.Text == cheep.Message && c.User.Name == cheep.UserName);
+        var foundUser1 = await _context.Users.SingleAsync(u => u.Name == user1.Name);
+        var foundUser2 = await _context.Users.SingleAsync(u => u.Name == user2.Name);
+        
+        // Act
+        await _reactionRepository.LikeCheep(foundCheep.CheepId, user1.Name);
+        
+        // Assert
+        var hasUser1Liked = await _reactionRepository.HasUserLiked(foundCheep.CheepId, user1.Name);
+        var hasUser2Liked = await _reactionRepository.HasUserLiked(foundCheep.CheepId, user2.Name);
+        
+        Assert.True(hasUser1Liked);
+        Assert.False(hasUser2Liked);
     }
     
 }
