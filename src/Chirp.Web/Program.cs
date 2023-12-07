@@ -79,7 +79,7 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ChirpContext>();
     context.Database.Migrate();
-    DbInitializer.SeedDatabase(context);
+    //DbInitializer.SeedDatabase(context);
 }
 
 // Configure the HTTP request pipeline.
