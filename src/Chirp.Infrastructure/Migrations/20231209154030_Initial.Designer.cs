@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chirp.Infrastructure.Migrations
 {
     [DbContext(typeof(ChirpContext))]
-    [Migration("20231207152549_Initial2")]
-    partial class Initial2
+    [Migration("20231209154030_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,17 +57,9 @@ namespace Chirp.Infrastructure.Migrations
                     b.Property<Guid>("FolloweeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("FolloweeUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("FollowerUserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("FollowerId", "FolloweeId");
 
-                    b.HasIndex("FolloweeUserId");
-
-                    b.HasIndex("FollowerUserId");
+                    b.HasIndex("FolloweeId");
 
                     b.ToTable("Followers");
                 });
@@ -293,14 +285,14 @@ namespace Chirp.Infrastructure.Migrations
                 {
                     b.HasOne("Chirp.Infrastructure.Entities.User", "FolloweeUser")
                         .WithMany()
-                        .HasForeignKey("FolloweeUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("FolloweeId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Chirp.Infrastructure.Entities.User", "FollowerUser")
                         .WithMany()
-                        .HasForeignKey("FollowerUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("FollowerId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("FolloweeUser");
@@ -313,13 +305,13 @@ namespace Chirp.Infrastructure.Migrations
                     b.HasOne("Chirp.Infrastructure.Entities.Cheep", "Cheep")
                         .WithMany()
                         .HasForeignKey("CheepId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Chirp.Infrastructure.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Cheep");
