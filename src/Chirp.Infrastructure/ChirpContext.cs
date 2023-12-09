@@ -25,6 +25,30 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
     
     modelBuilder.Entity<Follower>().HasKey(f => new {f.FollowerId, f.FolloweeId});
     
+    modelBuilder.Entity<Follower>()
+        .HasOne(f => f.FollowerUser)
+        .WithMany()
+        .HasForeignKey(f => f.FollowerId)
+        .OnDelete(DeleteBehavior.Restrict);  
+
+    modelBuilder.Entity<Follower>()
+        .HasOne(f => f.FolloweeUser)
+        .WithMany()
+        .HasForeignKey(f => f.FolloweeId)
+        .OnDelete(DeleteBehavior.Restrict);     
+    
+    modelBuilder.Entity<Reaction>()
+        .HasOne(r => r.Cheep)
+        .WithMany()
+        .HasForeignKey(r => r.CheepId)
+        .OnDelete(DeleteBehavior.Restrict);
+    
+    modelBuilder.Entity<Reaction>()
+        .HasOne(r => r.User)
+        .WithMany()
+        .HasForeignKey(r => r.UserId)
+        .OnDelete(DeleteBehavior.Restrict);
+    
     modelBuilder.Entity<Reaction>().HasKey(r => new {r.UserId, r.CheepId, r.ReactionType, r.ReactionContent});
     modelBuilder.Entity<Reaction>().Property(r => r.ReactionContent).HasMaxLength(160);
     
