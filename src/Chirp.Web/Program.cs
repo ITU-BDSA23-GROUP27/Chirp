@@ -10,12 +10,17 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-string path = Path.Join(Path.GetTempPath(), "Chirp.db");
-
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("NewConnectionString") ?? throw new InvalidOperationException("Connection string was not found.");
+string connectionString;
 
-//builder.Services.AddDbContext<ChirpContext>(options => options.UseSqlite(connectionString));
+if (builder.Environment.IsDevelopment())
+{
+    connectionString = builder.Configuration.GetConnectionString("Docker") ?? throw new InvalidOperationException("Connection string was not found.");
+}
+else
+{
+    connectionString = builder.Configuration.GetConnectionString("NewConnectionString") ?? throw new InvalidOperationException("Connection string was not found.");
+}
 
 builder.Services.AddDbContext<ChirpContext>(options => 
     options.UseSqlServer(connectionString, setting => 
