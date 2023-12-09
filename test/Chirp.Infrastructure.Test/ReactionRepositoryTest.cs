@@ -163,5 +163,90 @@ public class ReactionRepositoryTest
         Assert.True(hasUser1Liked);
         Assert.False(hasUser2Liked);
     }
+
+    [Fact]
+    public async Task CommentOnCheep_Success()
+    {
+        // Arrange
+        var user = new UserDto { Name = "Cole", Email = "cole@gmail.com"};
+        await _userRepository.CreateUser(user);
+        
+        var cheep = new CheepDto { Message = "Hello World", UserName = user.Name, TimeStamp = DateTime.Now.ToString() };
+        await _cheepRepository.CreateCheep(cheep);
+        
+        var foundCheep = await _context.Cheeps.SingleAsync(c => c.Text == cheep.Message && c.User.Name == cheep.UserName);
+        var foundUser = await _context.Users.SingleAsync(u => u.Name == user.Name);
+        
+        var comment = new ReactionDto
+        {
+            CheepId = foundCheep.CheepId,
+            UserId = foundUser.Id,
+            Comment = "This is a comment",
+            TimeStamp = DateTime.Now.ToString()
+        };
+        
+        // Act
+        await _reactionRepository.CommentOnCheep(comment);
+        
+        // Assert
+        var commentDb = await _context.Reactions.SingleAsync(r => 
+            r.UserId == foundUser.Id && 
+            r.CheepId == foundCheep.CheepId &&
+            r.ReactionType == ReactionType.Comment &&
+            r.ReactionContent == "This is a comment");
+
+        Assert.NotNull(commentDb);
+        Assert.Equal(comment.Comment, commentDb.ReactionContent);
+    }
+    
+    [Fact]
+    public async Task GetCommentsFromCheep_ReturnsComments()
+    {
+        // Arrange
+        var user1 = new UserDto { Name = "Mikael", Email = "mikael@gmail.com"};
+        await _userRepository.CreateUser(user1);
+        var user2 = new UserDto { Name = "Klaus", Email = "klaus@gmail.com"};
+        await _userRepository.CreateUser(user2);
+        
+        var cheep = new CheepDto { Message = "Hello World", UserName = user1.Name, TimeStamp = DateTime.Now.ToString() };
+        await _cheepRepository.CreateCheep(cheep);
+        
+        var foundCheep = await _context.Cheeps.SingleAsync(c => c.Text == cheep.Message && c.User.Name == cheep.UserName);
+        var foundUser1 = await _context.Users.SingleAsync(u => u.Name == user1.Name);
+        var foundUser2 = await _context.Users.SingleAsync(u => u.Name == user2.Name);
+        
+        var comment1 = new ReactionDto
+        {
+            CheepId = foundCheep.CheepId,
+            UserId = foundUser1.Id,
+            Comment = "This is a comment",
+            TimeStamp = DateTime.Now.ToString()
+        };
+        
+        var comment2 = new ReactionDto
+        {
+            CheepId = foundCheep.CheepId,
+            UserId = foundUser2.Id,
+            Comment = "This is also a comment",
+            TimeStamp = DateTime.Now.ToString()
+        };
+        
+        // Act
+        await _reactionRepository.CommentOnCheep(comment1);
+        await _reactionRepository.CommentOnCheep(comment2);
+        
+        // Assert
+        var first = _context.Reactions.SingleOrDefaultAsync(c =>
+            c.UserId == foundUser1.Id && c.CheepId == foundCheep.CheepId && c.ReactionContent == comment1.Comment);
+        var second = _context.Reactions.SingleOrDefaultAsync(c =>
+            c.UserId == foundUser2.Id && c.CheepId == foundCheep.CheepId && c.ReactionContent == comment2.Comment);
+        Assert.NotNull(first);
+        Assert.NotNull(second);
+
+        var comments = (await _reactionRepository.GetCommentsFromCheep(foundCheep.CheepId)).ToList();
+        Assert.Equal(2, comments.Count);
+        Assert.Contains(comments, c => c.UserId == foundUser1.Id && c.CheepId == foundCheep.CheepId && c.Comment == comment1.Comment);
+        Assert.Contains(comments, c => c.UserId == foundUser2.Id && c.CheepId == foundCheep.CheepId && c.Comment == comment2.Comment);
+    }
     
 }
