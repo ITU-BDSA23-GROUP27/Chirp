@@ -70,6 +70,11 @@ public class UserTimelineModel : BasePageModel
                 //TODO Problem: Can't find github authors in http since it makes it lowercase e.g. "/Tien197" -> "/tien197"   
                 var existingUser = await _userRepository.GetUserByName(user);
                 
+                if (existingUser is null)
+                {
+                    throw new ArgumentException("Author does not exist: ", nameof(user));
+                }
+                
                 // show cheeps of user
             }
             catch (ArgumentException)
