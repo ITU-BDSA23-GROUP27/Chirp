@@ -21,8 +21,8 @@ public class BasePageModel : PageModel
 
         return await Task.FromResult<IActionResult>(Page());
     }
-    
-    protected async Task<IActionResult> Cheep(string? cheepMessage, IValidator<CheepDto> validator, ICheepRepository cheepRepository)
+
+    public async Task<IActionResult> Cheep(string? cheepMessage, IValidator<CheepDto> validator, ICheepRepository cheepRepository)
     {
         // TODO Refactor to a class called Utility
         // Added one hour to UTC time to match the time of Copenhagen
@@ -56,8 +56,8 @@ public class BasePageModel : PageModel
         await HttpContext.SignOutAsync();
         return await Task.FromResult<IActionResult>(RedirectToPage("Public"));
     }
-    
-    protected async Task<IActionResult> HandleFollow(string authorName, string followerName, IFollowerRepository followerRepository)
+
+    public async Task<IActionResult> HandleFollow(string authorName, string followerName, IFollowerRepository followerRepository)
     {
         if (authorName is null)
         {
@@ -73,7 +73,7 @@ public class BasePageModel : PageModel
         return await Task.FromResult<IActionResult>(RedirectToPage(""));
     }
 
-    protected async Task<IActionResult> HandleLike(Guid cheepId, string userName, IReactionRepository reactionRepository)
+    public async Task<IActionResult> HandleLike(Guid cheepId, string userName, IReactionRepository reactionRepository)
     {
         if (userName is null)
         {
@@ -85,12 +85,12 @@ public class BasePageModel : PageModel
         return await Task.FromResult<IActionResult>(RedirectToPage(""));
     }
 
-    protected async Task<int> HandleGetLikeCount(Guid cheepId, IReactionRepository reactionRepository)
+    public async Task<int> HandleGetLikeCount(Guid cheepId, IReactionRepository reactionRepository)
     {
         return await reactionRepository.GetLikeCount(cheepId);
     }
 
-    protected async Task<bool> HandleHasUserLikedCheep(Guid cheepId, string userName, IReactionRepository reactionRepository)
+    public async Task<bool> HandleHasUserLikedCheep(Guid cheepId, string userName, IReactionRepository reactionRepository)
     {
         return await reactionRepository.HasUserLiked(cheepId, userName);
     }
