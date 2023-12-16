@@ -1,0 +1,29 @@
+@*! Follower and Followee names are reversed... *@
+
+<div class="followers-container">
+    <!-- Your Followers -->
+    <div class="column">
+        <h3 class="toggle" onclick="toggleSection('followers')">
+            Following <span id="followersIcon">&#9650;</span>
+        </h3>
+        <div class="followersDiv" id="followers">
+            @foreach (var follower in Model.Followers)
+            {
+                <p><a class="follow-link" href="/@follower.Name">@follower.Name</a></p>
+            }
+        </div>
+    </div>
+
+    <!-- Your Followees -->
+    <div class="column">
+        <h3 class="toggle" onclick="toggleSection('followees')">
+            Followers <span id="followeesIcon">&#9650;</span>
+        </h3>
+        <div class="" id="followees">
+            @foreach (var followee in Model.Followees)
+            {
+                <p><a class="follow-link" href="/@followee.Name">@followee.Name</a></p>
+            }
+        </div>
+    </div>
+</div>

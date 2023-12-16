@@ -9,10 +9,11 @@ namespace Chirp.Web.Pages;
 public class PublicModel : BasePageModel
 {
     private IValidator<CheepDto> _validator;
-    
+
     private readonly ICheepRepository _cheepRepository;
-    private readonly IAuthorRepository _authorRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IFollowerRepository _followerRepository;
+    private readonly IReactionRepository _reactionRepository;
     public IEnumerable<CheepDto> Cheeps { get; set; } = new List<CheepDto>();
     public int CurrentPage { get; set; } = 1;
     public int MaxCheepsPerPage { get; } = 32;
@@ -23,15 +24,17 @@ public class PublicModel : BasePageModel
     public int CheepMaxLength { get; set; } = 160;
     public Dictionary<string, bool> FollowStatus { get; set; } = new Dictionary<string, bool>();
 
-    
+
     [BindProperty, StringLength(160), Required]
     public string? CheepMessage { get; set; }
 
-    public PublicModel(ICheepRepository cheepRepository, IAuthorRepository authorRepository, IFollowerRepository followerRepository, IValidator<CheepDto> validator)
+    public PublicModel(ICheepRepository cheepRepository, IUserRepository userRepository,
+                       IFollowerRepository followerRepository, IReactionRepository reactionRepository, IValidator<CheepDto> validator)
     {
         _cheepRepository = cheepRepository;
-        _authorRepository = authorRepository;
+        _userRepository = userRepository;
         _followerRepository = followerRepository;
+        _reactionRepository = reactionRepository;
         _validator = validator;
     }
 
@@ -41,32 +44,32 @@ public class PublicModel : BasePageModel
         {
             try
             {
-                var author = new AuthorDto
+                var newUser = new UserDto
                 {
-                    Name = User.Identity.Name, //Might need to be changed to use only User.Identity (Does not work until users are implemented)
-                    Email = User.Identity.Name + "@chirp.com" //TODO: Needs to be removed
+                    Name = User.Identity?.Name ?? "Unknown", // Use null conditional operator with null coalescing operator
+                    Email = (User.Identity?.Name ?? "Unknown") + "@chirp.com" // Use null conditional operator with null coalescing operator
                 };
 
-                await _authorRepository.CreateAuthor(author);
+                await _userRepository.CreateUser(newUser);
             }
             catch (ArgumentException ex)
             {
                 Console.WriteLine(ex.Message);
             }
         }
-        
+
         Cheeps = await _cheepRepository.GetCheepsFromPage(CurrentPage);
-        
-        // Set follow status for each cheep author
+
+        // Set follow status for each cheep user
         if (User.Identity?.IsAuthenticated == true)
         {
             foreach (var cheep in Cheeps)
             {
-                var authorName = cheep.AuthorName;
-                var followersFromAuthor = await _followerRepository.GetFollowersFromAuthor(authorName);
-                var isFollowing = followersFromAuthor.Any(follower => follower.Name == User.Identity.Name);
+                var userName = cheep.UserName;
+                var followersFromUser = await _followerRepository.GetFollowersFromUser(userName);
+                var isFollowing = followersFromUser.Any(follower => follower.Name == User.Identity.Name);
 
-                FollowStatus[authorName] = isFollowing;
+                FollowStatus[userName] = isFollowing;
             }
         }
 
@@ -78,24 +81,19 @@ public class PublicModel : BasePageModel
 
         Cheeps = await _cheepRepository.GetCheepsFromPage(CurrentPage);
 
-        if (await GetTotalPages() == 0)
-        {
-            TotalPageCount = 1;    
-        } else {
-            TotalPageCount = await GetTotalPages();
-        }
-        CalculatePagination();
+        TotalPageCount = await GetTotalPages() == 0 ? 1 : await GetTotalPages();
+        await CalculatePagination();        
 
         return Page();
     }
-    
+
     public async Task<int> GetTotalPages()
     {
         int totalCheeps = (await _cheepRepository.GetCheeps()).Count();
         return (int)Math.Ceiling((double)totalCheeps / MaxCheepsPerPage);
     }
 
-    private void CalculatePagination()
+    public Task CalculatePagination()
     {
         StartPage = Math.Max(1, CurrentPage - DisplayRange / 2);
         EndPage = Math.Min(TotalPageCount, StartPage + DisplayRange - 1);
@@ -111,17 +109,32 @@ public class PublicModel : BasePageModel
                 EndPage = Math.Min(TotalPageCount, StartPage + DisplayRange - 1);
             }
         }
+
+        return Task.CompletedTask;
     }
-    
-    public async Task<IActionResult> OnPostChirp()
-    {
-        return await Chirp(CheepMessage, _validator, _cheepRepository);
-    }    
 
-    public async Task<IActionResult> OnPostFollow(string authorName, string followerName)
+    public async Task<IActionResult> OnPostCheep()
     {
-        return await HandleFollow(authorName, followerName, _followerRepository);
+        return await Cheep(CheepMessage, _validator, _cheepRepository);
+    }
 
+    public async Task<IActionResult> OnPostFollow(string userName, string followerName)
+    {
+        return await HandleFollow(userName, followerName, _followerRepository);
+
+    }
+public async Task<IActionResult> OnPostLikeCheep(Guid cheepId, string userName)
+    {
+        return await HandleLike(cheepId, userName, _reactionRepository);
+    }
+    public async Task<int> GetLikeCount(Guid cheepId)
+    {
+        return await HandleGetLikeCount(cheepId, _reactionRepository);
+    }
+
+    public async Task<bool> HasUserLikedCheep(Guid cheepId, string userName)
+    {
+        return await HandleHasUserLikedCheep(cheepId, userName, _reactionRepository);
     }
     
     public async Task<IActionResult> OnPostAuthenticateLogin()

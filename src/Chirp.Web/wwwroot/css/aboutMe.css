@@ -1,0 +1,31 @@
+.followers-container {
+    display: flex;
+    justify-content: space-between;
+    justify-content: start;
+    gap: 3rem;
+}
+
+hr {
+    border: 1px solid #e6e6e6;
+    margin: 1rem 0;
+}
+
+.toggle {
+    cursor: pointer;
+    transition: color 0.15s ease-in-out;
+}
+
+.follow-link {
+    color: rgb(181, 95, 215);
+    cursor: pointer;
+    text-decoration: none;
+    text-shadow: 0 1px 0 #ffffff80;
+    transition: color 0.15s ease-in-out;
+}
+
+.toggle:hover {
+    color: #007cc9;
+}
+.follow-link:hover {
+    color: #00931d
+}

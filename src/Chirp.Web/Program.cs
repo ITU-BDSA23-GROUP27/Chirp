@@ -3,26 +3,32 @@ using Chirp.Core.DTOs;
 using Chirp.Infrastructure;
 using Chirp.Infrastructure.Data;
 using Chirp.Infrastructure.Entities;
-using Chirp.Web.Data;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.CookiePolicy;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-string path = Path.Join(Path.GetTempPath(), "Chirp.db");
-
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+string connectionString;
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlite(connectionString));
+if (builder.Environment.IsDevelopment())
+{
+    connectionString = builder.Configuration.GetConnectionString("Docker") ?? throw new InvalidOperationException("Connection string was not found.");
+}
+else
+{
+    connectionString = builder.Configuration.GetConnectionString("NewConnectionString") ?? throw new InvalidOperationException("Connection string was not found.");
+}
+
+builder.Services.AddDbContext<ChirpContext>(options => 
+    options.UseSqlServer(connectionString, setting => 
+        setting.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ChirpContext>();
 
 builder.Services.AddDistributedMemoryCache();
 
@@ -45,23 +51,30 @@ builder.Services.AddAuthentication(options =>
     {
         // set the path for the authentication challenge
         o.LoginPath = "/signin";
-        // set the path for the sign out
+        // set the path for the sign out 
         o.LogoutPath = "/signout";
     })
     .AddGitHub(o =>
     {
-        o.ClientId = builder.Configuration["authentication:github:clientId"] ?? throw new InvalidOperationException("GitHub Client ID not found.");
-        o.ClientSecret = builder.Configuration["authentication:github:clientSecret"] ?? throw new InvalidOperationException("GitHub Client Secret not found.");
+        o.ClientId = builder.Configuration["authentication_github_clientId"] ?? throw new InvalidOperationException("GitHub Client ID not found.");
+        o.ClientSecret = builder.Configuration["authentication_github_clientSecret"] ?? throw new InvalidOperationException("GitHub Client Secret not found.");
         o.CallbackPath = "/signin-github";
     });
 
-builder.Services.AddRazorPages();
-builder.Services.AddDbContext<ChirpContext>(options => options.UseSqlite($"Data Source={path}"));
+builder.Services.AddRazorPages()
+        .AddRazorPagesOptions(options =>
+        {
+            options.Conventions.AuthorizePage("/AboutMe");
+            options.Conventions.AuthorizePage("/SeedDb");
+        });
+        
 builder.Services.AddScoped<ICheepRepository, Chirp.Infrastructure.CheepRepository>();
-builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IFollowerRepository, FollowerRepository>();
+builder.Services.AddScoped<IReactionRepository, ReactionRepository>();
 
 builder.Services.AddScoped<IValidator<CheepDto>, CheepValidator>();
+builder.Services.AddScoped<IValidator<CommentDto>, CommentValidator>();
 
 var app = builder.Build();
 
@@ -73,7 +86,6 @@ using (var scope = app.Services.CreateScope())
     context.Database.Migrate();
     DbInitializer.SeedDatabase(context);
 }
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

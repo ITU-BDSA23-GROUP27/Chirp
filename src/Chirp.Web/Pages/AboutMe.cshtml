@@ -1,0 +1,103 @@
+﻿@page
+@model Chirp.Web.Pages.AboutMeModel
+@{
+}
+
+@{
+    if (!User.Identity?.IsAuthenticated == true)
+    {
+        RedirectToPage("/");
+    }
+}
+
+@* 
+@foreach (var claim in User.Claims)
+{
+    <p>@claim.Type: <span style="color: crimson">@claim.Value<span/></p>
+} 
+*@
+
+<h2>About Me</h2>
+
+<div class="user-info">
+    <img src=@Model.Avatar class="claim-img" alt="1">
+    <p>
+        <span class="label">ID:</span> 
+        <span class="">@Model.ID<span/>
+    </p>
+    <p>
+        <span class="label">Username:</span> 
+        <span class="">@Model.Username<span/>
+    <p>
+        <span class="label">Name:</span> 
+        <span class="">@Model.Name<span/>
+    </p>
+    <p>
+        <span class="label">Email:</span> 
+        <span class="">@Model.Email<span/>
+    </p>
+    <p>
+        <span class="label">GitHub URL:</span> 
+        <a href="@Model.GithubURL" target="_blank">@Model.GithubURL</a>
+    </p>
+</div>
+
+<hr/>
+
+<!-- Followers -->
+<partial name="Partials/_FollowersTracker" model="Model"/>
+
+<hr/>
+
+<!-- My Cheeps -->
+<h3 class="toggle" onclick="toggleSection('myCheeps')">
+    My Cheeps: <span id="myCheepsIcon">&#9650;</span>
+</h3>
+<div class="" id="myCheeps">
+    @if (Model.Cheeps.Any())
+    {
+        <partial name="Partials/_CheepContext" model="Model"/>
+        <partial name="Partials/_Pagination" model="Model"/>
+    }
+    else
+    {
+        <em>You have no cheeps so far.</em>
+    }
+</div>
+
+<hr/>
+
+<!-- Download My Data -->
+@* <h3 class="toggle" onclick="toggleSection('downloadData')">
+    Download Your Data <span id="downloadDataIcon">&#9650;</span>
+</h3> *@
+<h3>Download Your Data</span></h3>
+<div class="" id="downloadData">
+    <p>Your privacy is important to us, and this feature is designed to empower you with control over your information. </p>
+    <div class="end">
+        <form method="post">
+            <button type="submit" class="seed-btn" asp-page-handler="DownloadData">Download Data</button>
+        </form>
+    </div>
+</div>
+
+<hr/>
+
+<!-- Forget Me -->
+@* <h3 class="toggle" onclick="toggleSection('forgetMe')">
+    Delete account <span id="forgetMeIcon">&#9650;</span>
+</h3> *@
+<h3>Delete account</h3>
+<div class="" id="forgetMe">
+    <p>If you wish to part ways with Chirp!, click the button below to permanently delete your account. 
+        Any information about you will be erased, and you will not be able to recover any information once deleted.
+    </p>
+
+    <div class="end">
+        <form method="post">
+            <button type="submit" class="unseed-btn" asp-page-handler="ForgetMe" >Forget Me</button>
+        </form>
+    </div>
+</div>
+
+ <script src="/js/aboutMe.js"></script>
