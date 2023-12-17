@@ -1,5 +1,9 @@
 namespace Chirp.Infrastructure.Entities;
 
+/// <summary>
+/// A representation a follower relationship between two users.
+/// </summary>
+
 public class Follower
 {
     public Guid FollowerId { get; set; }

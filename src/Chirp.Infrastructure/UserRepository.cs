@@ -5,6 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure;
 
+/// <summary>
+/// Repository for handling Users in the Chirp application.
+/// </summary>
+
 public class UserRepository : IUserRepository
 {
     private readonly ChirpContext _context;
@@ -57,6 +61,13 @@ public class UserRepository : IUserRepository
         _context.Users.Add(newUser);
         await _context.SaveChangesAsync();
     }
+    
+    /// <summary>
+    /// Method for deleting all of the User's data including cheeps, reactions, followers and followees from the database.
+    /// Since SQL server does not cascade delete on many-to-many relationships, we have to manually delete the entities
+    /// </summary>
+    /// <param name="user"></param>
+    /// <exception cref="ArgumentException"></exception>
 
     public async Task DeleteUser(UserDto user)
     {
@@ -64,10 +75,8 @@ public class UserRepository : IUserRepository
         
         if (existingUser is null)
         {
-            throw new ArgumentException("Author does not exist: ", nameof(user));
+            throw new ArgumentException("User does not exist: ", nameof(user));
         }
-        
-        // Since SQL server does not cascade delete on many-to-many relationships, we have to manually delete the associated entities
         
         // Delete user's followees
         var deleteFollowees = await _context.Followers

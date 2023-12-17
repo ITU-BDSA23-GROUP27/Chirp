@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Chirp.Infrastructure;
 
+/// <summary>
+/// The ChirpContext is the main database context for the Chirp application.
+/// </summary>
+
 public sealed class ChirpContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 {
     public DbSet<Cheep> Cheeps => Set<Cheep>();
@@ -18,7 +22,7 @@ public sealed class ChirpContext : IdentityDbContext<User, IdentityRole<Guid>, G
     
 protected override void OnModelCreating(ModelBuilder modelBuilder)
 {
-    // Making every property of string to have MaxLength is generated from ChatGPT
+    // The code part responsible for making every property of string to have MaxLength, is generated from ChatGPT
     
     base.OnModelCreating(modelBuilder);
 

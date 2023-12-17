@@ -6,6 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure;
 
+/// <summary>
+/// Repository for handling Cheeps in the Chirp application.
+/// </summary>
+
 public class CheepRepository : ICheepRepository
 {
     private readonly ChirpContext _context;

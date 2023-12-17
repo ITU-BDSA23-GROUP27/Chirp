@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure;
 
+/// <summary>
+/// Repository for handling reactions to Cheeps from Users e.g. likes and comments.
+/// </summary>
 public class ReactionRepository : IReactionRepository
 {
     private readonly ChirpContext _context;
