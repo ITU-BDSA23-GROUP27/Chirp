@@ -63,7 +63,7 @@ public class UserTimelineModel : BasePageModel
             }
         }
         
-        if (User.Identity?.IsAuthenticated == false)
+        if (User.Identity?.IsAuthenticated == false) //TODO Unnecessary code? 
         {
             try
             {

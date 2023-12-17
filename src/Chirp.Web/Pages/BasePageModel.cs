@@ -10,6 +10,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Web.Pages;
 
+/// <summary>
+/// A base class for all PageModels in the application.
+/// The base class contains methods that are used in multiple PageModels to avoid code duplication.
+/// </summary>
+
 public class BasePageModel : PageModel
 {
     protected async Task<IActionResult> HandleNotAuthenticated()
