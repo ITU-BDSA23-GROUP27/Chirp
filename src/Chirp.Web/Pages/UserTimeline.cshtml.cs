@@ -10,6 +10,8 @@ namespace Chirp.Web.Pages;
 
 /// <summary>
 /// PageModel for the UserTimeline page that shows the timeline for a specific user.
+/// Users can create Cheeps and react to their own Cheeps from the UserTimeline page.
+/// The page also shows the followers and followees of the User.
 /// Both authenticated and unauthenticated users can access the UserTimeline page
 /// </summary>
 
