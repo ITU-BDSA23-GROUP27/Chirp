@@ -18,6 +18,23 @@ public sealed class ChirpContext : IdentityDbContext<User, IdentityRole<Guid>, G
     
 protected override void OnModelCreating(ModelBuilder modelBuilder)
 {
+    // Making every property of string to have MaxLength is generated from ChatGPT
+    
+    base.OnModelCreating(modelBuilder);
+
+    foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+    {
+        foreach (var property in entityType.GetProperties())
+        {
+            if (property.ClrType == typeof(string) && property.GetMaxLength() == null)
+            {
+                modelBuilder.Entity(entityType.ClrType)
+                    .Property(property.Name)
+                    .HasMaxLength(160);
+            }
+        }
+    }
+    
     modelBuilder.Entity<Cheep>().Property(c => c.Text).HasMaxLength(160);
     
     modelBuilder.Entity<User>().Property(u => u.Name).HasMaxLength(50);
