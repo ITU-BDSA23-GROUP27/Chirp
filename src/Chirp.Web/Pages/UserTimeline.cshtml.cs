@@ -8,6 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Chirp.Web.Pages;
 
+/// <summary>
+/// PageModel for the UserTimeline page that shows the timeline for a specific user.
+/// Both authenticated and unauthenticated users can access the UserTimeline page
+/// </summary>
+
 public class UserTimelineModel : BasePageModel
 {
     private IValidator<CheepDto> _validator;

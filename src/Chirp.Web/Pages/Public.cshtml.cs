@@ -6,6 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Chirp.Web.Pages;
 
+/// <summary>
+/// PageModel for the Public page that shows the public timeline for all Cheeps.
+/// Both authenticated and unauthenticated users can access the Public page
+/// </summary>
+
 public class PublicModel : BasePageModel
 {
     private IValidator<CheepDto> _validator;

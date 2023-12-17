@@ -6,6 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Web.Pages;
 
+/// <summary>
+/// PageModel for the SeedDb page that is used to seed the database with data or clear the database.
+/// Only authenticated users with the Admin role can access the SeedDb page.
+/// </summary>
+
+
 // TODO - expand with user manager role - [Authorize(Roles = "Admin")]
 [Authorize]
 public class SeedDbModel : BasePageModel
