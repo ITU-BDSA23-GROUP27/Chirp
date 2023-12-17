@@ -2,6 +2,10 @@ using FluentValidation;
 
 namespace Chirp.Core.DTOs;
 
+/// <summary>
+/// Data Transfer Object (DTO) for Cheeps in the Chirp application.
+/// </summary>
+
 public class CheepDto
 {
     public Guid Id { get; set; }

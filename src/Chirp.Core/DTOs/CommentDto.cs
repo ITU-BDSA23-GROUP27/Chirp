@@ -2,6 +2,9 @@ using FluentValidation;
 
 namespace Chirp.Core.DTOs;
 
+/// <summary>
+/// Data Transfer Object (DTO) for handling Comments in the Chirp application.
+/// </summary>
 public class CommentDto
 {
     public Guid UserId { get; set; }
