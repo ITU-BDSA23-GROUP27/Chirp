@@ -33,6 +33,7 @@ public class UserTimelineModel : BasePageModel
     public int EndPage { get; set; }
     public int DisplayRange { get; set; } = 5;
     public string? RouteName { get; set; }
+    public int CheepMaxLength { get; set; } = 160;
     public Dictionary<string, bool> FollowStatus { get; set; } = new Dictionary<string, bool>();
     public int TotalFollowerCheepCount { get; set; }
 
