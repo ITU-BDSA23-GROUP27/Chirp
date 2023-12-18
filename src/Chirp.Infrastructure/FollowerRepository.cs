@@ -5,6 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure;
 
+/// <summary>
+/// Repository for handling both followers and followees in the Chirp application.
+/// Followers are the ones that follows the User
+/// Followees are the ones the User follows
+/// </summary>
+
 public class FollowerRepository : IFollowerRepository
 {
     private readonly ChirpContext _context;
@@ -13,7 +19,6 @@ public class FollowerRepository : IFollowerRepository
         _context = context;
     }
     
-    //Followers are the ones that follows the author/user
     public async Task<IEnumerable<UserDto>> GetFollowersFromUser(string userName)
     {
         var followers = await _context.Followers
@@ -29,7 +34,6 @@ public class FollowerRepository : IFollowerRepository
         return followers;
     }
     
-    //Followees are the ones the author/user follows
     public async Task<IEnumerable<UserDto>> GetFolloweesFromUser(string userName)
     {
         var followees = await _context.Followers

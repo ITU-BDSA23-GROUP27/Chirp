@@ -21,7 +21,7 @@ public class CheepRepositoryTest
             .Options;
 
         _context = new ChirpContext(options);
-        _context.Database.Migrate(); //TODO Get checked by TA
+        _context.Database.Migrate();
 
         _cheepRepository = new CheepRepository(_context);
         _userRepository = new UserRepository(_context);

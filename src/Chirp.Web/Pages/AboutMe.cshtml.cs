@@ -9,6 +9,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Web.Pages;
 
+/// <summary>
+/// PageModel for the AboutMe page that shows the information about User including claims, followers, followees and Cheeps.
+/// The page allows Users to download their data and delete their account.
+/// The AboutMe page is only accessible for authenticated users.
+/// </summary>
+
 [Authorize]
 public class AboutMeModel : BasePageModel
 {

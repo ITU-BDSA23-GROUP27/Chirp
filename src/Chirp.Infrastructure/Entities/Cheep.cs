@@ -3,6 +3,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Chirp.Infrastructure.Entities;
 
+/// <summary>
+/// A Cheep is a representation of a post in the Chirp application.
+/// Cheeps are used for users to post messages and to display messages on the timelines.
+/// </summary>
+
 public class Cheep
 {
     [Key]

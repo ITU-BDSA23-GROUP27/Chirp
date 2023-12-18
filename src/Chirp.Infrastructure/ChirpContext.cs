@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Chirp.Infrastructure;
 
+/// <summary>
+/// The ChirpContext is the main database context that consists of the entities User, Cheep, Follower and Reaction.
+/// It contains OnModelCreating method that is responsible for configuring the database schema.
+/// </summary>
+
 public sealed class ChirpContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
 {
     public DbSet<Cheep> Cheeps => Set<Cheep>();
@@ -16,9 +21,15 @@ public sealed class ChirpContext : IdentityDbContext<User, IdentityRole<Guid>, G
     {
     }
     
+    /// <summary>
+    /// The OnModelCreating method is responsible for configuring the database schema.
+    /// It is responsible for making every property of string to have MaxLength of 160 to remove SqlServer specific type 'varchar(max)'.
+    ///
+    /// </summary>
+    
 protected override void OnModelCreating(ModelBuilder modelBuilder)
 {
-    // Making every property of string to have MaxLength is generated from ChatGPT
+    // The code part responsible for making every property of string to have MaxLength, is generated from ChatGPT
     
     base.OnModelCreating(modelBuilder);
 

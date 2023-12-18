@@ -23,7 +23,7 @@ namespace Chirp.Infrastructure.Test
                 .Options;
 
             _context = new ChirpContext(options);
-            _context.Database.Migrate(); // TODO Get checked by TA
+            _context.Database.Migrate();
 
             _followerRepository = new FollowerRepository(_context);
             _userRepository = new UserRepository(_context);
