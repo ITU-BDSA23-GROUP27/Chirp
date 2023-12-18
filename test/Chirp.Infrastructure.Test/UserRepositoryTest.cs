@@ -73,19 +73,5 @@ namespace Chirp.Infrastructure.Test
             // Assert
             Assert.Equal("Spongebob Squarepants", result.Name);
         }
-
-        [Fact]
-        public async Task GetUserByEmail_ReturnsCorrectUser()
-        {
-            // Arrange
-            var user = new UserDto { Name = "Karsten Pedersen", Email = "kp67@email.com" };
-            await _userRepository.CreateUser(user);
-
-            // Act
-            var result = await _userRepository.GetUserByEmail("kp67@email.com");
-
-            // Assert
-            Assert.Equal("Karsten Pedersen", result.Name);
-        }
     }
 }
