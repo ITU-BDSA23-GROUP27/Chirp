@@ -27,7 +27,6 @@ public class PublicModel : BasePageModel
     public int StartPage { get; set; }
     public int EndPage { get; set; }
     public int DisplayRange { get; set; } = 5;
-    public int CheepMaxLength { get; set; } = 160;
     public Dictionary<string, bool> FollowStatus { get; set; } = new Dictionary<string, bool>();
 
 
