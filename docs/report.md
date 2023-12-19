@@ -1,11 +1,26 @@
 ---
-title: _Chirp!_ Project Report
-subtitle: ITU BDSA 2023 Group `27`
-author:
-- "Helge Pfeiffer <ropf@itu.dk>"
-- "Rasmus Lystrøm <rnie@itu.dk>"
+title: "_Chirp!_ Project Report"
+author: "
+    Phi Va Lo \t<phiy@itu.dk>                   \n\\vspace{-1em} 
+    Tien Cam Ly     <tily@itu.dk>               \n\\vspace{-1em}
+    Patrick Tristan Søborg <ptso@itu.dk>        \n\\vspace{-1em}
+    Kasper Kirkegaard Nielsen <kkni@itu.dk>     \n\\vspace{-1em}
+    Omar Lukman Semou <omse@itu.dk>             
+    "
+date: "2023-12-21" 
+subtitle: ITU BDSA 2023 - Group `27`
+lang: "en" 
+titlepage: true, 
+titlepage-background: "images/background.pdf"
+titlepage-rule-height: 0
 numbersections: true
+toc: true 
+toc-own-page: true
 ---
+
+
+
+
 
 # Design and Architecture of _Chirp!_
 
@@ -28,9 +43,6 @@ The different layers of the Onion architecture represent the projects in the sol
 
 <!-- onion image -->
 ![Onion achitecture](images/Onion_Architecture.png)
-
-
-
 
 
 
