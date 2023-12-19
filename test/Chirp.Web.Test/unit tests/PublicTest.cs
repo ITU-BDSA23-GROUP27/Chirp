@@ -10,123 +10,119 @@ namespace Razor.Test.unit_tests;
 
 public class PublicTest
 {
-    public class PublicModelTests
+    private readonly PublicModel _publicModel;
+
+    private readonly Mock<ICheepRepository> _cheepRepositoryMock = new Mock<ICheepRepository>();
+    private readonly Mock<IUserRepository> _userRepositoryMock = new Mock<IUserRepository>();
+    private readonly Mock<IFollowerRepository> _followerRepositoryMock = new Mock<IFollowerRepository>();
+    private readonly Mock<IReactionRepository> _reactionRepositoryMock = new Mock<IReactionRepository>();
+    private readonly Mock<IValidator<CheepDto>> _validatorMock = new Mock<IValidator<CheepDto>>();
+    
+    public PublicTest()
     {
-        private readonly PublicModel _publicModel;
+        _publicModel = new PublicModel(
+            _cheepRepositoryMock.Object,
+            _userRepositoryMock.Object,
+            _followerRepositoryMock.Object,
+            _reactionRepositoryMock.Object,
+            _validatorMock.Object
+        );
+    }
+    
+    [Fact]
+    public async Task OnGet_ShouldReturnPageResult()
+    {
+        // Arrange
+        _cheepRepositoryMock.Setup(repo => repo.GetCheepsFromPage(It.IsAny<int>())).ReturnsAsync(new List<CheepDto>());
 
-        private readonly Mock<ICheepRepository> _cheepRepositoryMock = new Mock<ICheepRepository>();
-        private readonly Mock<IUserRepository> _userRepositoryMock = new Mock<IUserRepository>();
-        private readonly Mock<IFollowerRepository> _followerRepositoryMock = new Mock<IFollowerRepository>();
-        private readonly Mock<IReactionRepository> _reactionRepositoryMock = new Mock<IReactionRepository>();
-        private readonly Mock<IValidator<CheepDto>> _validatorMock = new Mock<IValidator<CheepDto>>();
+        // Act
+        var result = await _publicModel.OnGet();
 
-        public PublicModelTests()
-        {
-            _publicModel = new PublicModel(
-                _cheepRepositoryMock.Object,
-                _userRepositoryMock.Object,
-                _followerRepositoryMock.Object,
-                _reactionRepositoryMock.Object,
-                _validatorMock.Object
-            );
-        }
+        // Assert
+        Assert.IsType<PageResult>(result);
+        // We can add more assertions here if necessary
+    }
+    
+    [Fact]
+    public async Task OnPostFollow_ShouldReturnActionResult()
+    {
+        // Arrange
+        _followerRepositoryMock.Setup(repo => repo.AddOrRemoveFollower(It.IsAny<string>(), It.IsAny<string>()));
 
-        [Fact]
-        public async Task OnGet_ShouldReturnPageResult()
-        {
-            // Arrange
-            _cheepRepositoryMock.Setup(repo => repo.GetCheepsFromPage(It.IsAny<int>())).ReturnsAsync(new List<CheepDto>());
+        // Act
+        var result = await _publicModel.OnPostFollow("userName", "followerName");
 
-            // Act
-            var result = await _publicModel.OnGet();
+        // Assert
+        Assert.IsType<RedirectToPageResult>(result);
+        // We can add more assertions here if necessary
+    }
 
-            // Assert
-            Assert.IsType<PageResult>(result);
-            // We can add more assertions here if necessary
-        }
+    [Fact]
+    public async Task OnPostLikeCheep_ShouldReturnActionResult()
+    {
+        // Arrange
+        _reactionRepositoryMock.Setup(repo => repo.LikeCheep(It.IsAny<Guid>(), It.IsAny<string>()));
+
+        // Act
+        var result = await _publicModel.OnPostLikeCheep(Guid.NewGuid(), "userName");
+
+        // Assert
+        Assert.IsType<RedirectToPageResult>(result);
+        // We can add more assertions here if necessary
+    }
+
+    [Fact]
+    public async Task GetLikeCount_ShouldReturnInt()
+    {
+        // Arrange
+        _reactionRepositoryMock.Setup(repo => repo.GetLikeCount(It.IsAny<Guid>())).ReturnsAsync(5);
+
+        // Act
+        var result = await _publicModel.GetLikeCount(Guid.NewGuid());
+
+        // Assert
+        Assert.Equal(5, result);
+        // We can add more assertions here if necessary
+    }
+
+    [Fact]
+    public async Task HasUserLikedCheep_ShouldReturnBool()
+    {
+        // Arrange
+        _reactionRepositoryMock.Setup(repo => repo.HasUserLiked(It.IsAny<Guid>(), It.IsAny<string>())).ReturnsAsync(true);
+
+        // Act
+        var result = await _publicModel.HasUserLikedCheep(Guid.NewGuid(), "userName");
+
+        // Assert
+        Assert.True(result);
+        // We can add more assertions here if necessary
+    }
+
+    [Fact]
+    public async Task OnPostAuthenticateLogin_ShouldReturnActionResult()
+    {
+        // Arrange
+        _userRepositoryMock.Setup(repo => repo.CreateUser(It.IsAny<UserDto>())).Returns(Task.CompletedTask);
+
+        // Act
+        var result = await _publicModel.OnPostAuthenticateLogin();
+
+        // Assert
+        Assert.IsType<RedirectToPageResult>(result);
+        // We can add more assertions here if necessary
+    }
+
+    [Fact]
+    public async Task OnPostLogOut_ShouldReturnActionResult()
+    {
+        // Arrange
+
+        // Act
+        var result = await _publicModel.OnPostLogOut();
+
+        // Assert
+        Assert.IsType<RedirectToPageResult>(result);
         
-        [Fact]
-        public async Task OnPostFollow_ShouldReturnActionResult()
-        {
-            // Arrange
-            _followerRepositoryMock.Setup(repo => repo.AddOrRemoveFollower(It.IsAny<string>(), It.IsAny<string>()));
-
-            // Act
-            var result = await _publicModel.OnPostFollow("userName", "followerName");
-
-            // Assert
-            Assert.IsType<RedirectToPageResult>(result);
-            // We can add more assertions here if necessary
-        }
-
-        [Fact]
-        public async Task OnPostLikeCheep_ShouldReturnActionResult()
-        {
-            // Arrange
-            _reactionRepositoryMock.Setup(repo => repo.LikeCheep(It.IsAny<Guid>(), It.IsAny<string>()));
-
-            // Act
-            var result = await _publicModel.OnPostLikeCheep(Guid.NewGuid(), "userName");
-
-            // Assert
-            Assert.IsType<RedirectToPageResult>(result);
-            // We can add more assertions here if necessary
-        }
-
-        [Fact]
-        public async Task GetLikeCount_ShouldReturnInt()
-        {
-            // Arrange
-            _reactionRepositoryMock.Setup(repo => repo.GetLikeCount(It.IsAny<Guid>())).ReturnsAsync(5);
-
-            // Act
-            var result = await _publicModel.GetLikeCount(Guid.NewGuid());
-
-            // Assert
-            Assert.Equal(5, result);
-            // We can add more assertions here if necessary
-        }
-
-        [Fact]
-        public async Task HasUserLikedCheep_ShouldReturnBool()
-        {
-            // Arrange
-            _reactionRepositoryMock.Setup(repo => repo.HasUserLiked(It.IsAny<Guid>(), It.IsAny<string>())).ReturnsAsync(true);
-
-            // Act
-            var result = await _publicModel.HasUserLikedCheep(Guid.NewGuid(), "userName");
-
-            // Assert
-            Assert.True(result);
-            // We can add more assertions here if necessary
-        }
-
-        [Fact]
-        public async Task OnPostAuthenticateLogin_ShouldReturnActionResult()
-        {
-            // Arrange
-            _userRepositoryMock.Setup(repo => repo.CreateUser(It.IsAny<UserDto>())).Returns(Task.CompletedTask);
-
-            // Act
-            var result = await _publicModel.OnPostAuthenticateLogin();
-
-            // Assert
-            Assert.IsType<RedirectToPageResult>(result);
-            // We can add more assertions here if necessary
-        }
-
-        [Fact]
-        public async Task OnPostLogOut_ShouldReturnActionResult()
-        {
-            // Arrange
-
-            // Act
-            var result = await _publicModel.OnPostLogOut();
-
-            // Assert
-            Assert.IsType<RedirectToPageResult>(result);
-            
-        }
-
     }
 }
