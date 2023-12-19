@@ -1,23 +1,22 @@
 ---
 title: "_Chirp!_ Project Report"
 author: "
-    Phi Va Lo \t<phiy@itu.dk>                   \n\\vspace{-1em} 
-    Tien Cam Ly     <tily@itu.dk>               \n\\vspace{-1em}
-    Patrick Tristan Søborg <ptso@itu.dk>        \n\\vspace{-1em}
-    Kasper Kirkegaard Nielsen <kkni@itu.dk>     \n\\vspace{-1em}
-    Omar Lukman Semou <omse@itu.dk>             
-    "
-date: "2023-12-21" 
+    Phi Va Lo                   \\hspace{108pt} <phiy@itu.dk>    \n\\vspace{-1em} 
+    Tien Cam Ly                 \\hspace{90pt}  <tily@itu.dk>    \n\\vspace{-1em}
+    Patrick Tristan Søborg      \\hspace{31pt}  <ptso@itu.dk>    \n\\vspace{-1em}
+    Kasper Kirkegaard Nielsen   \\hspace{5pt}   <kkni@itu.dk>    \n\\vspace{-1em}
+    Omar Lukman Semou           \\hspace{32pt}  <omse@itu.dk>             
+"
+date: "21-12-2023" 
 subtitle: ITU BDSA 2023 - Group `27`
 lang: "en" 
 titlepage: true, 
-titlepage-background: "images/background.pdf"
+titlepage-background: "images/Background.jpg"
 titlepage-rule-height: 0
 numbersections: true
 toc: true 
 toc-own-page: true
 ---
-
 
 
 
