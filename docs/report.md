@@ -22,15 +22,12 @@ Due note that the diagrams use different colored arrows, which is purely for van
 
 
 
-
-
-
-
 ## Architecture — In the small
 
 The different layers of the Onion architecture represent the projects in the solution and what each of them know e.g. the innermost layer Chirp.Core doesn’t know the other layers/projects and the outermost layer Chirp.Web knows all the inner layers/projects.  
 
 <!-- onion image -->
+![Onion achitecture](images/Onion_Architecture.png)
 
 
 
@@ -60,6 +57,7 @@ The different layers of the Onion architecture represent the projects in the sol
 The user activity diagram below shows all possible journeys a user can take. From the starting/entry point, each subset of a path that the user is taking, by following the arrows, is his/her user journey.
 
 <!-- user activity image -->
+![User activity diagram](images/User_Activity_Diagram.jpg)
 
 One thing that is not shown in the diagram is that you can from any page also navigate to another page directly, either by clicking on the navigation menu (if it exists) or manually input its endpoints (or use the hidden shortcuts, alt+1 to 5). 
 
@@ -70,7 +68,10 @@ An unauthorized user does not have the Seed DB menu on the page, but you can sti
 Both unauthorized and authorized can actually go into the Seed DB page, however the content displayed in that page is different depending on the authorization.
 
 <!-- image of unauthorized Seed DB page -->
+![Unauthorized Seed DB page](images/Unauthorized_SeedDB.png)
+
 <!-- image of authorized Seed DB page -->
+![Authorized Seed DB page](images/Authorized_SeedDB.png)
 
 
 
@@ -80,9 +81,10 @@ Both unauthorized and authorized can actually go into the Seed DB page, however 
 
 
 
-## Sequence of functionality/calls trough _Chirp!_
+## Sequence of functionality/calls through _Chirp!_
 
 <!-- image of Sequence diagram -->
+![Sequence of functionality/calls thorugh _Chirp!_](images/Sequence_Diagram.png)
 
 
 
@@ -106,7 +108,7 @@ A new pull request is created when a branch needs to be merged into the master b
 The pull request gets merged into the master branch when all checks succeed.  Two other workflows get triggered by the merge. The ‘Publish’ workflow makes one check and is responsible for  publishing a release with a given tag. The ‘Build and deploy ASP.Net Core app to Azure Web App’ workflow makes two checks for both building and deploying and is responsible for deploying the application into Azure. 
 
 <!-- image of UML activity diagram - Build, test, release, and deployment -->
-
+![Process - Activity Diagram](images/Process_Activity_Diagram.png)
 
 
 
@@ -128,6 +130,7 @@ The pull request gets merged into the master branch when all checks succeed.  Tw
 ### Project Board
 
 <!-- image of project board with issues -->
+![Project Board]()
 
 We have one unresolved functionality which is the comment feature. As of right now the feature is implemented in the code but not utilized by the front-end. That is the field for typing in a comment, the send button as well as showing the other comments on the individual cheeps.
 
@@ -135,6 +138,7 @@ We have one unresolved functionality which is the comment feature. As of right n
 ### Flow of Activities
 
 <!-- image of the flow of activities -->
+![Activity Flow]()
 
 Our activity flow was a bit mixed and thereby consisted of two different flows which changed throughout development of the project/application:
 
@@ -207,8 +211,6 @@ dotnet run --project .\Chirp\src\Chirp.Web
 
 
 
-
-
 ## How to run test suite locally
 
 ### Unit/Integration tests
@@ -265,6 +267,7 @@ Note: A few scenarios can occur when trying to authenticate with GitHub:
 1. When playwright clicks `Sign in` from the homepage’s navigation bar, the following GitHub authentication site should appear.
 
 <!-- image of GitHub authorization page -->
+![GitHub authorization page](images/GitHub_Authorization_SeedDB.png)
 
 Playwright will automatically fill in the information and sign in - if successful, it will redirect you to the homepage and continue doing the rest, otherwise the test will fail if the authentication is rejected.
 
@@ -272,13 +275,13 @@ Playwright will automatically fill in the information and sign in - if successfu
 2. In case you have made too many GitHub request, the reauthorization page may appear instead
 
 <!-- image of GitHub reauthorization page -->
+![GitHub reauthorization page](images/GitHub_Reauthorization_SeedDB.png)
 
 In that case, you will have to manually click the authorize button.
 
 3. Upon signing in, there might be a situation where you will be asked to authenticate  via the mobile GitHub Authentication app. This shouldn’t happen by default, but it could still happen as we have encountered it before. Then you will have to authorize it yourself from the phone (if the timer runs out on the UI test while trying to authenticate  from your phone, you could increase the timer in UnitTest1.cs line 77 (currently set to 4 seconds)).
 
 In most cases, the first situation will occur where you are not required to do more other than running the test after configuring your login.
-
 
 
 
