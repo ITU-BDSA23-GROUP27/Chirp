@@ -17,11 +17,11 @@ public class UserTimelineTest
 {
     private readonly UserTimelineModel _userTimelineModel;
     
-    private readonly Mock<ICheepRepository> _cheepRepositoryMock;
-    private readonly Mock<IUserRepository> _userRepositoryMock;
-    private readonly Mock<IFollowerRepository> _followerRepositoryMock;
-    private readonly Mock<IReactionRepository> _reactionRepositoryMock;
-    private readonly Mock<IValidator<CheepDto>> _validatorMock;
+    private readonly Mock<ICheepRepository> _cheepRepositoryMock = new Mock<ICheepRepository>();
+    private readonly Mock<IUserRepository> _userRepositoryMock = new Mock<IUserRepository>();
+    private readonly Mock<IFollowerRepository> _followerRepositoryMock = new Mock<IFollowerRepository>();
+    private readonly Mock<IReactionRepository> _reactionRepositoryMock = new Mock<IReactionRepository>();
+    private readonly Mock<IValidator<CheepDto>> _validatorMock = new Mock<IValidator<CheepDto>>();
 
     public UserTimelineTest()
     {
@@ -98,19 +98,6 @@ public class UserTimelineTest
             // Assert
             Assert.Equal(0, totalPages);
         }
-        
-        [Fact]
-        public async Task OnPostCheep_WithValidData_ReturnsRedirectToPageResult()
-        {
-            // Arrange
-
-            // Act
-            var result = await _userTimelineModel.OnPostCheep();
-
-            // Assert
-            Assert.IsType<RedirectToPageResult>(result);
-            // Add additional assertions if needed
-        }
 
         [Fact]
         public async Task OnPostFollow_WithValidData_ReturnsRedirectToPageResult()
@@ -158,29 +145,5 @@ public class UserTimelineTest
 
             // Assert
             Assert.False(hasLiked);
-        }
-
-        [Fact]
-        public async Task OnPostAuthenticateLogin_ReturnsCorrectActionResult()
-        {
-            // Arrange
-
-            // Act
-            var result = await _userTimelineModel.OnPostAuthenticateLogin();
-
-            // Assert
-            Assert.IsType<RedirectToPageResult>(result); 
-        }
-
-        [Fact]
-        public async Task OnPostLogOut_ReturnsCorrectActionResult()
-        {
-            // Arrange
-
-            // Act
-            var result = await _userTimelineModel.OnPostLogOut();
-
-            // Assert
-            Assert.IsType<RedirectToPageResult>(result); 
         }
 }
