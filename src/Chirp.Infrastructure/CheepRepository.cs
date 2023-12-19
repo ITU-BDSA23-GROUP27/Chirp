@@ -49,13 +49,6 @@ public class CheepRepository : ICheepRepository
         var cheeps = await GetCheeps();
         return cheeps.Where(c => c.UserName == userName);
     }
-    
-    public async Task<IEnumerable<CheepDto>> GetCheepsFromUserPage(string userName, int page)
-    {
-        var cheepsFromUser = await GetCheepsFromUser(userName);
-        return cheepsFromUser.Skip((page - 1) * PageLimit).Take(PageLimit);
-    }
-    
     public async Task CreateCheep(CheepDto cheep)
     {
         var existingUser = await _context.Users.SingleOrDefaultAsync(u => u.Name == cheep.UserName);

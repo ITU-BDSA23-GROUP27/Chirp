@@ -29,19 +29,6 @@ public class UserRepository : IUserRepository
             Email = user?.Email ?? string.Empty,
         };
     }
-
-    public async Task<UserDto> GetUserByEmail(string authorEmail)
-    {
-        var user = await _context.Users.FirstAsync(u => u.Email == authorEmail);
-
-        return new UserDto()
-        {
-            Id = user.Id,
-            Name = user.Name,
-            Email = user?.Email ?? string.Empty,
-        };
-    }
-
     public async Task CreateUser(UserDto user)
     {
         var existingUser = await _context.Users.SingleOrDefaultAsync(u => u.Name == user.Name);
@@ -68,7 +55,6 @@ public class UserRepository : IUserRepository
     /// </summary>
     /// <param name="user"></param>
     /// <exception cref="ArgumentException"></exception>
-
     public async Task DeleteUser(UserDto user)
     {
         var existingUser = await _context.Users.SingleOrDefaultAsync(u => u.Name == user.Name);

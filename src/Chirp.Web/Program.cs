@@ -68,13 +68,13 @@ builder.Services.AddRazorPages()
             options.Conventions.AuthorizePage("/SeedDb");
         });
         
-builder.Services.AddScoped<ICheepRepository, Chirp.Infrastructure.CheepRepository>();
+builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IFollowerRepository, FollowerRepository>();
 builder.Services.AddScoped<IReactionRepository, ReactionRepository>();
 
 builder.Services.AddScoped<IValidator<CheepDto>, CheepValidator>();
-builder.Services.AddScoped<IValidator<CommentDto>, CommentValidator>();
+builder.Services.AddScoped<IValidator<ReactionDto>, ReactionValidator>();
 
 var app = builder.Build();
 
