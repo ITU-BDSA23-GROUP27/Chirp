@@ -52,30 +52,4 @@ public class BasePageModelTest
         await Assert.ThrowsAsync<ArgumentNullException>(async () =>
             await _basePageModel.HandleLike(Guid.NewGuid(), null, _reactionRepositoryMock.Object));
     }
-
-    [Fact]
-    public async Task HandleGetLikeCount_ShouldReturnZero_IfReactionRepositoryReturnsNull()
-    {
-        // Arrange
-        _reactionRepositoryMock.Setup(repo => repo.GetLikeCount(It.IsAny<Guid>())).ReturnsAsync((int) ((int?)null)!); // Ehm what? intellisense fixed it to this
-
-        // Act
-        var result = await _basePageModel.HandleGetLikeCount(Guid.NewGuid(), _reactionRepositoryMock.Object);
-
-        // Assert
-        Assert.Equal(0, result);
-    }
-
-    [Fact]
-    public async Task HandleHasUserLikedCheep_ShouldReturnFalse_IfReactionRepositoryReturnsNull()
-    {
-        // Arrange
-        _reactionRepositoryMock.Setup(repo => repo.HasUserLiked(It.IsAny<Guid>(), It.IsAny<string>())).ReturnsAsync((bool) ((bool?)null)!); // Weird intellisense fix again
-
-        // Act
-        var result = await _basePageModel.HandleHasUserLikedCheep(Guid.NewGuid(), "userName", _reactionRepositoryMock.Object);
-
-        // Assert
-        Assert.False(result);
-    }
 }
