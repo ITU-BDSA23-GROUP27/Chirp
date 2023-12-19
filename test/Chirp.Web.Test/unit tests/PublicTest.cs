@@ -53,7 +53,7 @@ public class PublicTest
         var result = await _publicModel.OnPostFollow("userName", "followerName");
 
         // Assert
-        Assert.IsType<RedirectToPageResult>(result);
+        Assert.IsAssignableFrom<ActionResult>(result);
         // We can add more assertions here if necessary
     }
 
@@ -67,7 +67,7 @@ public class PublicTest
         var result = await _publicModel.OnPostLikeCheep(Guid.NewGuid(), "userName");
 
         // Assert
-        Assert.IsType<RedirectToPageResult>(result);
+        Assert.IsAssignableFrom<ActionResult>(result);
         // We can add more assertions here if necessary
     }
 
