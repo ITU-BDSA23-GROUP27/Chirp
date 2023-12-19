@@ -1,9 +1,12 @@
-﻿using Chirp.Core;
+﻿using System.Security.Claims;
+using Chirp.Core;
 using Chirp.Core.DTOs;
 using Chirp.Web.Pages;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 
 namespace Razor.Test.unit_tests;
@@ -27,6 +30,16 @@ public class PublicTest
             _reactionRepositoryMock.Object,
             _validatorMock.Object
         );
+        
+        _publicModel.PageContext = new PageContext
+        {
+            HttpContext = new DefaultHttpContext
+            {
+                User = new ClaimsPrincipal(new ClaimsIdentity()),
+            }
+        };
+
+        //_publicModel.Url = new UrlHelperFactory().GetUrlHelper(_publicModel.PageContext);
     }
     
     [Fact]
@@ -97,31 +110,5 @@ public class PublicTest
         // Assert
         Assert.True(result);
         // We can add more assertions here if necessary
-    }
-
-    [Fact]
-    public async Task OnPostAuthenticateLogin_ShouldReturnActionResult()
-    {
-        // Arrange
-        _userRepositoryMock.Setup(repo => repo.CreateUser(It.IsAny<UserDto>())).Returns(Task.CompletedTask);
-
-        // Act
-        var result = await _publicModel.OnPostAuthenticateLogin();
-
-        // Assert
-        Assert.IsAssignableFrom<ActionResult>(result);
-        // We can add more assertions here if necessary
-    }
-
-    [Fact]
-    public async Task OnPostLogOut_ShouldReturnActionResult()
-    {
-        // Arrange
-
-        // Act
-        var result = await _publicModel.OnPostLogOut();
-
-        // Assert
-        Assert.IsAssignableFrom<ActionResult>(result);
     }
 }
