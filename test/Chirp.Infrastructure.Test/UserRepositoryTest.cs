@@ -7,7 +7,6 @@ namespace Chirp.Infrastructure.Test
     public class UserRepositoryTest 
     {
         private readonly ChirpContext _context;
-        private readonly CheepRepository _cheepRepository;
         private readonly UserRepository _userRepository;
 
         public UserRepositoryTest()
@@ -22,7 +21,6 @@ namespace Chirp.Infrastructure.Test
             _context = new ChirpContext(options);
             _context.Database.Migrate(); //TODO Get checked by TA
 
-            _cheepRepository = new CheepRepository(_context);
             _userRepository = new UserRepository(_context);
         }
 

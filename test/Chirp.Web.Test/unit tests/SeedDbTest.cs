@@ -1,23 +1,26 @@
 ﻿using Chirp.Infrastructure;
 using Chirp.Web.Pages;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Razor.Test.unit_tests;
 
-public class SeedDBTest
+public class SeedDbTest
 {
-    private readonly DbContextOptions<ChirpContext> _options;
     private readonly ChirpContext _context;
 
-    public SeedDBTest()
+    public SeedDbTest()
     {
-        _options = new DbContextOptionsBuilder<ChirpContext>()
-            .UseModel(new Model()) // TODO Should use a database here - possibly three different to get seperate data 
+        var connection = new SqliteConnection("DataSource=:memory:");
+        connection.Open();
+
+        var options = new DbContextOptionsBuilder<ChirpContext>()
+            .UseSqlite(connection)
             .Options;
 
-        _context = new ChirpContext(_options);
+        _context = new ChirpContext(options);
+        _context.Database.Migrate();
     }
 
     [Fact]
