@@ -167,28 +167,35 @@ Flow 2:
 
 Here is a step-by-step guide on opening our Chirp application:
 
-NOTE: The semicolons (“”) needs to be removed from the beginning and end of a command for it to function.
-
 1. Firstly open a terminal window and navigate to where you want the project located
 
-2. Then clone the project down with the following command: “git clone https://github.com/ITU-BDSA23-GROUP27/Chirp.git”
+2. Then clone the project down with the following command:
+```bash
+git clone https://github.com/ITU-BDSA23-GROUP27/Chirp.git
+```
 
-
-3. For the application to work docker is needed along with a package which is downloaded through this command: “docker pull mcr.microsoft.com/mssql/server:2022-latest”
-
+3. For the application to work docker is needed along with a package which is downloaded through this command: 
+```bash
+docker pull mcr.microsoft.com/mssql/server:2022-latest
+```
 
 4. Afterwards the docker server needs to be initialized:
-“
+```bash
 docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=YourNewStrong@Passw0rd" -p 1433:1433  --name sql1 --hostname sql1 -d mcr.microsoft.com/mssql/server:2022-latest
-”
+```
 
+5. The application requires a client id and a client secret to a GitHub OAuth which needs to be set with the following commands; replace `<GitHub clientid>` and `<GitHub client secret>` with their respective values:
 
-5. The application requires a client id and a client secret to a GitHub OAuth which needs to be set with the following commands; replace <GitHub clientid> and <GitHub client secret> with their respective values:
-“dotnet user-secrets set "authentication_github_clientId" "<GitHub clientid>"   --project  .\Chirp\src\Chirp.Web”
-“dotnet user-secrets set "authentication_github_clientSecret" "<GitHub client secret>"   --project  .\Chirp\src\Chirp.Web”
+```bash
+dotnet user-secrets set "authentication_github_clientId" "<GitHub clientid>" --project .\Chirp\src\Chirp.Web
 
+dotnet user-secrets set "authentication_github_clientSecret" "<GitHub client secret>" --project .\Chirp\src\Chirp.Web
+```
 
-6. From here the application can be simply launched with the following command: “dotnet run --project  .\Chirp\src\Chirp.Web”
+6. From here the application can be simply launched with the following command: 
+```bash
+dotnet run --project .\Chirp\src\Chirp.Web
+```
 
 
 
@@ -219,9 +226,14 @@ NOTE: If you have already cloned the project down skip to step 3. The tests will
 1. Firstly open a terminal window and navigate to where you want the project located
 
 2. Then clone the project down with the following command:
-“git clone https://github.com/ITU-BDSA23-GROUP27/Chirp.git”
+```bash
+git clone https://github.com/ITU-BDSA23-GROUP27/Chirp.git
+```
 
-3. From here the test can be simply launched with the following command: “dotnet test  .\Chirp”
+3. From here the test can be simply launched with the following command: 
+```bash
+dotnet test .\Chirp
+```
 
 
 
@@ -232,8 +244,9 @@ NOTE: If you have already cloned the project down skip to step 3. The tests will
 ### UI Testing
 
 The UI test utilizes the playwright library.  The following command:
-
+```bash
 dotnet build pwsh bin/Debug/net7.0/playwright.ps1 install
+```
 
 installs various browsers and tools to run UI tests.
 
@@ -241,22 +254,22 @@ This test will only work locally, so it requires that you have the app running i
 
 In order for playwright to log you in with your github account, you also need to do either of these two things:
 
-1. Environment variables for  EMAIL and PASSWORD have to be set in your environment system that matches your github email and password respectively.
+1. Environment variables for  EMAIL and PASSWORD have to be set in your environment system that matches your GitHub email and password respectively.
 
-2. Replace the field email and password values with your actual user information (which is fine as you will not share the code) in the file “test\PlaywrightTests\UnitTest1.cs”, line 19-20.
+2. Replace the field email and password values with your actual user information (which is fine as you will not share the code) in the file `test\PlaywrightTests\UnitTest1.cs`, line 19-20.
 
-Then in the directory “test\PlaywrightTests\”, run dotnet test in the terminal, and that’s it.
+Then in the directory `test\PlaywrightTests\`, run `dotnet test` in the terminal, and that’s it.
 
 Note: A few scenarios can occur when trying to authenticate with GitHub:
 
-1. When playwright clicks ‘Sign in’ from the homepage’s navigation bar, the following github authentication site should appear.
+1. When playwright clicks `Sign in` from the homepage’s navigation bar, the following GitHub authentication site should appear.
 
 <!-- image of GitHub authorization page -->
 
 Playwright will automatically fill in the information and sign in - if successful, it will redirect you to the homepage and continue doing the rest, otherwise the test will fail if the authentication is rejected.
 
 
-2. In case you have made too many github request, the reauthorization page may appear instead
+2. In case you have made too many GitHub request, the reauthorization page may appear instead
 
 <!-- image of GitHub reauthorization page -->
 
@@ -264,7 +277,7 @@ In that case, you will have to manually click the authorize button.
 
 3. Upon signing in, there might be a situation where you will be asked to authenticate  via the mobile GitHub Authentication app. This shouldn’t happen by default, but it could still happen as we have encountered it before. Then you will have to authorize it yourself from the phone (if the timer runs out on the UI test while trying to authenticate  from your phone, you could increase the timer in UnitTest1.cs line 77 (currently set to 4 seconds)).
 
-In most cases, the first situation will occur where you are not required to do more other than running the test.
+In most cases, the first situation will occur where you are not required to do more other than running the test after configuring your login.
 
 
 
