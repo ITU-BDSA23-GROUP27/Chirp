@@ -11,30 +11,286 @@ numbersections: true
 
 ## Domain model
 
-Here comes a description of our domain model.
+ <!-- ![Illustration of the _Chirp!_ data model as UML class diagram.](docs/images/example_domain_model.png) -->
 
- ![Illustration of the _Chirp!_ data model as UML class diagram.](docs/images/example_domain_model.png)
+The illustration above depicts our domain model which might be hard to see properly. Therefore here is a link for a better depiction: [Figma]([../session_08/README_PROJECT.md/#1b-azure-ad-b2c--github](https://www.figma.com/file/Yn2gFlonZxWxXUJqc8cUVe/Data-Model-UML-(Chirp)?type=whiteboard&node-id=0%3A1&t=pohbXJHrRdmW6X85-1))
+
+Due note that the diagrams use different colored arrows, which is purely for vanity sake thereby making it easier to see which line corresponds to which object.
+
+
+
+
+
+
+
+
+
 
 ## Architecture — In the small
 
+The different layers of the Onion architecture represent the projects in the solution and what each of them know e.g. the innermost layer Chirp.Core doesn’t know the other layers/projects and the outermost layer Chirp.Web knows all the inner layers/projects.  
+
+<!-- onion image -->
+
+
+
+
+
+
+
+
+
 ## Architecture of deployed application
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## User activities
 
+The user activity diagram below shows all possible journeys a user can take. From the starting/entry point, each subset of a path that the user is taking, by following the arrows, is his/her user journey.
+
+<!-- user activity image -->
+
+One thing that is not shown in the diagram is that you can from any page also navigate to another page directly, either by clicking on the navigation menu (if it exists) or manually input its endpoints (or use the hidden shortcuts, alt+1 to 5). 
+
+If an unauthenticated user tries to access a page that requires to be authenticated, you will be redirected to the GitHub login site instead, or it will log you in if you have your user information stored in the cookies.
+
+An unauthorized user does not have the Seed DB menu on the page, but you can still try to access the authorized page (Seed DB) via the endpoint or using the shortcut.  
+
+Both unauthorized and authorized can actually go into the Seed DB page, however the content displayed in that page is different depending on the authorization.
+
+<!-- image of unauthorized Seed DB page -->
+<!-- image of authorized Seed DB page -->
+
+
+
+
+
+
+
+
+
 ## Sequence of functionality/calls trough _Chirp!_
+
+<!-- image of Sequence diagram -->
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Process
 
 ## Build, test, release, and deployment
 
+A new pull request is created when a branch needs to be merged into the master branch. Two GitHub Actions workflows get started: ‘CodeQL’ and ‘.NET (build and test)’, where the ‘CodeQL’ checks three times (CodeQL, Analyze (javascript) and Analyze (csharp)) and  ‘.NET’ workflow checks twice for push and pull request. 
+
+The pull request gets merged into the master branch when all checks succeed.  Two other workflows get triggered by the merge. The ‘Publish’ workflow makes one check and is responsible for  publishing a release with a given tag. The ‘Build and deploy ASP.Net Core app to Azure Web App’ workflow makes two checks for both building and deploying and is responsible for deploying the application into Azure. 
+
+<!-- image of UML activity diagram - Build, test, release, and deployment -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Team work
+
+### Project Board
+
+<!-- image of project board with issues -->
+
+We have one unresolved functionality which is the comment feature. As of right now the feature is implemented in the code but not utilized by the front-end. That is the field for typing in a comment, the send button as well as showing the other comments on the individual cheeps.
+
+
+### Flow of Activities
+
+<!-- image of the flow of activities -->
+
+Our activity flow was a bit mixed and thereby consisted of two different flows which changed throughout development of the project/application:
+
+Flow 1:
+
+1. The issue/problem is found
+2. The issue is noted in GitHub issues with corresponding acceptance criteria
+3. Afterwards the issue is fixed according to the listed acceptance criteria on an individual branch
+4. Lastly the branch with the fixed is merged into master through a pull request pending review of the other group members.
+
+Flow 2:
+
+1. The issue/problem is found
+2. The issue is fixed through various means depending on the issue on an individual branch
+3. Afterwards the issue is noted in GitHub issues with acceptance criteria matching the implemented fix (minor issues are fixed right away without making a new issue on GitHub)
+4. Lastly the branch with the fixed is merged into master through a pull request pending review of the other group members.
+
+
+
+
+
+
+
+
+
+
+
 
 ## How to make _Chirp!_ work locally
 
+Here is a step-by-step guide on opening our Chirp application:
+
+NOTE: The semicolons (“”) needs to be removed from the beginning and end of a command for it to function.
+
+1. Firstly open a terminal window and navigate to where you want the project located
+
+2. Then clone the project down with the following command: “git clone https://github.com/ITU-BDSA23-GROUP27/Chirp.git”
+
+
+3. For the application to work docker is needed along with a package which is downloaded through this command: “docker pull mcr.microsoft.com/mssql/server:2022-latest”
+
+
+4. Afterwards the docker server needs to be initialized:
+“
+docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=YourNewStrong@Passw0rd" -p 1433:1433  --name sql1 --hostname sql1 -d mcr.microsoft.com/mssql/server:2022-latest
+”
+
+
+5. The application requires a client id and a client secret to a GitHub OAuth which needs to be set with the following commands; replace <GitHub clientid> and <GitHub client secret> with their respective values:
+“dotnet user-secrets set "authentication_github_clientId" "<GitHub clientid>"   --project  .\Chirp\src\Chirp.Web”
+“dotnet user-secrets set "authentication_github_clientSecret" "<GitHub client secret>"   --project  .\Chirp\src\Chirp.Web”
+
+
+6. From here the application can be simply launched with the following command: “dotnet run --project  .\Chirp\src\Chirp.Web”
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## How to run test suite locally
+
+### Unit/Integration tests
+
+In this category there are two test repositories: <span style="color:red;">(explain methods maybe?)</span>
+
+* Chirp.Infrastructure.Test: Which tests the repositories and their methods in different scenarios.
+
+* Chirp.Web.Test: Which tests the different methods used in the page models, meaning the functionality of the web application. 
+
+Here is a step-by-step guide on how to run test suite locally:
+
+NOTE: If you have already cloned the project down skip to step 3. The tests will not run correctly if the application is running simultaneously.
+
+1. Firstly open a terminal window and navigate to where you want the project located
+
+2. Then clone the project down with the following command:
+“git clone https://github.com/ITU-BDSA23-GROUP27/Chirp.git”
+
+3. From here the test can be simply launched with the following command: “dotnet test  .\Chirp”
+
+
+
+
+
+
+
+### UI Testing
+
+The UI test utilizes the playwright library.  The following command:
+
+dotnet build pwsh bin/Debug/net7.0/playwright.ps1 install
+
+installs various browsers and tools to run UI tests.
+
+This test will only work locally, so it requires that you have the app running in localhost.
+
+In order for playwright to log you in with your github account, you also need to do either of these two things:
+
+1. Environment variables for  EMAIL and PASSWORD have to be set in your environment system that matches your github email and password respectively.
+
+2. Replace the field email and password values with your actual user information (which is fine as you will not share the code) in the file “test\PlaywrightTests\UnitTest1.cs”, line 19-20.
+
+Then in the directory “test\PlaywrightTests\”, run dotnet test in the terminal, and that’s it.
+
+Note: A few scenarios can occur when trying to authenticate with GitHub:
+
+1. When playwright clicks ‘Sign in’ from the homepage’s navigation bar, the following github authentication site should appear.
+
+<!-- image of GitHub authorization page -->
+
+Playwright will automatically fill in the information and sign in - if successful, it will redirect you to the homepage and continue doing the rest, otherwise the test will fail if the authentication is rejected.
+
+
+2. In case you have made too many github request, the reauthorization page may appear instead
+
+<!-- image of GitHub reauthorization page -->
+
+In that case, you will have to manually click the authorize button.
+
+3. Upon signing in, there might be a situation where you will be asked to authenticate  via the mobile GitHub Authentication app. This shouldn’t happen by default, but it could still happen as we have encountered it before. Then you will have to authorize it yourself from the phone (if the timer runs out on the UI test while trying to authenticate  from your phone, you could increase the timer in UnitTest1.cs line 77 (currently set to 4 seconds)).
+
+In most cases, the first situation will occur where you are not required to do more other than running the test.
+
+
+
+
+
 
 # Ethics
 
 ## License
 
-## LLMs, ChatGPT, CoPilot, and others
+We chose the software license MIT which only requires the preservation of copyright and license notices. This license was chosen to put as few restrictions on the code as possible. Which would allow others to use our code freely in any project/work seen fit.
+
+### ChatGPT
+ChatGPT was used throughout the development of the application whenever there was a specific scenario which we were not able to fix ourselves. This is also noted in the code with something similar to: “This was made with the help of ChatGPT”.
+
+### CoPilot
+CoPilot was used as well in the development but more as a word/sentence completer rather than an AI helper. It was especially useful when making tests, since it was able to detect the structure of the other tests and base its answers accordingly. But other than that CoPilot was not that useful.
+
+
+
+
+
+
+
+
+
+
+
+
