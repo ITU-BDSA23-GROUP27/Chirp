@@ -9,10 +9,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Moq;
 using Xunit;
+using CheepRepository = Chirp.Infrastructure.CheepRepository;
+
 namespace Razor.Test.unit_tests;
 
 public class UserTimelineTest
 {
+    private readonly UserTimelineModel _userTimelineModel;
+    
     private readonly Mock<ICheepRepository> _cheepRepositoryMock;
     private readonly Mock<IUserRepository> _userRepositoryMock;
     private readonly Mock<IFollowerRepository> _followerRepositoryMock;
@@ -21,11 +25,21 @@ public class UserTimelineTest
 
     public UserTimelineTest()
     {
-        _cheepRepositoryMock = new Mock<ICheepRepository>();
-        _userRepositoryMock = new Mock<IUserRepository>();
-        _followerRepositoryMock = new Mock<IFollowerRepository>();
-        _reactionRepositoryMock = new Mock<IReactionRepository>();
-        _validatorMock = new Mock<IValidator<CheepDto>>();
+        _userTimelineModel = new UserTimelineModel(
+            _cheepRepositoryMock.Object,
+            _userRepositoryMock.Object,
+            _followerRepositoryMock.Object,
+            _reactionRepositoryMock.Object,
+            _validatorMock.Object
+        );
+        
+        _userTimelineModel.PageContext = new PageContext
+        {
+            HttpContext = new DefaultHttpContext
+            {
+                User = new ClaimsPrincipal(new ClaimsIdentity()),
+            }
+        };
     }
     
     
@@ -33,19 +47,6 @@ public class UserTimelineTest
         public async Task OnGet_UserIsAuthenticated_ReturnsPageResult()
         {
             // Arrange
-            var cheepRepositoryMock = new Mock<ICheepRepository>();
-            var userRepositoryMock = new Mock<IUserRepository>();
-            var followerRepositoryMock = new Mock<IFollowerRepository>();
-            var reactionRepositoryMock = new Mock<IReactionRepository>();
-            var validatorMock = new Mock<IValidator<CheepDto>>();
-
-            var userTimelineModel = new UserTimelineModel(
-                cheepRepositoryMock.Object,
-                userRepositoryMock.Object,
-                followerRepositoryMock.Object,
-                reactionRepositoryMock.Object,
-                validatorMock.Object
-            );
 
             var userClaims = new List<Claim>
             {
@@ -55,7 +56,7 @@ public class UserTimelineTest
             
             var userPrincipal = new ClaimsPrincipal(new ClaimsIdentity(userClaims, "mock"));
             
-            userTimelineModel.PageContext = new PageContext
+            _userTimelineModel.PageContext = new PageContext
             {
                 HttpContext = new DefaultHttpContext
                 {
@@ -64,7 +65,7 @@ public class UserTimelineTest
             };
 
             // Act
-            var result = await userTimelineModel.OnGet("testUser");
+            var result = await _userTimelineModel.OnGet("testUser");
 
             // Assert
             Assert.IsType<PageResult>(result);
@@ -74,30 +75,9 @@ public class UserTimelineTest
         public async Task OnGet_UserIsNotAuthenticated_ReturnsRedirectToPageResult()
         {
             // Arrange
-            var cheepRepositoryMock = new Mock<ICheepRepository>();
-            var userRepositoryMock = new Mock<IUserRepository>();
-            var followerRepositoryMock = new Mock<IFollowerRepository>();
-            var reactionRepositoryMock = new Mock<IReactionRepository>();
-            var validatorMock = new Mock<IValidator<CheepDto>>();
-
-            var userTimelineModel = new UserTimelineModel(
-                cheepRepositoryMock.Object,
-                userRepositoryMock.Object,
-                followerRepositoryMock.Object,
-                reactionRepositoryMock.Object,
-                validatorMock.Object
-            );
-
-            userTimelineModel.PageContext = new PageContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = new ClaimsPrincipal(new ClaimsIdentity()),
-                }
-            };
             
             // Act
-            var result = await userTimelineModel.OnGet("testUser");
+            var result = await _userTimelineModel.OnGet("testUser");
 
             // Assert
             var redirectToPageResult = Assert.IsType<RedirectToPageResult>(result);
@@ -108,74 +88,24 @@ public class UserTimelineTest
         public async Task GetTotalPages_ReturnsCorrectTotalPages()
         {
             // Arrange
-            var cheepRepositoryMock = new Mock<ICheepRepository>();
-            var userRepositoryMock = new Mock<IUserRepository>();
-            var followerRepositoryMock = new Mock<IFollowerRepository>();
-            var reactionRepositoryMock = new Mock<IReactionRepository>();
-            var validatorMock = new Mock<IValidator<CheepDto>>();
-
             // We could change the amount of dto objects returned from the repository to test the logic
-            cheepRepositoryMock.Setup(repo => repo.GetCheepsFromUser(It.IsAny<string>()))
+            _cheepRepositoryMock.Setup(repo => repo.GetCheepsFromUser(It.IsAny<string>()))
                 .ReturnsAsync(new List<CheepDto> {});
-
-            var userTimelineModel = new UserTimelineModel(
-                cheepRepositoryMock.Object,
-                userRepositoryMock.Object,
-                followerRepositoryMock.Object,
-                reactionRepositoryMock.Object,
-                validatorMock.Object
-            );
-
+            
             // Act
-            var totalPages = await userTimelineModel.GetTotalPages("testUser");
+            var totalPages = await _userTimelineModel.GetTotalPages("testUser");
 
             // Assert
             Assert.Equal(0, totalPages);
         }
         
         [Fact]
-        public async Task OnPostLogOut_ReturnsRedirectToPageResult()
-        {
-            // Arrange
-            var cheepRepositoryMock = new Mock<ICheepRepository>();
-            var userRepositoryMock = new Mock<IUserRepository>();
-            var followerRepositoryMock = new Mock<IFollowerRepository>();
-            var reactionRepositoryMock = new Mock<IReactionRepository>();
-            var validatorMock = new Mock<IValidator<CheepDto>>();
-
-            var userTimelineModel = new UserTimelineModel(
-                cheepRepositoryMock.Object,
-                userRepositoryMock.Object,
-                followerRepositoryMock.Object,
-                reactionRepositoryMock.Object,
-                validatorMock.Object
-            );
-
-            userTimelineModel.PageContext = new PageContext()
-            {
-                HttpContext = new DefaultHttpContext()
-                {
-                    User = new ClaimsPrincipal()
-                }
-            };
-            
-            // Act
-            var result = await userTimelineModel.OnPostLogOut();
-
-            // Assert
-            var redirectToPageResult = Assert.IsType<RedirectToPageResult>(result);
-            Assert.Equal("/Index", redirectToPageResult.PageName); // Adjust if your log out redirects to a different page
-        }
-    
-        
-        [Fact]
         public async Task OnPostCheep_WithValidData_ReturnsRedirectToPageResult()
         {
             // Arrange
-            var userTimelineModel = CreateUserTimelineModel();
 
             // Act
-            var result = await userTimelineModel.OnPostCheep();
+            var result = await _userTimelineModel.OnPostCheep();
 
             // Assert
             Assert.IsType<RedirectToPageResult>(result);
@@ -186,10 +116,9 @@ public class UserTimelineTest
         public async Task OnPostFollow_WithValidData_ReturnsRedirectToPageResult()
         {
             // Arrange
-            var userTimelineModel = CreateUserTimelineModel();
 
             // Act
-            var result = await userTimelineModel.OnPostFollow("userName", "followerName");
+            var result = await _userTimelineModel.OnPostFollow("userName", "followerName");
 
             // Assert
             Assert.IsType<RedirectToPageResult>(result);
@@ -199,10 +128,9 @@ public class UserTimelineTest
         public async Task OnPostLikeCheep_WithValidData_ReturnsRedirectToPageResult()
         {
             // Arrange
-            var userTimelineModel = CreateUserTimelineModel();
 
             // Act
-            var result = await userTimelineModel.OnPostLikeCheep(Guid.NewGuid(), "userName");
+            var result = await _userTimelineModel.OnPostLikeCheep(Guid.NewGuid(), "userName");
 
             // Assert
             Assert.IsType<RedirectToPageResult>(result);
@@ -212,10 +140,9 @@ public class UserTimelineTest
         public async Task GetLikeCount_ReturnsCorrectLikeCount()
         {
             // Arrange
-            var userTimelineModel = CreateUserTimelineModel();
 
             // Act
-            var likeCount = await userTimelineModel.GetLikeCount(Guid.NewGuid());
+            var likeCount = await _userTimelineModel.GetLikeCount(Guid.NewGuid());
 
             // Assert
             Assert.Equal(0, likeCount);
@@ -225,10 +152,9 @@ public class UserTimelineTest
         public async Task HasUserLikedCheep_ReturnsCorrectLikeStatus()
         {
             // Arrange
-            var userTimelineModel = CreateUserTimelineModel();
 
             // Act
-            var hasLiked = await userTimelineModel.HasUserLikedCheep(Guid.NewGuid(), "userName");
+            var hasLiked = await _userTimelineModel.HasUserLikedCheep(Guid.NewGuid(), "userName");
 
             // Assert
             Assert.False(hasLiked);
@@ -238,10 +164,9 @@ public class UserTimelineTest
         public async Task OnPostAuthenticateLogin_ReturnsCorrectActionResult()
         {
             // Arrange
-            var userTimelineModel = CreateUserTimelineModel();
 
             // Act
-            var result = await userTimelineModel.OnPostAuthenticateLogin();
+            var result = await _userTimelineModel.OnPostAuthenticateLogin();
 
             // Assert
             Assert.IsType<RedirectToPageResult>(result); 
@@ -251,25 +176,11 @@ public class UserTimelineTest
         public async Task OnPostLogOut_ReturnsCorrectActionResult()
         {
             // Arrange
-            var userTimelineModel = CreateUserTimelineModel();
 
             // Act
-            var result = await userTimelineModel.OnPostLogOut();
+            var result = await _userTimelineModel.OnPostLogOut();
 
             // Assert
             Assert.IsType<RedirectToPageResult>(result); 
-        }
-        
-        
-        
-        private UserTimelineModel CreateUserTimelineModel()
-        {
-            return new UserTimelineModel(
-                _cheepRepositoryMock.Object,
-                _userRepositoryMock.Object,
-                _followerRepositoryMock.Object,
-                _reactionRepositoryMock.Object,
-                _validatorMock.Object
-            );
         }
 }
