@@ -1,7 +1,6 @@
 using System.Globalization;
 using Chirp.Core;
 using Chirp.Core.DTOs;
-using Chirp.Infrastructure.Entities;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Authentication;

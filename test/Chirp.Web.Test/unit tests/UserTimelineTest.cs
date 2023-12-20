@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using System.Security.Principal;
 using Chirp.Core;
 using Chirp.Core.DTOs;
 using Chirp.Web.Pages;
@@ -8,8 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Moq;
-using Xunit;
-using CheepRepository = Chirp.Infrastructure.CheepRepository;
 
 namespace Razor.Test.unit_tests;
 

@@ -2,7 +2,6 @@
 using System.Globalization;
 using Chirp.Core;
 using Chirp.Core.DTOs;
-using Chirp.Infrastructure.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 

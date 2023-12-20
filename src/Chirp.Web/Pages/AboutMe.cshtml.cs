@@ -5,7 +5,6 @@ using Chirp.Core;
 using Chirp.Core.DTOs;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Chirp.Web.Pages;
 

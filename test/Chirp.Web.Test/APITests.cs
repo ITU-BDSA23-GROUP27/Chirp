@@ -1,6 +1,3 @@
-using AngleSharp;
-using AngleSharp.Dom;
-
 namespace Razor.Test;
 
 public class APITests

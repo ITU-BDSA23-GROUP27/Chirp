@@ -2,8 +2,6 @@
 using Chirp.Core.DTOs;
 using Chirp.Web.Pages;
 using FluentValidation;
-using FluentValidation.Results;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Moq;
 
 namespace Razor.Test.unit_tests;
