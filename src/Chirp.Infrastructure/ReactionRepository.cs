@@ -64,7 +64,7 @@ public class ReactionRepository : IReactionRepository
             .Where(r => r.ReactionType == ReactionType.Comment && r.CheepId == cheepId)
             .Select<Reaction, ReactionDto>(r => new ReactionDto()
                 {
-                    UserId = r.CheepId,
+                    UserId = r.UserId,
                     CheepId = r.CheepId,
                     TimeStamp = r.TimeStamp.ToString(CultureInfo.InvariantCulture),
                     Comment = r.ReactionContent
