@@ -70,6 +70,5 @@ public class UserRepositoryTest
 
             // Assert
             Assert.Equal("Spongebob Squarepants", result.Name);
-        }
     }
 }
