@@ -101,6 +101,8 @@ public class UserTimelineModel : BasePageModel
         Cheeps = await _cheepRepository.GetCheepsFromUser(user);
 
         // Set follow status for each cheep user
+        var enumerableDtos = Cheeps as CheepDto[] ?? Cheeps.ToArray();
+        
         if (User.Identity?.IsAuthenticated == true)
         {
             // Include followers' cheeps only for the logged-in user's timeline
@@ -113,8 +115,9 @@ public class UserTimelineModel : BasePageModel
                     Cheeps = Cheeps.Union(cheepDtos);
                     TotalFollowerCheepCount += cheepDtos.Count();
                 }
-            }   
-            foreach (var cheep in Cheeps)
+            }
+            
+            foreach (var cheep in enumerableDtos)
             {
                 var userName = cheep.UserName;
                 var followersFromUser = await _followerRepository
@@ -126,7 +129,7 @@ public class UserTimelineModel : BasePageModel
             }
         }
         
-        Cheeps = Cheeps
+        Cheeps = enumerableDtos
             .OrderByDescending(c => DateTime.ParseExact(c.TimeStamp, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture))
             .Skip((CurrentPage - 1) * MaxCheepsPerPage)
             .Take(MaxCheepsPerPage);
