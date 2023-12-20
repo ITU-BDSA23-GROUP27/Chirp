@@ -104,16 +104,18 @@ public class PublicModel : BasePageModel
         StartPage = Math.Max(1, CurrentPage - DisplayRange / 2);
         EndPage = Math.Min(TotalPageCount, StartPage + DisplayRange - 1);
 
-        if (EndPage - StartPage + 1 < DisplayRange)
+        if (EndPage - StartPage + 1 >= DisplayRange)
         {
-            if (StartPage > 1)
-            {
-                StartPage = Math.Max(1, EndPage - DisplayRange + 1);
-            }
-            else if (EndPage < TotalPageCount)
-            {
-                EndPage = Math.Min(TotalPageCount, StartPage + DisplayRange - 1);
-            }
+            return Task.CompletedTask;
+        }
+
+        if (StartPage > 1)
+        {
+            StartPage = Math.Max(1, EndPage - DisplayRange + 1);
+        }
+        else if (EndPage < TotalPageCount)
+        {
+            EndPage = Math.Min(TotalPageCount, StartPage + DisplayRange - 1);
         }
 
         return Task.CompletedTask;
