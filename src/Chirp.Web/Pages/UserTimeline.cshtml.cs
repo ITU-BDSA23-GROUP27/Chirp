@@ -69,24 +69,13 @@ public class UserTimelineModel : BasePageModel
             }
         }
         
-        if (User.Identity?.IsAuthenticated == false) //TODO Unnecessary code? 
+        try
         {
-            try
-            {
-                //TODO Problem: Can't find github authors in http since it makes it lowercase e.g. "/Tien197" -> "/tien197" (Might be a local-only problem)
-                var existingUser = await _userRepository.GetUserByName(user);
-                
-                if (existingUser is null)
-                {
-                    throw new ArgumentException("User does not exist: ", nameof(user));
-                }
-                
-                // show cheeps of user
-            }
-            catch (ArgumentException)
-            {
-                return RedirectToPage("/Public");
-            }
+            var existingUser = await _userRepository.GetUserByName(user); 
+        }
+        catch (ArgumentException)
+        {
+            return RedirectToPage("/Error");
         }
         
         //The following if statement has been made with the help of CHAT-GPT

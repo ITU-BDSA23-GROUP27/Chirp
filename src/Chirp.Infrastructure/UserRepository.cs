@@ -20,8 +20,13 @@ public class UserRepository : IUserRepository
 
     public async Task<UserDto> GetUserByName(string userName)
     {
-        var user = await _context.Users.FirstAsync(u => u.Name == userName);
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Name == userName);
 
+        if (user is null)
+        {
+            throw new ArgumentException("User does not exist: ", nameof(user));
+        }
+        
         return new UserDto
         {
             Id = user.Id,
