@@ -11,7 +11,7 @@ public class FollowerRepositoryTests
     private readonly FollowerRepository _followerRepository;
     private readonly UserRepository _userRepository;
 
-    public FollowerRepositoryTests(ITestOutputHelper testOutputHelper)
+    public FollowerRepositoryTests()
     {
         var connection = new SqliteConnection("DataSource=:memory:");
         connection.Open();
