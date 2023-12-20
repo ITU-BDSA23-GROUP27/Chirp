@@ -6,6 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure;
 
+/// <summary>
+/// Repository for handling Cheeps in the Chirp application.
+/// A Cheep is a representation of a post in the Chirp application.
+/// Cheeps are used for users to post messages and to display messages on the timelines.
+/// </summary>
+
 public class CheepRepository : ICheepRepository
 {
     private readonly ChirpContext _context;
@@ -43,13 +49,6 @@ public class CheepRepository : ICheepRepository
         var cheeps = await GetCheeps();
         return cheeps.Where(c => c.UserName == userName);
     }
-    
-    public async Task<IEnumerable<CheepDto>> GetCheepsFromUserPage(string userName, int page)
-    {
-        var cheepsFromUser = await GetCheepsFromUser(userName);
-        return cheepsFromUser.Skip((page - 1) * PageLimit).Take(PageLimit);
-    }
-    
     public async Task CreateCheep(CheepDto cheep)
     {
         var existingUser = await _context.Users.SingleOrDefaultAsync(u => u.Name == cheep.UserName);

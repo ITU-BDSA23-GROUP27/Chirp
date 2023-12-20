@@ -2,6 +2,10 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 namespace Chirp.Web.Pages;
 
+/// <summary>
+/// PageModel for the Error page that is shown when an error occurs.
+/// </summary>
+
 [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
 [IgnoreAntiforgeryToken]
 public class ErrorModel : BasePageModel

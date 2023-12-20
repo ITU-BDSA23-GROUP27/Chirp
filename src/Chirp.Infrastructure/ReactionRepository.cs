@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chirp.Infrastructure;
 
+/// <summary>
+/// Repository for handling reactions to Cheeps from Users e.g. likes and comments.
+/// </summary>
 public class ReactionRepository : IReactionRepository
 {
     private readonly ChirpContext _context;
@@ -23,23 +26,6 @@ public class ReactionRepository : IReactionRepository
 
         return likes.Count;
     }
-
-    public async Task<IEnumerable<ReactionDto>> GetLikesFromCheep(Guid cheepId)
-    {
-        var likes = await _context.Reactions
-            .OrderByDescending(r => r.TimeStamp)
-            .Where(r => r.ReactionType == ReactionType.Like && r.CheepId == cheepId)
-            .Select<Reaction, ReactionDto>(r => new ReactionDto()
-                {
-                    UserId = r.UserId,
-                    CheepId = r.CheepId,
-                    TimeStamp = r.TimeStamp.ToString(CultureInfo.InvariantCulture)
-                }
-            ).ToListAsync();
-
-        return likes;
-    }
-
     public async Task<bool> HasUserLiked(Guid cheepId, string userName)
     {
         var user = await _context.Users.SingleOrDefaultAsync(u => u.Name == userName);
@@ -56,7 +42,6 @@ public class ReactionRepository : IReactionRepository
 
         return hasUserLiked;
     }
-
     public async Task<IEnumerable<ReactionDto>> GetCommentsFromCheep(Guid cheepId)
     {
         var comments = await _context.Reactions
@@ -73,7 +58,6 @@ public class ReactionRepository : IReactionRepository
 
         return comments;
     }
-    
     public async Task LikeCheep(Guid cheepId, string userName)
     {
         var cheep = await _context.Cheeps.SingleOrDefaultAsync(c => c.CheepId == cheepId);
@@ -124,7 +108,6 @@ public class ReactionRepository : IReactionRepository
         
         await _context.SaveChangesAsync();
     }
-
     public async Task CommentOnCheep(ReactionDto comment)
     {
         var cheep = await _context.Cheeps.SingleOrDefaultAsync(c => c.CheepId == comment.CheepId);

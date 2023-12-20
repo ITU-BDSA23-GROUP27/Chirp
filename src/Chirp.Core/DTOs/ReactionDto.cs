@@ -2,6 +2,10 @@ using FluentValidation;
 
 namespace Chirp.Core.DTOs;
 
+/// <summary>
+/// Data Transfer Object (DTO) for handling reactions in the Chirp application.
+/// </summary>
+
 public class ReactionDto
 {
     public Guid UserId { get; set; }

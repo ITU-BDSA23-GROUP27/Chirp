@@ -1,5 +1,8 @@
 namespace Chirp.Infrastructure.Entities;
 
+/// <summary>
+/// A Reaction is a representation of a reaction from a User to a Cheep e.g. likes and comments.
+/// </summary>
 public class Reaction
 {
     public Guid UserId { get; set; }

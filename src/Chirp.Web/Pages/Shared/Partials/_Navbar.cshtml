@@ -3,7 +3,7 @@
 @inject UserManager<User> UserManager
 
 <nav class="navbar">
-    @if (User.Identity?.IsAuthenticated == true)
+    @if (User.Identity?.IsAuthenticated == true) 
     {
         <div>
             <a class='@(Context.Request.Path == "/"        ? "active" : "")' href="/">Home </a>

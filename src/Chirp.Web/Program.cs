@@ -11,10 +11,21 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+string connectionString;
 
-builder.Services.AddDbContext<ChirpContext>(options =>
-    options.UseSqlite(connectionString));
+if (builder.Environment.IsDevelopment())
+{
+    connectionString = builder.Configuration.GetConnectionString("Docker") ?? throw new InvalidOperationException("Connection string was not found.");
+}
+else
+{
+    connectionString = builder.Configuration.GetConnectionString("NewConnectionString") ?? throw new InvalidOperationException("Connection string was not found.");
+}
+
+builder.Services.AddDbContext<ChirpContext>(options => 
+    options.UseSqlServer(connectionString, setting => 
+        setting.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ChirpContext>();
@@ -57,13 +68,13 @@ builder.Services.AddRazorPages()
             options.Conventions.AuthorizePage("/SeedDb");
         });
         
-builder.Services.AddScoped<ICheepRepository, Chirp.Infrastructure.CheepRepository>();
+builder.Services.AddScoped<ICheepRepository, CheepRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IFollowerRepository, FollowerRepository>();
 builder.Services.AddScoped<IReactionRepository, ReactionRepository>();
 
 builder.Services.AddScoped<IValidator<CheepDto>, CheepValidator>();
-builder.Services.AddScoped<IValidator<CommentDto>, CommentValidator>();
+builder.Services.AddScoped<IValidator<ReactionDto>, ReactionValidator>();
 
 var app = builder.Build();
 

@@ -2,16 +2,18 @@ using FluentValidation;
 
 namespace Chirp.Core.DTOs;
 
+/// <summary>
+/// Data Transfer Object (DTO) for Cheeps in the Chirp application.
+/// A Cheep is a representation of a post in the Chirp application.
+/// Cheeps are used for users to post messages and to display messages on the timelines.
+/// </summary>
+
 public class CheepDto
 {
-    
-    // made to public records instead ?
     public Guid Id { get; set; }
     public required string Message { get; set; }
     public required string TimeStamp { get; set; }
     public required string UserName { get; set; }
-    public bool IsCurrentUserFollowing { get; set; }
-
 }
 
 public class CheepValidator : AbstractValidator<CheepDto>
