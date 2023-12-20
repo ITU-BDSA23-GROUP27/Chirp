@@ -38,9 +38,7 @@ public class FollowerRepositoryTests
         await _followerRepository.AddOrRemoveFollower(user.Name, follower.Name);
 
         // Act
-            
-        var followersTask = await _followerRepository.GetFollowersFromUser(user.Name);
-        var followers = followersTask;
+        var followers = await _followerRepository.GetFollowersFromUser(user.Name);
 
         // Assert
         Assert.Contains(followers, f => f.Name == follower.Name);
