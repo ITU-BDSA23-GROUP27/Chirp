@@ -338,7 +338,7 @@ Pros:
 
 1. Simplicity: Setting up GitHub OAuth is very simple. You only need to create a GitHub OAuth application and add the client id and client secret to the application. You don't need to set up a database or anything else.
 
-2. Documentation: GitHub provides clear and extensive documentation for OAuth, and integrating it with ASP.NET Identity is also well documented. This makes it easy to set up and use.
+2. Documentation: GitHub provides clear and extensive documentation for OAuth and integrating it with ASP.NET Identity is also well documented. This makes it easy to set up and use.
 
 3. Community Support: Since GitHub OAuth is widely used, there is a lot of community support available. If you run into any problems, you can easily find a solution online.
 
@@ -368,3 +368,9 @@ Cons:
 2. Complexity: The additional features and flexibility of B2C can introduce complexity, making the initial setup take more time compared to a simpler solution like GitHub OAuth.
 
 
+
+## Conclusion
+
+GitHub OAuth with Identity was choosen for simplicity and ease of use for this mini project. It is easy to set up and use, and it provides all the features we need for _Chirp!_, and using GitHub is a functional requirement. 
+
+In contrast, B2C might be better for this project, if _Chirp!_ one day have a large community with a lot of concurrent users, and we need to support multiple identity providers. 
