@@ -333,6 +333,7 @@ Qodana was used to check the quality of our code. It was able to detect multiple
 The pros and cons of using GitHub OAuth with Identity and AAD B2C with Identity are discussed below.
 
 ## GitHub OAuth with Identity
+
 Pros:
 
 1. Simplicity: Setting up GitHub OAuth is very simple. You only need to create a GitHub OAuth application and add the client id and client secret to the application. You don't need to set up a database or anything else.
@@ -351,4 +352,19 @@ Cons:
 
 
 ## Azure Active Directory B2C with Identity
+
+Pros: 
+
+1. Identity Provider Flexibility: B2C supports many identity providers, including GitHub, Google, Facebook, Microsoft, etc. This means that users can use their existing accounts to log in to your application.
+
+2. Customization and Branding: B2C allows you to customize the login page and add your own branding. This allows you to create a consistent user experience across all your applications.
+
+3. Scalability and Enterprise Features: B2C is designed for enterprise applications, so it has many features that are useful for enterprise applications, such as multi-factor authentication, single sign-on, and more.
+
+Cons:
+
+1. Learning Curve: Setting up B2C might have a steeper learning curve, especially if you are not familiar with B2C. However, once you learn how to use it, it is very easy to use.
+
+2. Complexity: The additional features and flexibility of B2C can introduce complexity, making the initial setup take more time compared to a simpler solution like GitHub OAuth.
+
 
