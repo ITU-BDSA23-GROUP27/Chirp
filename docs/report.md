@@ -113,9 +113,9 @@ Both unauthorized and authorized can actually go into the Seed DB page, however 
 
 ## Build, test, release, and deployment
 
-A new pull request is created when a branch needs to be merged into the master branch. Two GitHub Actions workflows get started: ‘CodeQL’ and ‘.NET (build and test)’, where the ‘CodeQL’ checks three times (CodeQL, Analyze (javascript) and Analyze (csharp)) and  ‘.NET’ workflow checks twice for push and pull request. 
+A new pull request is created when a branch needs to be merged into the master branch. When a pull request is created, two GitHub Actions workflows get started/triggered: ‘CodeQL’ and ‘.NET (build and test)’, where the ‘CodeQL’ checks three times (CodeQL, Analyze (javascript) and Analyze (csharp)) and ‘.NET’ workflow checks twice for push and pull request.
 
-The pull request gets merged into the master branch when all checks succeed.  Two other workflows get triggered by the merge. The ‘Publish’ workflow makes one check and is responsible for  publishing a release with a given tag. The ‘Build and deploy ASP.Net Core app to Azure Web App’ workflow makes two checks for both building and deploying and is responsible for deploying the application into Azure. 
+The pull request gets merged into the master branch when all checks succeeds. Two other workflows get triggered by the merge from the pull request. The ‘Publish’ workflow makes one check and is responsible for publishing a release with a given tag. The ‘Build and deploy ASP.Net Core app to Azure Web App’ workflow makes two checks for both building and deploying and is responsible for deploying the application into Azure.
 
 <!-- image of UML activity diagram - Build, test, release, and deployment -->
 ![Process - Activity Diagram](images/Process_Activity_Diagram.png)
@@ -188,12 +188,12 @@ Here is a step-by-step guide on opening our Chirp application:
 git clone https://github.com/ITU-BDSA23-GROUP27/Chirp.git
 ```
 
-3. For the application to work docker is needed along with a package which is downloaded through this command: 
+3. For the application to work, Docker is needed along with a package which is downloaded through this command:
 ```bash
 docker pull mcr.microsoft.com/mssql/server:2022-latest
 ```
 
-4. Afterwards the docker server needs to be initialized:
+4. Afterwards the Docker server needs to be initialized:
 ```bash
 docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=YourNewStrong@Passw0rd" -p 1433:1433  --name sql1 --hostname sql1 -d mcr.microsoft.com/mssql/server:2022-latest
 ```
@@ -206,7 +206,7 @@ dotnet user-secrets set "authentication_github_clientId" "<GitHub clientid>" --p
 dotnet user-secrets set "authentication_github_clientSecret" "<GitHub client secret>" --project .\Chirp\src\Chirp.Web
 ```
 
-6. From here the application can be simply launched with the following command: 
+6. From here the application can be simply launched with the following command:
 ```bash
 dotnet run --project .\Chirp\src\Chirp.Web
 ```
@@ -225,11 +225,11 @@ dotnet run --project .\Chirp\src\Chirp.Web
 
 ### Unit/Integration tests
 
-In this category there are two test repositories: <span style="color:red;">(explain methods maybe?)</span>
+In this category, there are two test repositories: <span style="color:red;">(explain methods maybe?)</span>
 
-* Chirp.Infrastructure.Test: Which tests the repositories and their methods in different scenarios.
+* Chirp.Infrastructure.Test: is testing the repositories and their methods in different scenarios.
 
-* Chirp.Web.Test: Which tests the different methods used in the page models, meaning the functionality of the web application. 
+* Chirp.Web.Test: is testing the different methods used in the page models, meaning the functionality of the web application.
 
 Here is a step-by-step guide on how to run test suite locally:
 
@@ -255,18 +255,18 @@ dotnet test .\Chirp
 
 ### UI Testing
 
-The UI test utilizes the playwright library.  The following command:
+The UI test utilizes the Playwright library.  The following command:
 ```bash
 dotnet build pwsh bin/Debug/net7.0/playwright.ps1 install
 ```
 
-installs various browsers and tools to run UI tests.
+It installs various browsers and tools to run UI tests.
 
 This test will only work locally, so it requires that you have the app running in localhost.
 
-In order for playwright to log you in with your github account, you also need to do either of these two things:
+In order for Playwright to log you in with your GitHub account, you also need to do either of these two things:
 
-1. Environment variables for  EMAIL and PASSWORD have to be set in your environment system that matches your GitHub email and password respectively.
+1. Environment variables for EMAIL and PASSWORD have to be set in your environment system that matches your GitHub email and password respectively.
 
 2. Replace the field email and password values with your actual user information (which is fine as you will not share the code) in the file `test\PlaywrightTests\UnitTest1.cs`, line 19-20.
 
@@ -282,14 +282,14 @@ Note: A few scenarios can occur when trying to authenticate with GitHub:
 Playwright will automatically fill in the information and sign in - if successful, it will redirect you to the homepage and continue doing the rest, otherwise the test will fail if the authentication is rejected.
 
 
-2. In case you have made too many GitHub request, the reauthorization page may appear instead
+2. In case you have made too many GitHub request, the reauthorization page may appear instead.
 
 <!-- image of GitHub reauthorization page -->
 ![GitHub reauthorization page](images/GitHub_Reauthorization_SeedDB.png)
 
 In that case, you will have to manually click the authorize button.
 
-3. Upon signing in, there might be a situation where you will be asked to authenticate  via the mobile GitHub Authentication app. This shouldn’t happen by default, but it could still happen as we have encountered it before. Then you will have to authorize it yourself from the phone (if the timer runs out on the UI test while trying to authenticate  from your phone, you could increase the timer in UnitTest1.cs line 77 (currently set to 4 seconds)).
+3. Upon signing in, there might be a situation where you will be asked to authenticate via the mobile GitHub Authentication app. This shouldn’t happen by default, but it could still happen as we have encountered it before. Then you will have to authorize it yourself from the phone (if the timer runs out on the UI test while trying to authenticate from your phone, you could increase the timer in UnitTest1.cs line 77 (currently set to 4 seconds)).
 
 In most cases, the first situation will occur where you are not required to do more other than running the test after configuring your login.
 
@@ -301,14 +301,13 @@ In most cases, the first situation will occur where you are not required to do m
 
 ## License
 
-We chose the software license MIT which only requires the preservation of copyright and license notices. This license was chosen to put as few restrictions on the code as possible. Which would allow others to use our code freely in any project/work seen fit.
+We chose the software license MIT which only requires the preservation of copyright and license notices. This license was chosen to put as few restrictions on the code as possible, which would allow others to use our code freely in any project/work seen fit.
 
 ### ChatGPT
-ChatGPT was used throughout the development of the application whenever there was a specific scenario which we were not able to fix ourselves. This is also noted in the code with something similar to: “This was made with the help of ChatGPT”.
+ChatGPT was used throughout the development of the application whenever there was a specific scenario which we were not able to fix ourselves. This is also noted in the code with something similar to: “This was made with the help of ChatGPT”. We have used ChatGPT for trivial things such as generating a fitting paragraph for our Privacy page. Other than that, we have used ChatGPT to ask questions when we were in doubt and needed a quick answer.
 
 ### CoPilot
-CoPilot was used as well in the development but more as a word/sentence completer rather than an AI helper. It was especially useful when making tests, since it was able to detect the structure of the other tests and base its answers accordingly. But other than that CoPilot was not that useful.
-
+CoPilot was used as well in the development but more as a word/sentence completer rather than an AI helper. It was especially useful when making tests, since it was able to detect the structure of the other tests and base its answers accordingly. Because of that, creating tests of the different methods in the repositories was quite fast. At some points, CoPilot has been good at suggesting code that could guide us to the correct solution, or suggesting code that we needed. However most of the times, it generated code that we couldn't use and these moments made CoPilot not that useful.  
 
 
 
