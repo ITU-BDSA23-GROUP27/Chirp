@@ -149,7 +149,7 @@ We have one unresolved functionality which is the comment feature. As of right n
 ### Flow of Activities
 
 <!-- image of the flow of activities -->
-![Activity Flow]()
+![Flow of Activities](images/Flow_of_Activities_Diagram.png)
 
 Our activity flow was a bit mixed and thereby consisted of two different flows which changed throughout development of the project/application:
 
