@@ -225,7 +225,7 @@ dotnet run --project .\Chirp\src\Chirp.Web
 
 ### Unit/Integration tests
 
-In this category, there are two test repositories: <span style="color:red;">(explain methods maybe?)</span>
+In this category, there are two test repositories:
 
 * Chirp.Infrastructure.Test: is testing the repositories and their methods in different scenarios.
 
