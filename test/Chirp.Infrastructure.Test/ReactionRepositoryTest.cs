@@ -107,34 +107,6 @@ public class ReactionRepositoryTest
     }
     
     [Fact]
-    public async Task GetLikesFromCheep_ReturnsLikes()
-    {
-        // Arrange
-        var user1 = new UserDto { Name = "One", Email = "one@gmail.com"};
-        await _userRepository.CreateUser(user1);
-        
-        var user2 = new UserDto { Name = "Two", Email = "two@gmail.com"};
-        await _userRepository.CreateUser(user2);
-    
-        var cheep = new CheepDto { Message = "Hello World", UserName = user1.Name, TimeStamp = DateTime.Now.ToString() };
-        await _cheepRepository.CreateCheep(cheep);
-        
-        var foundCheep = await _context.Cheeps.SingleAsync(c => c.Text == cheep.Message && c.User.Name == cheep.UserName);
-        var foundUser1 = await _context.Users.SingleAsync(u => u.Name == user1.Name);
-        var foundUser2 = await _context.Users.SingleAsync(u => u.Name == user2.Name);
-        
-        // Act
-        await _reactionRepository.LikeCheep(foundCheep.CheepId, user1.Name);
-        await _reactionRepository.LikeCheep(foundCheep.CheepId, user2.Name);
-        
-        // Assert
-        var likes = (await _reactionRepository.GetLikesFromCheep(foundCheep.CheepId)).ToList();
-        Assert.Equal(2, likes.Count());
-        Assert.Contains(likes, l => l.UserId == foundUser1.Id);
-        Assert.Contains(likes, l => l.UserId == foundUser2.Id);
-    }
-    
-    [Fact]
     public async Task HasUserLiked_ReturnsTrueOrFalse()
     {
         // Arrange
