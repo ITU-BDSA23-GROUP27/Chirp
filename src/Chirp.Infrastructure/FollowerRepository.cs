@@ -24,7 +24,7 @@ public class FollowerRepository : IFollowerRepository
         var followers = await _context.Followers
             .Where(f => f.FolloweeUser.Name == userName)
             .Select(f => f.FollowerUser)
-            .Select<User, UserDto>(f => new UserDto()
+            .Select<User, UserDto>(f => new UserDto
             {
                 Id = f.Id,
                 Name = f.Name,
@@ -39,7 +39,7 @@ public class FollowerRepository : IFollowerRepository
         var followees = await _context.Followers
             .Where(f => f.FollowerUser.Name == userName)
             .Select(f => f.FolloweeUser)
-            .Select<User, UserDto>(f => new UserDto()
+            .Select<User, UserDto>(f => new UserDto
             {
                 Id = f.Id,
                 Name = f.Name,
@@ -77,7 +77,7 @@ public class FollowerRepository : IFollowerRepository
             _context.Followers.Remove(existingFollower);
         }
 
-        var newFollower = new Follower()
+        var newFollower = new Follower
         {
             FollowerId = follower.Id,
             FolloweeId = user.Id,

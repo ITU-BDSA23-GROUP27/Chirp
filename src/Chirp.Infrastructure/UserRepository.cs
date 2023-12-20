@@ -22,7 +22,7 @@ public class UserRepository : IUserRepository
     {
         var user = await _context.Users.FirstAsync(u => u.Name == userName);
 
-        return new UserDto()
+        return new UserDto
         {
             Id = user.Id,
             Name = user.Name,
