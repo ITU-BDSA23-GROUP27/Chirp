@@ -1,8 +1,4 @@
-﻿@using Chirp.Infrastructure.Entities
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
-
-<nav class="navbar">
+﻿<nav class="navbar">
     @if (User.Identity?.IsAuthenticated == true) 
     {
         <div>
