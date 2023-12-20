@@ -51,7 +51,7 @@ public class UserRepository : IUserRepository
         {
             Id = new Guid(),
             Name = user.Name,
-            Email = user.Email,
+            Email = user.Email
         };
         
         _context.Users.Add(newUser);

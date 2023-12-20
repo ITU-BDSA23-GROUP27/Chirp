@@ -25,7 +25,7 @@ public class NavigationPartialModel : PageModel
     {
         var props = new AuthenticationProperties
         {
-            RedirectUri = Url.Page("/Error"),
+            RedirectUri = Url.Page("/Error")
         };
         return await Task.FromResult<IActionResult>(Challenge(props));
     }
