@@ -7,14 +7,12 @@ namespace Chirp.Infrastructure.Test
 {
     public class FollowerRepositoryTests 
     {
-        private readonly ITestOutputHelper _testOutputHelper;
         private readonly ChirpContext _context;
         private readonly FollowerRepository _followerRepository;
         private readonly UserRepository _userRepository;
 
         public FollowerRepositoryTests(ITestOutputHelper testOutputHelper)
         {
-            _testOutputHelper = testOutputHelper;
             var connection = new SqliteConnection("DataSource=:memory:");
             connection.Open();
 
