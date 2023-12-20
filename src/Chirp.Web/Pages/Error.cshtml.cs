@@ -1,7 +1,5 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
 namespace Chirp.Web.Pages;
 
 /// <summary>
@@ -13,16 +11,6 @@ namespace Chirp.Web.Pages;
 public class ErrorModel : BasePageModel
 {
     public string? RequestId { get; set; }
-
-    public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
-
-    private readonly ILogger<ErrorModel> _logger;
-
-    public ErrorModel(ILogger<ErrorModel> logger)
-    {
-        _logger = logger;
-    }
-
     public Task OnGet()
     {
         RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;

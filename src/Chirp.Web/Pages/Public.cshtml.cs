@@ -104,16 +104,18 @@ public class PublicModel : BasePageModel
         StartPage = Math.Max(1, CurrentPage - DisplayRange / 2);
         EndPage = Math.Min(TotalPageCount, StartPage + DisplayRange - 1);
 
-        if (EndPage - StartPage + 1 < DisplayRange)
+        if (EndPage - StartPage + 1 >= DisplayRange)
         {
-            if (StartPage > 1)
-            {
-                StartPage = Math.Max(1, EndPage - DisplayRange + 1);
-            }
-            else if (EndPage < TotalPageCount)
-            {
-                EndPage = Math.Min(TotalPageCount, StartPage + DisplayRange - 1);
-            }
+            return Task.CompletedTask;
+        }
+
+        if (StartPage > 1)
+        {
+            StartPage = Math.Max(1, EndPage - DisplayRange + 1);
+        }
+        else if (EndPage < TotalPageCount)
+        {
+            EndPage = Math.Min(TotalPageCount, StartPage + DisplayRange - 1);
         }
 
         return Task.CompletedTask;
@@ -129,10 +131,12 @@ public class PublicModel : BasePageModel
         return await HandleFollow(userName, followerName, _followerRepository);
 
     }
-public async Task<IActionResult> OnPostLikeCheep(Guid cheepId, string userName)
+    
+    public async Task<IActionResult> OnPostLikeCheep(Guid cheepId, string userName)
     {
         return await HandleLike(cheepId, userName, _reactionRepository);
     }
+    
     public async Task<int> GetLikeCount(Guid cheepId)
     {
         return await HandleGetLikeCount(cheepId, _reactionRepository);

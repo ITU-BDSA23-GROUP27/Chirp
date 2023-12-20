@@ -47,7 +47,7 @@ public class ReactionRepository : IReactionRepository
         var comments = await _context.Reactions
             .OrderByDescending(r => r.TimeStamp)
             .Where(r => r.ReactionType == ReactionType.Comment && r.CheepId == cheepId)
-            .Select<Reaction, ReactionDto>(r => new ReactionDto()
+            .Select<Reaction, ReactionDto>(r => new ReactionDto
                 {
                     UserId = r.UserId,
                     CheepId = r.CheepId,
@@ -72,7 +72,7 @@ public class ReactionRepository : IReactionRepository
             throw new ArgumentException("Error: User not found when adding reaction");
         }
         
-        var newLike = new Reaction()
+        var newLike = new Reaction
         {
             UserId = user.Id,
             CheepId = cheepId,
@@ -122,7 +122,7 @@ public class ReactionRepository : IReactionRepository
             throw new ArgumentException("Error: User or Cheep not found when adding reaction");
         }
         
-        var newComment = new Reaction()
+        var newComment = new Reaction
         {
             UserId = comment.UserId,
             CheepId = comment.CheepId,

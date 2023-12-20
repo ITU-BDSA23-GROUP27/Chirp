@@ -11,9 +11,9 @@ namespace Chirp.Core.DTOs;
 public class CheepDto
 {
     public Guid Id { get; set; }
-    public required string Message { get; set; }
-    public required string TimeStamp { get; set; }
-    public required string UserName { get; set; }
+    public required string Message { get; init; }
+    public required string TimeStamp { get; init; }
+    public required string UserName { get; init; }
 }
 
 public class CheepValidator : AbstractValidator<CheepDto>
