@@ -309,7 +309,8 @@ ChatGPT was used throughout the development of the application whenever there wa
 ### CoPilot
 CoPilot was used as well in the development but more as a word/sentence completer rather than an AI helper. It was especially useful when making tests, since it was able to detect the structure of the other tests and base its answers accordingly. Because of that, creating tests of the different methods in the repositories was quite fast. At some points, CoPilot has been good at suggesting code that could guide us to the correct solution, or suggesting code that we needed. However most of the times, it generated code that we couldn't use and these moments made CoPilot not that useful.  
 
-
+### Qodana
+Qodana was used to check the quality of our code. It was able to detect multiple minor issues that we were not aware of, such as unused variables, unused methods, and unused namespaces. It also detected some issues with the code that we were able to fix. However, it also detected some issues that we were not able to fix, such as the use of `var` instead of the actual type. We were not able to fix this issue because it would require us to change the type of the variable, which would then require us to change the type of the variable in all the other places where it is used. This would be a lot of work and we did not see the benefit of doing it.
 
 
 
