@@ -80,10 +80,10 @@ The different layers of the Onion architecture represent the projects in the sol
 
 The user activity diagram below shows all possible journeys a user can take. From the starting/entry point, each subset of a path that the user is taking, by following the arrows, is his/her user journey.
 
-<!-- user activity image -->
+<!-- user activity - general -->
 ![User activity diagram](images/User_Activity_Diagram.png)
 
-One thing that is not shown in the diagram is that you can from any page also navigate to another page directly, either by clicking on the navigation menu (if it exists) or manually input its endpoints (or use the hidden shortcuts, alt+1 to 5). 
+One thing that is not shown in the diagram above is that you can from any page also navigate to another page directly, either by clicking on the navigation menu (if it exists) or manually input its endpoints (or use the hidden shortcuts, alt+1 to 5). 
 
 If an unauthenticated user tries to access a page that requires to be authenticated, you will be redirected to the GitHub login site instead, or it will log you in if you have your user information stored in the cookies.
 
@@ -97,6 +97,12 @@ Both unauthorized and authorized can actually go into the Seed DB page, however 
 <!-- image of authorized Seed DB page -->
 ![Authorized Seed DB page](images/Authorized_SeedDB.png)
 
+
+
+Below is a full user journey to the implmentation of our UI-test (UI testing is described later).
+
+<!-- user activity - UI Test -->
+![Authorized Seed DB page](images/User_Activity_Diagram2.png)
 
 
 
