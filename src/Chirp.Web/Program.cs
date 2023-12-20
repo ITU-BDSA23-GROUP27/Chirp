@@ -105,7 +105,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseCookiePolicy(new CookiePolicyOptions()
+app.UseCookiePolicy(new CookiePolicyOptions
 {
     HttpOnly = HttpOnlyPolicy.Always,
     Secure = CookieSecurePolicy.Always,

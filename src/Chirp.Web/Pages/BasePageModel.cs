@@ -102,7 +102,7 @@ public class BasePageModel : PageModel
     protected async Task<IActionResult> HandleComment(string? comment, Guid userId, Guid cheepId, IValidator<ReactionDto> validator, IReactionRepository reactionRepository)
     {
 
-        var reactionDto = new ReactionDto()
+        var reactionDto = new ReactionDto
         {
             UserId = userId,
             CheepId = cheepId,
