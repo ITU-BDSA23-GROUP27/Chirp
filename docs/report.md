@@ -67,7 +67,7 @@ The different layers of the Onion architecture represent the projects in the sol
 The user activity diagram below shows all possible journeys a user can take. From the starting/entry point, each subset of a path that the user is taking, by following the arrows, is his/her user journey.
 
 <!-- user activity image -->
-![User activity diagram](images/User_Activity_Diagram.jpg)
+![User activity diagram](images/User_Activity_Diagram.png)
 
 One thing that is not shown in the diagram is that you can from any page also navigate to another page directly, either by clicking on the navigation menu (if it exists) or manually input its endpoints (or use the hidden shortcuts, alt+1 to 5). 
 
