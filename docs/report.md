@@ -24,7 +24,8 @@ toc-own-page: true
 
 ## Domain model
 
- <!-- ![Illustration of the _Chirp!_ data model as UML class diagram.](docs/images/example_domain_model.png) -->
+<!-- Domain model UML -->
+![Domain_Model_UML](images/Domain_Model_UML.png)
 
 The illustration above depicts our domain model which might be hard to see properly. Therefore here is a link for a better depiction: [Figma](https://www.figma.com/file/Yn2gFlonZxWxXUJqc8cUVe/Data-Model-UML-(Chirp)?type=whiteboard&node-id=0%3A1&t=pohbXJHrRdmW6X85-1)
 
