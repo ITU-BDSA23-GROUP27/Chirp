@@ -11,9 +11,6 @@ namespace Chirp.Web.Pages;
 public class ErrorModel : BasePageModel
 {
     public string? RequestId { get; set; }
-
-    public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
-
     public Task OnGet()
     {
         RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
