@@ -20,14 +20,13 @@ toc-own-page: true
 
 
 
-
 # Design and Architecture of _Chirp!_
 
 ## Domain model
 
  <!-- ![Illustration of the _Chirp!_ data model as UML class diagram.](docs/images/example_domain_model.png) -->
 
-The illustration above depicts our domain model which might be hard to see properly. Therefore here is a link for a better depiction: [Figma]([../session_08/README_PROJECT.md/#1b-azure-ad-b2c--github](https://www.figma.com/file/Yn2gFlonZxWxXUJqc8cUVe/Data-Model-UML-(Chirp)?type=whiteboard&node-id=0%3A1&t=pohbXJHrRdmW6X85-1))
+The illustration above depicts our domain model which might be hard to see properly. Therefore here is a link for a better depiction: [Figma](https://www.figma.com/file/Yn2gFlonZxWxXUJqc8cUVe/Data-Model-UML-(Chirp)?type=whiteboard&node-id=0%3A1&t=pohbXJHrRdmW6X85-1)
 
 Due note that the diagrams use different colored arrows, which is purely for vanity sake thereby making it easier to see which line corresponds to which object.
 
