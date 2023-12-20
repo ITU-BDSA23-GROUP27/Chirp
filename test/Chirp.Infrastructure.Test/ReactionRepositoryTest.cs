@@ -8,15 +8,13 @@ namespace Chirp.Infrastructure.Test;
 
 public class ReactionRepositoryTest
 {
-    private readonly ITestOutputHelper _testOutputHelper;
     private readonly ChirpContext _context;
     private readonly ReactionRepository _reactionRepository;
     private readonly UserRepository _userRepository;
     private readonly CheepRepository _cheepRepository;
     
-    public ReactionRepositoryTest(ITestOutputHelper testOutputHelper)
+    public ReactionRepositoryTest()
     {
-        _testOutputHelper = testOutputHelper;
         var connection = new SqliteConnection("DataSource=:memory:");
         connection.Open();
 
@@ -25,7 +23,7 @@ public class ReactionRepositoryTest
             .Options;
 
         _context = new ChirpContext(options);
-        _context.Database.Migrate(); // TODO Get checked by TA
+        _context.Database.Migrate();
 
         _reactionRepository = new ReactionRepository(_context);
         _cheepRepository = new CheepRepository(_context);
