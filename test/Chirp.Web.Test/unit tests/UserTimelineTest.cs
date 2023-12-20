@@ -87,7 +87,7 @@ public class UserTimelineTest
         // Arrange
         // We could change the amount of dto objects returned from the repository to test the logic
         _cheepRepositoryMock.Setup(repo => repo.GetCheepsFromUser(It.IsAny<string>()))
-            .ReturnsAsync(new List<CheepDto> {});
+            .ReturnsAsync(new List<CheepDto>());
         
         // Act
         var totalPages = await _userTimelineModel.GetTotalPages("testUser");
