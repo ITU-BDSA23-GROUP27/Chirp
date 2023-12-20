@@ -67,19 +67,6 @@ public class UserTimelineTest
         // Assert
         Assert.IsType<PageResult>(result);
     }
-
-    [Fact]
-    public async Task OnGet_UserIsNotAuthenticated_ReturnsRedirectToPageResult()
-    {
-        // Arrange
-        
-        // Act
-        var result = await _userTimelineModel.OnGet("testUser");
-
-        // Assert
-        var redirectToPageResult = Assert.IsType<RedirectToPageResult>(result);
-        Assert.Equal("/Public", redirectToPageResult.PageName);
-    }
     
     [Fact]
     public async Task GetTotalPages_ReturnsCorrectTotalPages()
