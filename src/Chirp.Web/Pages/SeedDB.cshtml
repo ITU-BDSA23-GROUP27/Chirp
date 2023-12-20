@@ -4,7 +4,7 @@
 }
 
 @* TODO - temporary implementation - expand with user manager role *@
-@if (!(new[] { "PhiVaLo", "Tien197", "PTS404", "HelgeCPH", "ondfisk" }).Contains(User.Identity?.Name))
+@if (!new[] { "PhiVaLo", "Tien197", "PTS404", "HelgeCPH", "ondfisk" }.Contains(User.Identity?.Name))
 {
     <h2 id="red">Access Denied</h2>
     <p>Sorry, this page is only accessible to the developer.</p>
