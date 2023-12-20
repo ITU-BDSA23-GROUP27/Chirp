@@ -81,7 +81,7 @@ public class BasePageModel : PageModel
     {
         if (userName is null)
         {
-            throw new ArgumentNullException($"Username is null");
+            throw new ArgumentNullException("Username is null");
         }
         
         await reactionRepository.LikeCheep(cheepId, userName);
