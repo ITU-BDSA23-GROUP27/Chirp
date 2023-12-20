@@ -24,10 +24,19 @@ toc-own-page: true
 
 ## Domain model
 
-<!-- Domain model UML -->
-![Domain_Model_UML](images/Domain_Model_UML.png)
+<!-- Chirp.Core Domain model UML -->
+![Chirp.Core_Domain_Model](images/Chirp.Core_Domain_Model.png)
 
-The illustration above depicts our domain model which might be hard to see properly. Therefore here is a link for a better depiction: [Figma](https://www.figma.com/file/Yn2gFlonZxWxXUJqc8cUVe/Data-Model-UML-(Chirp)?type=whiteboard&node-id=0%3A1&t=pohbXJHrRdmW6X85-1)
+<!-- Chirp.Infrastructure Domain model UML -->
+![Chirp.Infrastructure_Domain_Model](images/Chirp.Infrastructure_Domain_Model.png)
+
+<!-- Chirp.Web Domain model UML -->
+![Chirp.Web_Domain_Model](images/Chirp.Web_Domain_Model.png)
+
+The illustration above depicts our domain model of Chirp.Core, Chirp.Infrastructure and Chirp.Web which might be hard to see properly. Therefore here is a link for a better depiction: [Figma](https://www.figma.com/file/Yn2gFlonZxWxXUJqc8cUVe/Data-Model-UML-(Chirp)?type=whiteboard&node-id=0%3A1&t=pohbXJHrRdmW6X85-1)
+
+<!-- Legends in Domain model UML -->
+![Legends_Domain_Model](images/Legends_Domain_Model.png)
 
 Due note that the diagrams use different colored arrows, which is purely for vanity sake thereby making it easier to see which line corresponds to which object.
 
