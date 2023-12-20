@@ -26,7 +26,7 @@ public class UserRepository : IUserRepository
         {
             Id = user.Id,
             Name = user.Name,
-            Email = user.Email ?? string.Empty,
+            Email = user.Email ?? string.Empty
         };
     }
     public async Task CreateUser(UserDto user)

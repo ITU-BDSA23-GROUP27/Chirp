@@ -34,7 +34,7 @@ public class PublicTest
         {
             HttpContext = new DefaultHttpContext
             {
-                User = new ClaimsPrincipal(new ClaimsIdentity()),
+                User = new ClaimsPrincipal(new ClaimsIdentity())
             }
         };
 

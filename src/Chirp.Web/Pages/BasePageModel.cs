@@ -50,7 +50,7 @@ public class BasePageModel : PageModel
     {
         var props = new AuthenticationProperties
         {
-            RedirectUri = Url.Page("/"),
+            RedirectUri = Url.Page("/")
         };
         return await Task.FromResult<IActionResult>(Challenge(props));
     }
