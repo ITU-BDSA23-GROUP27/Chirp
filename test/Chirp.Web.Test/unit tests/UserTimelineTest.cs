@@ -41,106 +41,106 @@ public class UserTimelineTest
     
     
     [Fact]
-        public async Task OnGet_UserIsAuthenticated_ReturnsPageResult()
+    public async Task OnGet_UserIsAuthenticated_ReturnsPageResult()
+    {
+        // Arrange
+
+        var userClaims = new List<Claim>
         {
-            // Arrange
-
-            var userClaims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, "TestUser"),
-                new Claim(ClaimTypes.Authentication, "true")
-            };
-            
-            var userPrincipal = new ClaimsPrincipal(new ClaimsIdentity(userClaims, "mock"));
-            
-            _userTimelineModel.PageContext = new PageContext
-            {
-                HttpContext = new DefaultHttpContext
-                {
-                    User = userPrincipal
-                }
-            };
-
-            // Act
-            var result = await _userTimelineModel.OnGet("testUser");
-
-            // Assert
-            Assert.IsType<PageResult>(result);
-        }
-
-        [Fact]
-        public async Task OnGet_UserIsNotAuthenticated_ReturnsRedirectToPageResult()
-        {
-            // Arrange
-            
-            // Act
-            var result = await _userTimelineModel.OnGet("testUser");
-
-            // Assert
-            var redirectToPageResult = Assert.IsType<RedirectToPageResult>(result);
-            Assert.Equal("/Public", redirectToPageResult.PageName);
-        }
+            new Claim(ClaimTypes.Name, "TestUser"),
+            new Claim(ClaimTypes.Authentication, "true")
+        };
         
-        [Fact]
-        public async Task GetTotalPages_ReturnsCorrectTotalPages()
+        var userPrincipal = new ClaimsPrincipal(new ClaimsIdentity(userClaims, "mock"));
+        
+        _userTimelineModel.PageContext = new PageContext
         {
-            // Arrange
-            // We could change the amount of dto objects returned from the repository to test the logic
-            _cheepRepositoryMock.Setup(repo => repo.GetCheepsFromUser(It.IsAny<string>()))
-                .ReturnsAsync(new List<CheepDto> {});
-            
-            // Act
-            var totalPages = await _userTimelineModel.GetTotalPages("testUser");
+            HttpContext = new DefaultHttpContext
+            {
+                User = userPrincipal
+            }
+        };
 
-            // Assert
-            Assert.Equal(0, totalPages);
-        }
+        // Act
+        var result = await _userTimelineModel.OnGet("testUser");
 
-        [Fact]
-        public async Task OnPostFollow_WithValidData_ReturnsRedirectToPageResult()
-        {
-            // Arrange
+        // Assert
+        Assert.IsType<PageResult>(result);
+    }
 
-            // Act
-            var result = await _userTimelineModel.OnPostFollow("userName", "followerName");
+    [Fact]
+    public async Task OnGet_UserIsNotAuthenticated_ReturnsRedirectToPageResult()
+    {
+        // Arrange
+        
+        // Act
+        var result = await _userTimelineModel.OnGet("testUser");
 
-            // Assert
-            Assert.IsType<RedirectToPageResult>(result);
-        }
+        // Assert
+        var redirectToPageResult = Assert.IsType<RedirectToPageResult>(result);
+        Assert.Equal("/Public", redirectToPageResult.PageName);
+    }
+    
+    [Fact]
+    public async Task GetTotalPages_ReturnsCorrectTotalPages()
+    {
+        // Arrange
+        // We could change the amount of dto objects returned from the repository to test the logic
+        _cheepRepositoryMock.Setup(repo => repo.GetCheepsFromUser(It.IsAny<string>()))
+            .ReturnsAsync(new List<CheepDto> {});
+        
+        // Act
+        var totalPages = await _userTimelineModel.GetTotalPages("testUser");
 
-        [Fact]
-        public async Task OnPostLikeCheep_WithValidData_ReturnsRedirectToPageResult()
-        {
-            // Arrange
+        // Assert
+        Assert.Equal(0, totalPages);
+    }
 
-            // Act
-            var result = await _userTimelineModel.OnPostLikeCheep(Guid.NewGuid(), "userName");
+    [Fact]
+    public async Task OnPostFollow_WithValidData_ReturnsRedirectToPageResult()
+    {
+        // Arrange
 
-            // Assert
-            Assert.IsType<RedirectToPageResult>(result);
-        }
+        // Act
+        var result = await _userTimelineModel.OnPostFollow("userName", "followerName");
 
-        [Fact]
-        public async Task GetLikeCount_ReturnsCorrectLikeCount()
-        {
-            // Arrange
+        // Assert
+        Assert.IsType<RedirectToPageResult>(result);
+    }
 
-            // Act
-            var likeCount = await _userTimelineModel.GetLikeCount(Guid.NewGuid());
+    [Fact]
+    public async Task OnPostLikeCheep_WithValidData_ReturnsRedirectToPageResult()
+    {
+        // Arrange
 
-            // Assert
-            Assert.Equal(0, likeCount);
-        }
+        // Act
+        var result = await _userTimelineModel.OnPostLikeCheep(Guid.NewGuid(), "userName");
 
-        [Fact]
-        public async Task HasUserLikedCheep_ReturnsCorrectLikeStatus()
-        {
-            // Arrange
+        // Assert
+        Assert.IsType<RedirectToPageResult>(result);
+    }
 
-            // Act
-            var hasLiked = await _userTimelineModel.HasUserLikedCheep(Guid.NewGuid(), "userName");
+    [Fact]
+    public async Task GetLikeCount_ReturnsCorrectLikeCount()
+    {
+        // Arrange
 
-            // Assert
-            Assert.False(hasLiked);
-        }
+        // Act
+        var likeCount = await _userTimelineModel.GetLikeCount(Guid.NewGuid());
+
+        // Assert
+        Assert.Equal(0, likeCount);
+    }
+
+    [Fact]
+    public async Task HasUserLikedCheep_ReturnsCorrectLikeStatus()
+    {
+        // Arrange
+
+        // Act
+        var hasLiked = await _userTimelineModel.HasUserLikedCheep(Guid.NewGuid(), "userName");
+
+        // Assert
+        Assert.False(hasLiked);
+    }
 }
