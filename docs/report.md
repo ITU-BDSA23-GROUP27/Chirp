@@ -278,9 +278,10 @@ Pros:
 - More control over authentication and identity management processes.
 
 Cons:
-In comparison to Azure AD B2C, features like multi-factor authentication needs to be manually implemented.
-Might require additional effort to scale well for larger user bases.
-Requires more maintenance.
+
+- In comparison to Azure AD B2C, features like multi-factor authentication needs to be manually implemented.
+- Might require additional effort to scale well for larger user bases.
+- Requires more maintenance.
 
 
 ## Azure AD B2C	
