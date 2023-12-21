@@ -28,7 +28,7 @@ public class BasePageModelTest
 
         // Act and Assert - using lambda so same method can be used for both tests
         await Assert.ThrowsAsync<ArgumentNullException>(async () =>
-            await _basePageModel.HandleFollow(null, "followerName", _followerRepositoryMock.Object));
+            await _basePageModel.HandleFollow(null!, "followerName", _followerRepositoryMock.Object));
     }
 
     [Fact]
@@ -38,7 +38,7 @@ public class BasePageModelTest
 
         // Act and Assert - using lambda so same method can be used for both tests
         await Assert.ThrowsAsync<ArgumentNullException>(async () =>
-            await _basePageModel.HandleFollow("authorName", null, _followerRepositoryMock.Object));
+            await _basePageModel.HandleFollow("authorName", null!, _followerRepositoryMock.Object));
     }
 
     [Fact]
@@ -48,6 +48,6 @@ public class BasePageModelTest
 
         // Act and Assert - using lambda so same method can be used for both tests
         await Assert.ThrowsAsync<ArgumentNullException>(async () =>
-            await _basePageModel.HandleLike(Guid.NewGuid(), null, _reactionRepositoryMock.Object));
+            await _basePageModel.HandleLike(Guid.NewGuid(), null!, _reactionRepositoryMock.Object));
     }
 }
