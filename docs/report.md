@@ -70,7 +70,7 @@ Both unauthorized and authorized can actually go into the Seed DB page, however,
 Below is a full user journey to the implmentation of our UI-test (UI testing is described later).
 
 <!-- image of user activity - UI Testing -->
-![Authorized Seed DB page](images/User_Activity_Diagram2.png)
+![User activity diagram for UI-Test](images/User_Activity_Diagram2.png)
 
 <!-------------------------------------------------------------------------------------------------------->
 
