@@ -20,13 +20,18 @@ public class UserRepository : IUserRepository
 
     public async Task<UserDto> GetUserByName(string userName)
     {
-        var user = await _context.Users.FirstAsync(u => u.Name == userName);
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Name == userName);
 
-        return new UserDto()
+        if (user is null)
+        {
+            throw new ArgumentException("User does not exist: ", nameof(user));
+        }
+        
+        return new UserDto
         {
             Id = user.Id,
             Name = user.Name,
-            Email = user?.Email ?? string.Empty,
+            Email = user.Email ?? string.Empty
         };
     }
     public async Task CreateUser(UserDto user)
@@ -42,7 +47,7 @@ public class UserRepository : IUserRepository
         {
             Id = new Guid(),
             Name = user.Name,
-            Email = user.Email,
+            Email = user.Email
         };
         
         _context.Users.Add(newUser);

@@ -2,7 +2,6 @@
 using System.Globalization;
 using Chirp.Core;
 using Chirp.Core.DTOs;
-using Chirp.Infrastructure.Entities;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
@@ -70,19 +69,13 @@ public class UserTimelineModel : BasePageModel
             }
         }
         
-        if (User.Identity?.IsAuthenticated == false) //TODO Unnecessary code? 
+        try
         {
-            try
-            {
-                //TODO Problem: Can't find github authors in http since it makes it lowercase e.g. "/Tien197" -> "/tien197"   
-                var existingUser = await _userRepository.GetUserByName(user);
-                
-                // show cheeps of user
-            }
-            catch (ArgumentException)
-            {
-                return RedirectToPage("/Public");
-            }
+            var existingUser = await _userRepository.GetUserByName(user); 
+        }
+        catch (ArgumentException)
+        {
+            return RedirectToPage("/Error");
         }
         
         //The following if statement has been made with the help of CHAT-GPT
@@ -109,7 +102,8 @@ public class UserTimelineModel : BasePageModel
                     Cheeps = Cheeps.Union(cheepDtos);
                     TotalFollowerCheepCount += cheepDtos.Count();
                 }
-            }   
+            }
+            
             foreach (var cheep in Cheeps)
             {
                 var userName = cheep.UserName;

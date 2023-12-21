@@ -47,9 +47,9 @@ public class ReactionRepository : IReactionRepository
         var comments = await _context.Reactions
             .OrderByDescending(r => r.TimeStamp)
             .Where(r => r.ReactionType == ReactionType.Comment && r.CheepId == cheepId)
-            .Select<Reaction, ReactionDto>(r => new ReactionDto()
+            .Select<Reaction, ReactionDto>(r => new ReactionDto
                 {
-                    UserId = r.CheepId,
+                    UserId = r.UserId,
                     CheepId = r.CheepId,
                     TimeStamp = r.TimeStamp.ToString(CultureInfo.InvariantCulture),
                     Comment = r.ReactionContent
@@ -63,12 +63,16 @@ public class ReactionRepository : IReactionRepository
         var cheep = await _context.Cheeps.SingleOrDefaultAsync(c => c.CheepId == cheepId);
         var user = await _context.Users.SingleOrDefaultAsync(u => u.Name == userName);
 
-        if (cheep is null || user is null)
+        if (cheep is null)
         {
-            throw new ArgumentException("Error: User or Cheep not found when adding reaction");
+            throw new ArgumentException("Error: Cheep not found when adding reaction");
+        }
+        if (user is null)
+        {
+            throw new ArgumentException("Error: User not found when adding reaction");
         }
         
-        var newLike = new Reaction()
+        var newLike = new Reaction
         {
             UserId = user.Id,
             CheepId = cheepId,
@@ -118,7 +122,7 @@ public class ReactionRepository : IReactionRepository
             throw new ArgumentException("Error: User or Cheep not found when adding reaction");
         }
         
-        var newComment = new Reaction()
+        var newComment = new Reaction
         {
             UserId = comment.UserId,
             CheepId = comment.CheepId,

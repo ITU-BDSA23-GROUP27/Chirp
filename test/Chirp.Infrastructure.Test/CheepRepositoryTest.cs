@@ -1,4 +1,4 @@
-using Chirp.Core;
+using System.Globalization;
 using Chirp.Core.DTOs;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
@@ -37,7 +37,7 @@ public class CheepRepositoryTest
         var cheepDto = new CheepDto
         {
             Message = "Bye, world!",
-            TimeStamp = DateTime.UtcNow.ToString(),
+            TimeStamp = DateTime.UtcNow.ToString(CultureInfo.CurrentCulture),
             UserName = "Hans Hansen"
         };
 

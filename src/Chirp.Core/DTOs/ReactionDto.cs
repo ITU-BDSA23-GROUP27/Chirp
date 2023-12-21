@@ -8,10 +8,10 @@ namespace Chirp.Core.DTOs;
 
 public class ReactionDto
 {
-    public Guid UserId { get; set; }
-    public Guid CheepId { get; set; }
-    public required string TimeStamp { get; set; }
-    public string? Comment { get; set; }
+    public Guid UserId { get; init; }
+    public Guid CheepId { get; init; }
+    public required string TimeStamp { get; init; }
+    public string? Comment { get; init; }
 }
 
 public class ReactionValidator : AbstractValidator<ReactionDto>

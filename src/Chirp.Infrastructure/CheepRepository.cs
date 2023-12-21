@@ -27,8 +27,8 @@ public class CheepRepository : ICheepRepository
     {
         var cheeps = await _context.Cheeps
             .OrderByDescending(c => c.TimeStamp)
-            .Select<Cheep, CheepDto>(c => new CheepDto()
-        {
+            .Select<Cheep, CheepDto>(c => new CheepDto
+            {
             Id = c.CheepId,
             Message = c.Text,
             TimeStamp = c.TimeStamp.ToString(CultureInfo.InvariantCulture),
@@ -58,7 +58,7 @@ public class CheepRepository : ICheepRepository
             throw new ArgumentException($"No existing author with that name found: {cheep.UserName}");
         }
 
-        var newCheep = new Cheep()
+        var newCheep = new Cheep
         {
             CheepId = new Guid(),
             Text = cheep.Message,

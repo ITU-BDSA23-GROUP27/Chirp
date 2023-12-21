@@ -17,5 +17,5 @@ public class Reaction
 public enum ReactionType
 {
     Like,
-    Comment,
+    Comment
 }
