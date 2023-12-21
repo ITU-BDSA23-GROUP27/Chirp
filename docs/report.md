@@ -59,7 +59,7 @@ If an unauthenticated user tries to access a page that requires to be authentica
 
 An unauthorized user does not have the Seed DB menu on the page, but you can still try to access the authorized page (Seed DB) via the endpoint or using the shortcut.  
 
-Both unauthorized and authorized can actually go into the Seed DB page, however the content displayed in that page is different depending on the authorization.
+Both unauthorized and authorized can actually go into the Seed DB page, however, the content displayed in that page is different depending on the authorization.
 
 <!-- image of unauthorized Seed DB page -->
 ![Unauthorized Seed DB page](images/Unauthorized_SeedDB.png)
@@ -103,7 +103,7 @@ The pull request gets merged into the master branch when all checks succeeds. Tw
 <!-- image of project board with issues -->
 ![Project Dashboard](images/Project_Dashboard.png)
 
-We have one unresolved functionality which is the comment feature. As of right now the feature is implemented in the code but not utilized by the front-end. That is the field for typing in a comment, the send button as well as showing the other comments on the individual cheeps. In addition there is a minor fix needed in the form of making the username endpoint case-insensitive.
+We have one unresolved functionality which is the comment feature. As of right now the feature is implemented in the code but not utilized by the front-end. That is the field for typing in a comment, the send button as well as showing the other comments on the individual cheeps. In addition, there is a minor fix needed in the form of making the username endpoint case-insensitive.
 
 
 <!-------------------------------------------------------------------------------------------------------->
@@ -117,16 +117,16 @@ Our activity flow was a bit mixed and thereby consisted of two different flows w
 
 Flow 1:
 
-1. The issue/problem is found
-2. The issue is noted in GitHub issues with corresponding acceptance criteria
-3. Afterwards the issue is fixed according to the listed acceptance criteria on an individual branch
+1. The issue/problem is found.
+2. The issue is noted in GitHub issues with corresponding acceptance criteria.
+3. Afterwards the issue is fixed according to the listed acceptance criteria on an individual branch.
 4. Lastly the branch with the fixed is merged into master through a pull request pending review of the other group members.
 
 Flow 2:
 
-1. The issue/problem is found
-2. The issue is fixed through various means depending on the issue on an individual branch
-3. Afterwards the issue is noted in GitHub issues with acceptance criteria matching the implemented fix (minor issues are fixed right away without making a new issue on GitHub)
+1. The issue/problem is found.
+2. The issue is fixed through various means depending on the issue on an individual branch.
+3. Afterwards the issue is noted in GitHub issues with acceptance criteria matching the implemented fix (minor issues are fixed right away without making a new issue on GitHub).
 4. Lastly the branch with the fixed is merged into master through a pull request pending review of the other group members.
 
 <!-------------------------------------------------------------------------------------------------------->
@@ -189,7 +189,7 @@ NOTE: If you have already cloned the project down skip to step 3. The tests will
 git clone https://github.com/ITU-BDSA23-GROUP27/Chirp.git
 ```
 
-3. From here the test can be simply launched with the following command: 
+3. From here, the test can be simply launched with the following command: 
 ```bash
 dotnet test .\Chirp
 ```
