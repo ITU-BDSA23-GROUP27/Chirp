@@ -18,19 +18,18 @@ toc: true
 toc-own-page: true
 ---
 
-
+<!-------------------------------------------------------------------------------------------------------->
 
 # Design and Architecture of _Chirp!_
 
 ## Domain model
 
 <!-- image of Domain Model UML -->
-![Chirp.Core Domain Model](images/Domain_Model_UML.png)
+![Domain Model UML](images/Domain_Model_UML.png)
 
 The illustration above depicts our domain model of Chirp.Core, Chirp.Infrastructure and Chirp.Web. Zoom in for a better view.
 
-
-
+<!-------------------------------------------------------------------------------------------------------->
 
 ## Architecture — In the small
 
@@ -39,35 +38,13 @@ The different layers of the Onion architecture represent the projects in the sol
 <!-- onion image -->
 ![Onion achitecture](images/Onion_Architecture.png)
 
-
-
-
-
-
-
-
-
+<!-------------------------------------------------------------------------------------------------------->
 
 ## Architecture of deployed application
 
 ![Architecture of deployed application](images/Architecture_of_Deployed_Application.png)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!-------------------------------------------------------------------------------------------------------->
 
 ## User activities
 
@@ -90,18 +67,12 @@ Both unauthorized and authorized can actually go into the Seed DB page, however 
 <!-- image of authorized Seed DB page -->
 ![Authorized Seed DB page](images/Authorized_SeedDB.png)
 
-
-
 Below is a full user journey to the implmentation of our UI-test (UI testing is described later).
 
 <!-- image of user activity - UI Testing -->
 ![Authorized Seed DB page](images/User_Activity_Diagram2.png)
 
-
-
-
-
-
+<!-------------------------------------------------------------------------------------------------------->
 
 
 ## Sequence of functionality/calls through _Chirp!_
@@ -109,18 +80,7 @@ Below is a full user journey to the implmentation of our UI-test (UI testing is 
 <!-- image of Sequence diagram -->
 ![Sequence of functionality/calls thorugh _Chirp!_](images/Sequence_Diagram.png)
 
-
-
-
-
-
-
-
-
-
-
-
-
+<!-------------------------------------------------------------------------------------------------------->
 
 # Process
 
@@ -133,19 +93,7 @@ The pull request gets merged into the master branch when all checks succeeds. Tw
 <!-- image of UML activity diagram - Build, test, release, and deployment -->
 ![Process - Activity Diagram](images/Process_Activity_Diagram.png)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!-------------------------------------------------------------------------------------------------------->
 
 
 ## Team work
@@ -155,8 +103,10 @@ The pull request gets merged into the master branch when all checks succeeds. Tw
 <!-- image of project board with issues -->
 ![Project Dashboard](images/Project_Dashboard.png)
 
-We have one unresolved functionality which is the comment feature. As of right now the feature is implemented in the code but not utilized by the front-end. That is the field for typing in a comment, the send button as well as showing the other comments on the individual cheeps.
+We have one unresolved functionality which is the comment feature. As of right now the feature is implemented in the code but not utilized by the front-end. That is the field for typing in a comment, the send button as well as showing the other comments on the individual cheeps. In addition there is a minor fix needed in the form of making the username endpoint case-insensitive.
 
+
+<!-------------------------------------------------------------------------------------------------------->
 
 ### Flow of Activities
 
@@ -179,16 +129,7 @@ Flow 2:
 3. Afterwards the issue is noted in GitHub issues with acceptance criteria matching the implemented fix (minor issues are fixed right away without making a new issue on GitHub)
 4. Lastly the branch with the fixed is merged into master through a pull request pending review of the other group members.
 
-
-
-
-
-
-
-
-
-
-
+<!-------------------------------------------------------------------------------------------------------->
 
 ## How to make _Chirp!_ work locally
 
@@ -224,14 +165,7 @@ dotnet user-secrets set "authentication_github_clientSecret" "<GitHub client sec
 dotnet run --project .\Chirp\src\Chirp.Web
 ```
 
-
-
-
-
-
-
-
-
+<!-------------------------------------------------------------------------------------------------------->
 
 
 ## How to run test suite locally
@@ -260,10 +194,7 @@ git clone https://github.com/ITU-BDSA23-GROUP27/Chirp.git
 dotnet test .\Chirp
 ```
 
-
-
-
-
+<!-------------------------------------------------------------------------------------------------------->
 
 
 ### UI Testing
@@ -306,8 +237,7 @@ In that case, you will have to manually click the authorize button.
 
 In most cases, the first situation will occur where you are not required to do more other than running the test after configuring your login.
 
-
-
+<!-------------------------------------------------------------------------------------------------------->
 
 
 # Ethics
@@ -325,6 +255,7 @@ CoPilot was used as well in the development but more as a word/sentence complete
 ### Qodana
 Qodana was used to check the quality of our code. It was able to detect multiple minor issues that we were not aware of, such as unused variables, unused methods, and unused namespaces. It also detected some issues with the code that we were able to fix. However, it also detected some issues that we were not able to fix, such as the use of `var` instead of the actual type. We were not able to fix this issue because it would require us to change the type of the variable, which would then require us to change the type of the variable in all the other places where it is used. This would be a lot of work and we did not see the benefit of doing it.
 
+<!-------------------------------------------------------------------------------------------------------->
 
 
 # Authentication
@@ -368,9 +299,9 @@ Cons:
 2. **Complexity**: The additional features and flexibility of B2C can introduce complexity, making the initial setup take more time compared to a simpler solution like GitHub OAuth.
 
 
-
 ## Conclusion
 
 GitHub OAuth with Identity was choosen for simplicity and ease of use for this mini project. It is easy to set up and use, and it provides all the features we need for _Chirp!_, and using GitHub is a functional requirement. 
 
 In contrast, B2C might be better for this project, if _Chirp!_ one day have a large community with a lot of concurrent users, and we need to support multiple identity providers. 
+
