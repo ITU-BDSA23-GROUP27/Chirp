@@ -260,48 +260,57 @@ Qodana was used to check the quality of our code. It was able to detect multiple
 
 # Authentication
 <!-- You will have to document in your project why you chose what you did and discuss pros and cons -->
-The pros and cons of using GitHub OAuth with Identity and AAD B2C with Identity are discussed below.
 
-## GitHub OAuth with Identity
+We chose using ASP.NET Core Identity as an identity management solution since it seemed to have many benefits seen from what we were presented, such as it already being built-in, support for authorization and support for social identity providers like GitHub, which fitted with the requirement of using GitHub OAuth. It seemed like the simplest solution  out of all the ones presented to us, especially since we could read and follow the book ‘Andrew Lock ASP.NET Core in Action, Third Edition’ and other documentations on the implementation/scaffolding of Identity in ASP.NET Core projects. 
+
+## ASP.NET Core Identity
 
 Pros:
 
-1. **Simplicity**: Setting up GitHub OAuth is very simple. You only need to create a GitHub OAuth application and add the client id and client secret to the application. You don't need to set up a database or anything else.
+- Identity is built-in ASP.NET Core.
+- Local accounts.
+- Credentials stored in database.
+- Works offline.
+- Support for social identity providers (Facebook, Twitter, GitHub, etc.).
+- Support for authorization.
+- You manage everything (some code auto generated).
+- Suitable for smaller applications.
+- More control over authentication and identity management processes.
 
-2. **Documentation**: GitHub provides clear and extensive documentation for OAuth and integrating it with ASP.NET Identity is also well documented. This makes it easy to set up and use.
+Cons:
+In comparison to Azure AD B2C, features like multi-factor authentication needs to be manually implemented.
+Might require additional effort to scale well for larger user bases.
+Requires more maintenance.
 
-3. **Community Support**: Since GitHub OAuth is widely used, there is a lot of community support available. If you run into any problems, you can easily find a solution online.
 
+## Azure AD B2C	
+
+Pros:
+
+- Support various social identity providers. 
+- Multi-factor authentication.
+- High scalability and reliability.
+- Suitable for large-scale application.
 
 Cons:
 
-1. **Limited to GitHub Users**: The main limitation is that only users with GitHub accounts can use the application. If your target audience includes users who don't use GitHub, this may be a drawback.
-
-2. **Limited Features**: GitHub OAuth only provides basic authentication features. If you need more advanced features, you will have to implement them yourself.
-
-3. **Dependence on GitHub's Servers**: Since GitHub OAuth depends on GitHub's servers, if GitHub's servers go down, your application will also go down.
+- No built-in support for authorization.
+- Complexity when it comes to setting up and managing Azure B2C.
+- Less control over authentication and identity management compared to ASP.NET Core Identity.
 
 
-## Azure Active Directory B2C with Identity
+## Azure Web Apps Easy Auth
 
-Pros: 
+Pros:
 
-1. **Identity Provider Flexibility**: B2C supports many identity providers, including GitHub, Google, Facebook, Microsoft, etc. This means that users can use their existing accounts to log in to your application.
-
-2. **Customization and Branding**: B2C allows you to customize the login page and add your own branding. This allows you to create a consistent user experience across all your applications.
-
-3. **Scalability and Enterprise Features**: B2C is designed for enterprise applications, so it has many features that are useful for enterprise applications, such as multi-factor authentication, single sign-on, and more.
+- Easy Auth is built into the Azure App Service making it easy to use.
+- Well made for prototyping but also production ready.
+- Since it is a part of Azure it also inherits its security, scalability and reliability.
 
 Cons:
 
-1. **Learning Curve**: Setting up B2C might have a steeper learning curve, especially if you are not familiar with B2C. However, once you learn how to use it, it is very easy to use.
-
-2. **Complexity**: The additional features and flexibility of B2C can introduce complexity, making the initial setup take more time compared to a simpler solution like GitHub OAuth.
-
-
-## Conclusion
-
-GitHub OAuth with Identity was choosen for simplicity and ease of use for this mini project. It is easy to set up and use, and it provides all the features we need for _Chirp!_, and using GitHub is a functional requirement. 
-
-In contrast, B2C might be better for this project, if _Chirp!_ one day have a large community with a lot of concurrent users, and we need to support multiple identity providers. 
+- It is somewhat limited since it is built directly into Azure.
+- There is no built-in support for authorization.
+- It only works on Azure.
+- Customization is rather limited compared to other options.
 
