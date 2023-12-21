@@ -44,7 +44,17 @@ The different layers of the Onion architecture represent the projects in the sol
 
 
 
+
+
+
+
 ## Architecture of deployed application
+
+![Architecture of deployed application](images/Architecture_of_Deployed_Application.png)
+
+
+
+
 
 
 
@@ -143,7 +153,7 @@ The pull request gets merged into the master branch when all checks succeeds. Tw
 ### Project Board
 
 <!-- image of project board with issues -->
-![Project Board]()
+![Project Dashboard](images/Project_Dashboard.png)
 
 We have one unresolved functionality which is the comment feature. As of right now the feature is implemented in the code but not utilized by the front-end. That is the field for typing in a comment, the send button as well as showing the other comments on the individual cheeps.
 
