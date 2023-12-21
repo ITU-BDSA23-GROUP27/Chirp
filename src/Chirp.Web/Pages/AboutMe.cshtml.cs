@@ -1,9 +1,9 @@
 using System.Globalization;
 using System.Text;
-using System.Web.Http;
 using Chirp.Core;
 using Chirp.Core.DTOs;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Chirp.Web.Pages;
