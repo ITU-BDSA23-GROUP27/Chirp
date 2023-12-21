@@ -218,7 +218,7 @@ Then in the directory `test\PlaywrightTests\`, run `dotnet test` in the terminal
 
 Note: A few scenarios can occur when trying to authenticate with GitHub:
 
-1. When playwright clicks `Sign in` from the homepage’s navigation bar, the following GitHub authentication site should appear.
+1. When Playwright clicks `Sign in` from the homepage’s navigation bar, the following GitHub authentication site should appear.
 
 <!-- image of GitHub authorization page -->
 ![GitHub authorization page](images/GitHub_Authorization_SeedDB.png)
@@ -296,7 +296,7 @@ Pros:
 Cons:
 
 - No built-in support for authorization.
-- Complexity when it comes to setting up and managing Azure B2C.
+- Complex when it comes to setting up and managing Azure B2C.
 - Less control over authentication and identity management compared to ASP.NET Core Identity.
 
 
@@ -306,7 +306,7 @@ Pros:
 
 - Easy Auth is built into the Azure App Service making it easy to use.
 - Well made for prototyping but also production ready.
-- Since it is a part of Azure it also inherits its security, scalability and reliability.
+- Since it is a part of Azure, it also inherits its security, scalability and reliability.
 
 Cons:
 
