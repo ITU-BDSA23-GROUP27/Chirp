@@ -24,27 +24,10 @@ toc-own-page: true
 
 ## Domain model
 
-<!-- Chirp.Core Domain model UML -->
-![Chirp.Core Domain Model](images/Chirp.Core_Domain_Model.png)
+<!-- image of Domain Model UML -->
+![Chirp.Core Domain Model](images/Domain_Model_UML.png)
 
-<!-- Legends in Domain model UML -->
-\begin{figure}[ht]
-\centering
-\includegraphics[width=0.3\textwidth]{images/Legends_Domain_Model.png}
-\caption{Legends - Domain Model}
-\end{figure}
-
-<!-- Chirp.Infrastructure Domain model UML -->
-![Chirp.Infrastructure Domain Model](images/Chirp.Infrastructure_Domain_Model.png)
-
-<!-- Chirp.Web Domain model UML -->
-![Chirp.Web Domain Model](images/Chirp.Web_Domain_Model.png)
-
-The illustration above depicts our domain model of Chirp.Core, Chirp.Infrastructure and Chirp.Web which might be hard to see properly. Therefore here is a link for a better depiction: [Figma](https://www.figma.com/file/Yn2gFlonZxWxXUJqc8cUVe/Data-Model-UML-(Chirp)?type=whiteboard&node-id=0%3A1&t=pohbXJHrRdmW6X85-1)
-
-Due note that the diagrams use different colored arrows, which is purely for vanity sake thereby making it easier to see which line corresponds to which object.
-
-
+The illustration above depicts our domain model of Chirp.Core, Chirp.Infrastructure and Chirp.Web. Zoom in for a better view.
 
 
 
@@ -80,7 +63,7 @@ The different layers of the Onion architecture represent the projects in the sol
 
 The user activity diagram below shows all possible journeys a user can take. From the starting/entry point, each subset of a path that the user is taking, by following the arrows, is his/her user journey.
 
-<!-- user activity - general -->
+<!-- image of user activity - general -->
 ![User activity diagram](images/User_Activity_Diagram.png)
 
 One thing that is not shown in the diagram above is that you can from any page also navigate to another page directly, either by clicking on the navigation menu (if it exists) or manually input its endpoints (or use the hidden shortcuts, alt+1 to 5). 
@@ -101,7 +84,7 @@ Both unauthorized and authorized can actually go into the Seed DB page, however 
 
 Below is a full user journey to the implmentation of our UI-test (UI testing is described later).
 
-<!-- user activity - UI Test -->
+<!-- image of user activity - UI Testing -->
 ![Authorized Seed DB page](images/User_Activity_Diagram2.png)
 
 
